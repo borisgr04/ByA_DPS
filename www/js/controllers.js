@@ -50,9 +50,9 @@ angular.module('starter.controllers', [])
   function _llenarGrupos(){
       var e = {};
       e.name = "Periodo Cumplimiento Salud";
-      e.fecha1 = "11-11-2015";
+      e.fecha1 = "11-11-2015   ";
       e.name2 = "Periodo Cumplimiento Educación";
-      e.fecha2 = "12-12-2015";
+      e.fecha2 = "12-12-2015   ";
       e.items = ["Beneficiario","Tipo Inscripción","Cumplió","Fecha Cumplimiento"];
       
       var d = {};

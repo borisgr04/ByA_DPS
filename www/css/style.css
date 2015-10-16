@@ -1,0 +1,456 @@
+/* Empty. Add your own CSS if you like */
+body{
+	font-family: 'Roboto', sans-serif;
+}
+h1{
+	color: #3e97cf;
+	font-size: 28px;
+	font-family: 'Roboto', sans-serif;
+}
+
+.card p{
+	color: #000000;
+	font-weight: 100;
+}
+
+.logo{
+	width: 50%;
+	margin: 0 auto;
+	display: block;
+	margin-top: 15%;
+}
+
+.bar-header{
+	color: #FFF !important;
+} 
+
+.list a{
+	border:none;
+	font-family: 'Roboto', sans-serif;
+	color: #494949;
+	font-size: 14px
+}
+
+.list .icon{
+	font-size: 25px;
+}
+
+.view-container .formulario label{
+	width: 90%;
+	border: none;
+	margin: 0 auto;
+	padding-left: 0;
+	border-bottom: 1px solid #d9d9d9;
+}
+
+.item-floating-label{
+	padding: 0;
+    margin-bottom: 7px;
+}
+
+.item-floating-label input{
+	border-bottom:1px solid #0ff;
+}
+
+.item-select select{
+	border-bottom:1px solid #0ff;
+    margin-bottom: 7px;
+	padding-left: 0px;
+}
+
+.item-stacked-label{
+	padding: 0;
+    margin-bottom: 5px;
+}
+
+.item-stacked-label input{
+	border-bottom:1px solid #0ff;
+}
+
+.item-select{
+	width: 100%;
+	display: block;
+	height: 50px;
+}
+select{
+	min-width: 100% !important;
+	width: 100% !important;
+	text-align: left !important;
+	direction: ltr !important;
+}
+.title-document {
+	width: 90%;
+	margin: 0 auto;
+	font-size: 14px;
+	color: #c7c7c7;
+	margin-top: 15% !important;
+}
+.input-label{
+	font-size: 14px;
+	color: #c7c7c7;
+}
+
+.card-enroll p{
+	color: #f29400;
+}
+
+.formulario .button-positive,
+.listado .button-positive
+{
+	background-color: #3e97cf !important;
+	border-color: #3e97cf !important;
+	box-shadow: 0px 0px 3px 0px #000 !important;
+	color: #fff;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 700;
+	margin-top: 15% !important;
+	width: 40% !important;
+	text-transform: uppercase !important;
+	margin-left: 5% !important;
+	min-height: 0 !important;
+}
+
+.user-result .checkbox{
+	float: left;
+	margin-right: 5%;
+}
+
+.user-result .checkbox input{
+	width: 20px;
+	height: 20px;
+}
+
+.user-result .checkbox input:before{
+	border-radius: 2px !important;
+}
+
+.list .item{
+	border:none;
+}
+
+.modal-wrapper .list .item{
+	border: 1px solid rgba(197, 197, 197, 0.5);
+}
+
+.user-result .documento{
+	color: #000;
+	font-family: 'Roboto', sans-serif;
+}
+
+.user-result .nombres{
+	color: #999999;
+	font-family: 'Roboto', sans-serif;
+}
+
+.profile-ico{
+	width: 7%;
+  float: left;
+  margin-right: 5%;
+  margin-top: 3%;
+}
+
+.thumb-jovenes{
+  background-color: #d6d6d6;
+  border-radius: 20px;
+  width: 12%;
+  padding: 1.5% 1%;
+  float: left;
+  margin-right: 5%;
+  margin-bottom: 5%;
+}
+
+.thumb-familias{
+  background-color: #d6d6d6;
+  border-radius: 20px;
+  width: 12%;
+  padding: 1% 0%;
+  float: left;
+  margin-right: 5%;
+  margin-bottom: 5%;
+}
+
+.program-info-box{
+	float: left;
+}
+
+.program-title{
+  color: #000 !important;
+  font-size: 1em !important;
+  font-family: 'Roboto', sans-serif;
+}
+
+.program-desc{
+	color: #999999 !important;
+	font-size: 0.9em !important;
+	font-family: 'Roboto', sans-serif;
+}
+
+.program-link{
+  text-transform: uppercase !important;
+  color: #f29400 !important;
+  text-decoration: none !important;
+  font-weight: 500 !important;
+  font-family: 'Roboto', sans-serif;
+}
+
+.ion-ios-information{
+	float: right;
+	color: #FE9401;
+}
+
+.detalle-programa-box .has-header{
+	top: 0 !important;
+}
+
+.detalle-programa-box .program-head-one{
+	background: -webkit-linear-gradient(#000000, #B2B2B2);
+	background: -o-linear-gradient(#000000, #B2B2B2);
+	background: -moz-linear-gradient(#000000, #B2B2B2);
+	background: linear-gradient(#000000, #B2B2B2);
+}
+
+.detalle-programa-box .program-head-two{
+	background-color: #fafafa;
+	opacity: 0.5;
+	  padding-bottom: 5%;
+}
+
+.detalle-programa-box .img-program{
+	margin: 0 auto;
+	display: block;
+	padding-top: 14%;
+	padding-bottom: 3%;
+}
+
+.detalle-programa-box .program-title-detail{
+	position: relative;
+	margin-top: -10%;
+	text-align: center;
+	font-size: 2em;
+	color: #fff;
+}
+
+.detalle-programa-box .bar-light .back-button{
+	color: #fff !important;
+}
+
+.detalle-programa-box .program-desc-title{
+  color: #000;
+  font-size: 1.5em;
+  font-family: 'Roboto', sans-serif;
+  margin-top: 10%;
+}
+
+.detalle-programa-box .program-desc-desc{
+  color: #999999;
+  font-size: 1em;
+  font-family: 'Roboto', sans-serif;
+}
+
+.logoEncabezado {
+  width: auto;
+  height: 39px;
+  float: left;
+  position: relative;
+  left: -3px;
+  top: 6px;
+}
+
+.detalle-programa-box .bar-light{
+	background-color: #3E97CF !important;
+}
+
+.bar.bar-positive {
+    border-color: #3e97cf;
+    background-color: #3e97cf;
+    background-image: linear-gradient(0deg, #3e97cf, #3e97cf 50%, transparent 50%);
+    color: #fff;
+}
+
+.popup-title{
+    color: #3e97cf;
+    text-align: left;
+}
+
+.checkbox input:checked:before, .checkbox input:checked + .checkbox-icon:before {
+    background: #f29400;
+    border-color: #f29400;
+}
+
+input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.cloned-text-input), textarea[readonly]:not(.cloned-text-input), select[readonly] {
+  	background-color: #fff;
+	width: 100%;
+	border-bottom: 1px solid #c7c7c7;
+}
+
+.list .item{
+	font-family: "Helvetica Neue", "Roboto", "Segoe UI", sans-serif;
+	color: #000;
+}
+
+.ion-ios-arrow-down:before {
+    content: "\f3d0";
+    float: right;
+    position: relative;
+    top: 32px;
+    font-size: 17px;
+}
+
+.item-radio input:checked ~ .item-content {
+    background: #f29400;
+}
+
+.item-radio{
+    width: 25px;
+    height: 25px;
+    float: left;
+    margin-right: 5%;
+    margin-top: 8px;
+    color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.2) !important;
+}
+
+.item-radio i{
+    padding: 1px 5px 0px 0px;
+    font-size: 18px;
+}
+
+.user-result .item-radio input:checked ~ .radio-icon {
+    font-size: 18px !important;
+    padding: 0px 5px 0px 0px !important;
+    color: #fff;
+}
+
+.formulario ul li.item{
+margin: 0 auto;
+    padding: 0;
+    width: 90%;
+}
+
+.formulario ul li.item input{
+color:  #000;
+}
+
+.ion-navicon:before {
+    content: "\f20e";
+    font-size: 33px;
+    margin-left: 4px;
+	color: #fff;
+}
+
+.ion-android-arrow-back:before {
+    content: "\f2ca";
+    color: #fff;
+    font-size: 25px;
+    margin-top: 4px;
+    margin-left: 3px;
+}
+
+.ion-ios-arrow-left:before{
+	color: #fff;
+}
+
+.enrollment-bar .title{
+	left: 54px !important;
+}
+
+.list {
+    margin:20px;
+}
+
+.card-full{
+	width: 100%;
+	padding-left: 0px;
+	padding-top: 0px;
+}
+
+.borde-list{
+	border-bottom-color: #000;
+}
+
+.borde-item{
+	border-color: #fff;
+}
+
+.item-button{
+	margin-bottom: 10px;
+}
+
+.link{
+	font-size: 0.9em;
+	margin: 0px;
+	padding: 0;
+}
+
+.item-programa{
+	padding-bottom: 0px;
+}
+
+.button-menu{
+	padding: 5px;
+}
+
+.text-button-large{
+	font-size: large;
+	padding-top: 5px;
+}
+
+.item-accordion-button{
+	border-top: #fff;
+}
+
+.ion-item-border{
+	border: transparent;
+}	
+
+.i-x90{
+	font-size: 90px;
+}
+
+.i-x110{
+	font-size: 110px;
+}
+
+.i-x80{
+	font-size: 80px;
+}
+
+.i-x70{
+	font-size: 70px;
+}
+
+.i-x60{
+	font-size: 60px;
+}
+
+.orange{
+	color: #f0ad4e;
+}
+
+.gray-light{
+	color: #0ff;
+}
+
+.gray-light-2{
+	color: #C0C0C0;
+}
+
+.blue{
+	color:#3E97CF;
+}
+
+.contenedor{
+	text-align: center;
+	margin: 10px;
+}
+
+.text-large{
+	font-size: large;
+}
+
+.margin-bottom-20{
+	margin-bottom: 20px;
+}
+.margin-top-20{
+	margin-top: 20px;
+}

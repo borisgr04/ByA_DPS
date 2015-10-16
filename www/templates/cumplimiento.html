@@ -1,0 +1,27 @@
+<ion-view view-title='<img class="logoEncabezado" src="img/logo2.png"/> Cumplimiento'>
+    <ion-content>
+        <div>
+        <div ng-repeat="group in groups">
+          <ion-item class="item-stable" ng-click="toggleGroup(group)" ng-class="{active: isGroupShown(group)}" style="background-color: #fff;">
+              <div class="row" style="margin:0px;padding:0px;">
+                <div class="col col-20">
+                    <img ng-src="img/profile.png" style="width:75%;">
+                </div>
+                <div class="col col-80">
+                    {{group.name}}<br/>
+                    <label class='gray-light-2'>{{group.fecha1}}</label>  <i class="icon" ng-class="isGroupShown(group) ? 'ion-minus-circled' : 'ion-plus-circled'" style="color:#3E97CF;margin-left:180px;"></i> <br>
+                    {{group.name2}} <br>
+                    <label class='gray-light-2'>{{group.fecha2}}</label>
+                </div>
+              </div>   
+          </ion-item>
+          <ion-item class="item-accordion item-accordion-button" ng-show="isGroupShown(group)" style="padding-left:95px;margin-top:0px;padding-top:0px;">
+            <p>Beneficiario</p>
+            <p>Tipo de Inscripción</p>
+            <p>Cumplió</p>
+            <p>Fecha de Cumplimiento</p>
+          </ion-item>
+        </div>
+      </div>
+    </ion-content>
+</ion-view>

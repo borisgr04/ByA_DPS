@@ -1,6 +1,16 @@
 angular.module('starter.controllers', [])
 .controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacion) { 
   
+  _init();
+  function _init(){
+    var serAut = autenticacion._getToken();
+    serAut.then(function(pl){
+      console.log(JSON.stringify(pl));
+    },function(pl){
+      console.log(JSON.stringify(pl))
+    }); 
+  };  
+  
 })
 .controller('CumplimientoCtrl', function ($scope) {
   $scope.groups = [];

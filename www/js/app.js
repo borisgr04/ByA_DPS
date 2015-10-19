@@ -32,6 +32,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers'])
         url: '/home',
         views: {
             'menuContent': {
+                controller: 'HomeCtrl',
                 templateUrl: 'templates/home.html'
             }
         }

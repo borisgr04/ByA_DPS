@@ -1,7 +1,9 @@
 angular.module('starter.controllers', [])
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {})
+.controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacion) { 
+  
+})
 .controller('CumplimientoCtrl', function ($scope) {
-    $scope.groups = [];
+  $scope.groups = [];
   $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
       $scope.shownGroup = null;

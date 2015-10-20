@@ -52,9 +52,20 @@ angular.module('starter.controllers', [])
         });
     };  
 })
-.controller('PreguntasPersonasCtrl', function ($scope) {
+.controller('PreguntasPersonasCtrl', function ($scope, $ionicPopup, $timeout) {
     $scope.lPreguntas = {};
     $scope.ids_preguntas = [];
+    $scope.index_preguntas = 0;
+    $scope.pregunta_actual = {};
+    $scope.obj_respuestas = {};
+    $scope._continuar = function(){
+        _continuar();
+    };
+    $scope._verificarValidarRespuestaActual = function (respuesta) {
+        $.each($scope.pregunta_actual.respuestas, function (index, item) {
+            if (item.nombre != respuesta.nombre) item.value = false;
+        });
+    };
      
     _init();
 
@@ -62,7 +73,9 @@ angular.module('starter.controllers', [])
         _obtenerPreguntas();
     };
     function _obtenerPreguntas() {
-        $scope.lPreguntas = byaSite._getVar("lPreguntas");       
+        $scope.lPreguntas = byaSite._getVar("lPreguntas");
+        $scope.obj_respuestas.cuestionarioField = [];
+        $scope.obj_respuestas.idTransactionField = $scope.lPreguntas.CuestionarioProgramasPersonaResponse.idTransactionField;        
         _extraerIdsPreguntas();
     };
     function _extraerIdsPreguntas() {
@@ -72,7 +85,73 @@ angular.module('starter.controllers', [])
                 if (item.preguntaField.idPreguntaField == item2) ban = true;
             });            
             if (!ban) $scope.ids_preguntas.push(item.preguntaField.idPreguntaField);
-        });        
+        });
+        _preguntar(); 
+    };
+    function _preguntar() {
+        $scope.pregunta_actual = {};
+        $scope.pregunta_actual.respuestas = [];
+        var respuesta_pendiente = {};
+        var ban_res = false;
+        $.each($scope.lPreguntas.CuestionarioProgramasPersonaResponse.cuestionarioPersonaField, function (index, item) {
+            if (item.preguntaField.idPreguntaField == $scope.ids_preguntas[$scope.index_preguntas]) {
+                $scope.pregunta_actual.pregunta = item.preguntaField.descripcionPreguntaField;
+                var res = {};
+                res.value = false;
+                res.nombre = item.respuestaField.respuestaDePreguntaField;
+
+                if (("" + res.nombre + "").toUpperCase() != ("ninguna de las anteriores").toUpperCase()) {
+                    $scope.pregunta_actual.respuestas.push(res);
+                }
+                else {
+                    respuesta_pendiente = res;
+                    ban_res = true;
+                }
+            }
+        });
+        if (ban_res) {
+            $scope.pregunta_actual.respuestas.push(respuesta_pendiente);
+        }
+    };
+    function _esValidoRespuesta() {
+        var respondio = false;
+        $.each($scope.pregunta_actual.respuestas, function (index, respuesta) {
+            if (respuesta.value) respondio = true;
+        });
+        return respondio;
+    };
+    function _buscarRespuestaSeleccionada() {
+        var respuesta = "";
+        $.each($scope.pregunta_actual.respuestas, function (index, item) {
+            if (item.value) respuesta = item.nombre;
+        });
+    
+        $.each($scope.lPreguntas.CuestionarioProgramasPersonaResponse.cuestionarioPersonaField, function (index, item) {
+            if ((item.respuestaField.idPreguntaField == $scope.ids_preguntas[$scope.index_preguntas]) && (item.respuestaField.respuestaDePreguntaField == respuesta)) {
+                $scope.obj_respuestas.cuestionarioField.push(item);
+            }
+        });
+    };
+    function _continuar() {
+        if (_esValidoRespuesta()) {
+            _buscarRespuestaSeleccionada();
+            showAlert("Respuestas", JSON.stringify($scope.obj_respuestas));
+            if (($scope.index_preguntas + 1) < $scope.ids_preguntas.length) {
+                $scope.index_preguntas = $scope.index_preguntas + 1;
+                _preguntar();
+            }
+        } else {
+            showAlert("Atención", "Debe seleccionar una de las respuestas");
+        }
+    };
+    function showAlert(title, data) {
+        var alertPopup = $ionicPopup.alert({
+            title: title,
+            template: data
+        });
+        alertPopup.then(function (res) {
+            console.log('Thank you');
+        });
     };
 })
 .controller('CumplimientoCtrl', function ($scope) {
@@ -173,4 +252,3 @@ angular.module('starter.controllers', [])
       $scope.groups.push(d);
   };
 });
-

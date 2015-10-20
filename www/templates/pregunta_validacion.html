@@ -6,13 +6,14 @@
 	        </div>
         </div>
         <div class="list">
-            <span class="input-label" style="width:100%">Su fecha de Nacimiento ?</span>        
-            <ion-checkbox ng-model="isChecked">11/12/1989</ion-checkbox>
-            <ion-checkbox ng-model="isChecked">15/02/1970</ion-checkbox>
-            <ion-checkbox ng-model="isChecked">20/01/1995</ion-checkbox>   
+            <div class="row text-justify"> 
+                {{pregunta_actual.pregunta}}
+            </div>                            
+            <ion-checkbox ng-repeat="respuesta in pregunta_actual.respuestas" ng-model="respuesta.value" ng-click="_verificarValidarRespuestaActual(respuesta)">{{respuesta.nombre}}</ion-checkbox>
+
             <div class="text-center" style="margin-top:20px;">
-                <a class="button button-block button-positive" href="#/app/programas_inscritos">
-                    <p class="text-button-large">Consultar</p> 
+                <a class="button button-block button-positive" ng-click="_continuar()">
+                    <p class="text-button-large">Continuar</p> 
                 </a>
             </div>
         </div>        

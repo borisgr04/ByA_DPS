@@ -1,36 +1,235 @@
 angular.module('starter.controllers', [])
-.controller('HomeCtrl', function($scope, $ionicModal, $timeout, $http) { 
 
+.controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacionService) {   
+  _init();
+  function _init(){
+     _getToken();
+  };  
+  function _getToken(){
+      var serAut = autenticacionService._getTokenFirst();
+      serAut.then(function (pl) {
+          byaSite._setToken(pl.data.access_token);
+      }, function (pl) {
+          alert(JSON.stringify(pl));
+      });
+  };  
 })
-
-.controller('IdentificarPersonaCtrl',function($scope){
-  
-  $scope.oculto = false;
-  $scope.mensajeError = "";
-  $scope.usuario = {};
-  $scope.usuario.tipoDocumento = null;
-  $scope.usuario.documento = "";
-  
-  $scope.regresar = function(){
+.controller('IdentificarPersonaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
     
-  }
+    $scope.ocultoMensaje = false;
+    $scope.ocultoLoader = false;
+    $scope.mensajeError = "";
+    $scope.usuario = {};
+    $scope.usuario.tipoDocumento = "";
+    $scope.usuario.documento = "";
+    
+    $scope.objConsulta = {};
+    $scope._verificarCiudadano = function(){
+        _verificarCiudadano();
+    };
+    
+    _init();
+    function _init() {
+        _getToken();
+    };
+    
+    function _getToken() {
+        if (byaSite._pedirToken()) {
+            var serAut = autenticacionService._getTokenFirst();
+            serAut.then(function (pl) {
+                byaSite._setToken(pl.data.access_token);
+            }, function (pl) {
+                showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+            });
+        }
+    };
+    
+    function _verificarCiudadano(){           
+        var serVer = verificacionCiudadanoService._obtenerCuestionario($scope.usuario.tipoDocumento, $scope.usuario.documento);
+        serVer.then(function (pl) {
+            byaSite._setVar("lPreguntas",pl.data);
+            $scope.ocultoLoader = false;
+            $state.go("app.pregunta_validacion");
+        }, function (pl) {
+            showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+            $scope.ocultoLoader = false;
+        });
+    };
+    
+    function showAlert(title,data) {
+        var alertPopup = $ionicPopup.alert({
+            title: title,
+            template: data
+        });
+        alertPopup.then(function (res) {
+            console.log('Thank you');
+        });
+    };
   
-  $scope.unitChanged = function(){
-    alert($scope.usuario.tipoDocumento.tipo);
-  }
-  
-  $scope.validarDocumento = function(){
-    var documento = $scope.usuario.documento;
-    if(documento == ""){
-      $scope.mensajeError = "Debe seleccionar por lo menos un parámetro de búsqueda";
-      $scope.oculto = true;
-    }else if (! /^[0-9]+$/.test(documento)) {
-      $scope.mensajeError = "No se admiten caracteres especiales";
-      $scope.usuario.documento = "";
-      $scope.oculto = true;
+    $scope.regresar = function(){}
+    
+    $scope.validarDocumento = function(){
+        var documento = $scope.usuario.documento;
+        if(documento == ""){
+            $scope.mensajeError = "Debe seleccionar por lo menos un parámetro de búsqueda";
+            $scope.ocultoMensaje = true;
+        }else if (! /^[0-9]+$/.test(documento)) {
+            $scope.mensajeError = "No se admiten caracteres especiales";
+            $scope.usuario.documento = "";
+            $scope.ocultoMensaje = true;
+        }else{
+            $scope.ocultoLoader = true;
+            _verificarCiudadano();
+        }
     }
     
-  }
+})
+  
+.controller('PreguntasPersonasCtrl', function ($scope) {
+    $scope.lPreguntas = {};
+    $scope.ids_preguntas = [];
+     
+    _init();
+
+
+    function _init() {
+        _llenarPreguntas();
+        _obtenerPreguntas();
+    };
+    function _llenarPreguntas() {
+        var lpreguntas =
+            {
+                "CuestionarioProgramasPersonaResponse": {
+                    "cuestionarioPersonaField": [
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 9,
+                            "descripcionPreguntaField": "¿Con cuál de estos correos electrónicos ha tenido relación?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 9,
+                            "respuestaDePreguntaField": "contactenos63@latinmail.com"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 5,
+                            "descripcionPreguntaField": "¿Cuál de las siguientes es su fecha de nacimiento (aaaa-mm-dd)?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 5,
+                            "respuestaDePreguntaField": "2016-01-07"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 9,
+                            "descripcionPreguntaField": "¿Con cuál de estos correos electrónicos ha tenido relación?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 9,
+                            "respuestaDePreguntaField": "ninguna de las anteriores"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 1,
+                            "descripcionPreguntaField": "¿Con cuál de estas direcciones ha tenido relación?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 1,
+                            "respuestaDePreguntaField": "cll 26 n13 -60"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 1,
+                            "descripcionPreguntaField": "¿Con cuál de estas direcciones ha tenido relación?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 1,
+                            "respuestaDePreguntaField": "auto norte n 93 -27"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 1,
+                            "descripcionPreguntaField": "¿Con cuál de estas direcciones ha tenido relación?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 1,
+                            "respuestaDePreguntaField": "ninguna de las anteriores"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 9,
+                            "descripcionPreguntaField": "¿Con cuál de estos correos electrónicos ha tenido relación?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 9,
+                            "respuestaDePreguntaField": "contactenos66@gmail.com"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 5,
+                            "descripcionPreguntaField": "¿Cuál de las siguientes es su fecha de nacimiento (aaaa-mm-dd)?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 5,
+                            "respuestaDePreguntaField": "ninguna de las anteriores"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 5,
+                            "descripcionPreguntaField": "¿Cuál de las siguientes es su fecha de nacimiento (aaaa-mm-dd)?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 5,
+                            "respuestaDePreguntaField": "2016-01-04"
+                        }
+                    }
+                    ],
+                    "programasPersonaField": null,
+                    "idTransactionField": "258d0459-bacc-456b-bd91-6e1bf04d08f1"
+                }
+            }
+
+        byaSite._setVar("lPreguntas", lpreguntas)
+    };
+    function _obtenerPreguntas() {
+        $scope.lPreguntas = byaSite._getVar("lPreguntas");       
+        _extraerIdsPreguntas();
+    };
+    function _extraerIdsPreguntas() {
+        $.each($scope.lPreguntas.CuestionarioProgramasPersonaResponse.cuestionarioPersonaField, function (index, item) {
+            var ban = false;
+            $.each($scope.ids_preguntas, function (index2, item2) {
+                if (item.preguntaField.idPreguntaField == item2) ban = true;
+            });            
+            if (!ban) $scope.ids_preguntas.push(item.preguntaField.idPreguntaField);
+        });        
+    };
 })
 
 

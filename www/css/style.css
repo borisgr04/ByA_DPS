@@ -454,3 +454,9 @@ color:  #000;
 .margin-top-20{
 	margin-top: 20px;
 }
+
+.spinner{
+	position: absolute;
+  	top: 100%;
+  	left: 45%;
+}

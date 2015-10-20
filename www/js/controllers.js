@@ -1,38 +1,55 @@
 angular.module('starter.controllers', [])
-.controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacionService) { 
-  
+.controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacionService) {   
   _init();
   function _init(){
      _getToken();
   };  
   function _getToken(){
-    var serAut = autenticacionService._getToken();
-    serAut.then(function(pl){
-        byaSite._setToken(pl.data.access_token);
-    },function(pl){
-        alert(JSON.stringify(pl));
-    });
-  };
-  
-})
-.controller('IdentificarPersonaCtrl', function($scope, verificacionCiudadanoService) { 
-  $scope.objConsulta = {};
-  $scope._verificarCiudadano = function(){
-    _verificarCiudadano();
-  };
-  
-  _init();
-  function _init(){     
-  };  
-  function _verificarCiudadano(){           
-      var serVer = verificacionCiudadanoService._obtenerCuestionario($scope.tip_identificacion, $scope.identificacion);
-      serVer.then(function (pl) {
-          alert(JSON.stringify(pl));
-      },function(pl){
+      var serAut = autenticacionService._getTokenFirst();
+      serAut.then(function (pl) {
+          byaSite._setToken(pl.data.access_token);
+      }, function (pl) {
           alert(JSON.stringify(pl));
       });
-  };
+  };  
+})
+.controller('IdentificarPersonaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout) {
+    $scope.objConsulta = {};
+    $scope._verificarCiudadano = function(){
+        _verificarCiudadano();
+    };
   
+    _init();
+    function _init() {
+        _getToken();
+    };
+    function _getToken() {
+        if (byaSite._pedirToken()) {
+            var serAut = autenticacionService._getTokenFirst();
+            serAut.then(function (pl) {
+                byaSite._setToken(pl.data.access_token);
+            }, function (pl) {
+                showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+            });
+        }
+    };
+    function _verificarCiudadano(){           
+        var serVer = verificacionCiudadanoService._obtenerCuestionario($scope.objConsulta.tip_identificacion, $scope.objConsulta.identificacion);
+        serVer.then(function (pl) {
+            byaSite._setVar("lPreguntas",pl.data);
+        }, function (pl) {
+            showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+        });
+    };
+    function showAlert(title,data) {
+        var alertPopup = $ionicPopup.alert({
+            title: title,
+            template: data
+        });
+        alertPopup.then(function (res) {
+            console.log('Thank you');
+        });
+    };  
 })
 .controller('PreguntasPersonasCtrl', function ($scope) {
     $scope.lPreguntas = {};

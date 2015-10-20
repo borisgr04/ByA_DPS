@@ -1,11 +1,16 @@
 var byaSite = new Object();
 var byaSite = {
-    token_dps: "token_DPS",
-     _getToken: function(){
-         return localStorage.getItem(this.token_dps);
+    pedirTokenSiempre: true,
+    siAlert:true,
+    token_dps_VC: "token_DPS_VC",
+    _pedirToken: function(){
+        return this.pedirTokenSiempre;
+    },
+    _getToken: function (fc_success) {
+        return localStorage.getItem(this.token_dps_VC);
      },
      _setToken: function(token){
-        localStorage.setItem(this.token_dps,token);
+        localStorage.setItem(this.token_dps_VC,token);
      },
      _setVar: function (name,obj) {
         localStorage.setItem(name, JSON.stringify(obj));
@@ -15,5 +20,10 @@ var byaSite = {
      },
      _removeVar: function (name) {
         localStorage.removeItem(name);
+     },
+     alert: function (value) {
+         if (this.siAlert) {
+             alert(JSON.stringify(value));
+         }
      }
 };

@@ -36,7 +36,8 @@ angular.module('starter.controllers', [])
     function _verificarCiudadano(){           
         var serVer = verificacionCiudadanoService._obtenerCuestionario($scope.objConsulta.tip_identificacion, $scope.objConsulta.identificacion);
         serVer.then(function (pl) {
-            byaSite._setVar("lPreguntas",pl.data);
+            byaSite._setVar("lPreguntas", pl.data);
+            window.location.href = "#/app/pregunta_validacion";
         }, function (pl) {
             showAlert("Error:", "Ha sido imposible conectarse al servidor ");
         });
@@ -57,131 +58,8 @@ angular.module('starter.controllers', [])
      
     _init();
 
-
     function _init() {
-        _llenarPreguntas();
         _obtenerPreguntas();
-    };
-    function _llenarPreguntas() {
-        var lpreguntas =
-            {
-                "CuestionarioProgramasPersonaResponse": {
-                    "cuestionarioPersonaField": [
-                    {
-                        "preguntaField": {
-                            "idPreguntaField": 9,
-                            "descripcionPreguntaField": "¿Con cuál de estos correos electrónicos ha tenido relación?",
-                            "tipoPreguntaField": 0
-                        },
-                        "respuestaField": {
-                            "idTransaccionField": null,
-                            "idPreguntaField": 9,
-                            "respuestaDePreguntaField": "contactenos63@latinmail.com"
-                        }
-                    },
-                    {
-                        "preguntaField": {
-                            "idPreguntaField": 5,
-                            "descripcionPreguntaField": "¿Cuál de las siguientes es su fecha de nacimiento (aaaa-mm-dd)?",
-                            "tipoPreguntaField": 0
-                        },
-                        "respuestaField": {
-                            "idTransaccionField": null,
-                            "idPreguntaField": 5,
-                            "respuestaDePreguntaField": "2016-01-07"
-                        }
-                    },
-                    {
-                        "preguntaField": {
-                            "idPreguntaField": 9,
-                            "descripcionPreguntaField": "¿Con cuál de estos correos electrónicos ha tenido relación?",
-                            "tipoPreguntaField": 0
-                        },
-                        "respuestaField": {
-                            "idTransaccionField": null,
-                            "idPreguntaField": 9,
-                            "respuestaDePreguntaField": "ninguna de las anteriores"
-                        }
-                    },
-                    {
-                        "preguntaField": {
-                            "idPreguntaField": 1,
-                            "descripcionPreguntaField": "¿Con cuál de estas direcciones ha tenido relación?",
-                            "tipoPreguntaField": 0
-                        },
-                        "respuestaField": {
-                            "idTransaccionField": null,
-                            "idPreguntaField": 1,
-                            "respuestaDePreguntaField": "cll 26 n13 -60"
-                        }
-                    },
-                    {
-                        "preguntaField": {
-                            "idPreguntaField": 1,
-                            "descripcionPreguntaField": "¿Con cuál de estas direcciones ha tenido relación?",
-                            "tipoPreguntaField": 0
-                        },
-                        "respuestaField": {
-                            "idTransaccionField": null,
-                            "idPreguntaField": 1,
-                            "respuestaDePreguntaField": "auto norte n 93 -27"
-                        }
-                    },
-                    {
-                        "preguntaField": {
-                            "idPreguntaField": 1,
-                            "descripcionPreguntaField": "¿Con cuál de estas direcciones ha tenido relación?",
-                            "tipoPreguntaField": 0
-                        },
-                        "respuestaField": {
-                            "idTransaccionField": null,
-                            "idPreguntaField": 1,
-                            "respuestaDePreguntaField": "ninguna de las anteriores"
-                        }
-                    },
-                    {
-                        "preguntaField": {
-                            "idPreguntaField": 9,
-                            "descripcionPreguntaField": "¿Con cuál de estos correos electrónicos ha tenido relación?",
-                            "tipoPreguntaField": 0
-                        },
-                        "respuestaField": {
-                            "idTransaccionField": null,
-                            "idPreguntaField": 9,
-                            "respuestaDePreguntaField": "contactenos66@gmail.com"
-                        }
-                    },
-                    {
-                        "preguntaField": {
-                            "idPreguntaField": 5,
-                            "descripcionPreguntaField": "¿Cuál de las siguientes es su fecha de nacimiento (aaaa-mm-dd)?",
-                            "tipoPreguntaField": 0
-                        },
-                        "respuestaField": {
-                            "idTransaccionField": null,
-                            "idPreguntaField": 5,
-                            "respuestaDePreguntaField": "ninguna de las anteriores"
-                        }
-                    },
-                    {
-                        "preguntaField": {
-                            "idPreguntaField": 5,
-                            "descripcionPreguntaField": "¿Cuál de las siguientes es su fecha de nacimiento (aaaa-mm-dd)?",
-                            "tipoPreguntaField": 0
-                        },
-                        "respuestaField": {
-                            "idTransaccionField": null,
-                            "idPreguntaField": 5,
-                            "respuestaDePreguntaField": "2016-01-04"
-                        }
-                    }
-                    ],
-                    "programasPersonaField": null,
-                    "idTransactionField": "258d0459-bacc-456b-bd91-6e1bf04d08f1"
-                }
-            }
-
-        byaSite._setVar("lPreguntas", lpreguntas)
     };
     function _obtenerPreguntas() {
         $scope.lPreguntas = byaSite._getVar("lPreguntas");       

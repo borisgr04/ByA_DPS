@@ -1,5 +1,4 @@
 angular.module('starter.controllers', [])
-
 .controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacionService) {   
   _init();
   function _init(){
@@ -10,9 +9,18 @@ angular.module('starter.controllers', [])
       serAut.then(function (pl) {
           byaSite._setToken(pl.data.access_token);
       }, function (pl) {
-          alert(JSON.stringify(pl));
+          showAlert("Error", "Ha sido imposible conectarse al servidor");
       });
-  };  
+  };
+  function showAlert(title, data) {
+      var alertPopup = $ionicPopup.alert({
+          title: title,
+          template: data
+      });
+      alertPopup.then(function (res) {
+          console.log('Thank you');
+      });
+  };
 })
 .controller('IdentificarPersonaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
     
@@ -21,18 +29,39 @@ angular.module('starter.controllers', [])
     $scope.mensajeError = "";
     $scope.usuario = {};
     $scope.usuario.tipoDocumento = "";
-    $scope.usuario.documento = "";
-    
+    $scope.usuario.documento = "";    
     $scope.objConsulta = {};
     $scope._verificarCiudadano = function(){
         _verificarCiudadano();
+    };
+    $scope.validarDocumento = function () {
+        $scope.mensajeError = "";
+        var documento = $scope.usuario.documento;
+        var tipoDocumento = $scope.usuario.tipoDocumento;
+        console.log(('' + documento).length);
+        if (documento == "") {
+            $scope.mensajeError = "Debe completar el número de documento";
+            $scope.ocultoMensaje = true;
+        } else if (tipoDocumento == "CE" && ('' + documento).length > 6) {
+            $scope.mensajeError = "La longitud máxima del número de documento es 6";
+            $scope.usuario.documento = "";
+            $scope.ocultoMensaje = true;
+        } else if (tipoDocumento == "") {
+            $scope.mensajeError = "Debe completar el tipo de identificación";
+        } else if (! /^[0-9]+/.test(documento)) {
+            $scope.mensajeError = "No se admiten caracteres especiales y la longitud máxima del número de documento es 10";
+            $scope.usuario.documento = "";
+            $scope.ocultoMensaje = true;            
+        } else {
+            $scope.ocultoLoader = true;
+            _verificarCiudadano();
+        }
     };
     
     _init();
     function _init() {
         _getToken();
-    };
-    
+    };    
     function _getToken() {
         if (byaSite._pedirToken()) {
             var serAut = autenticacionService._getTokenFirst();
@@ -42,8 +71,7 @@ angular.module('starter.controllers', [])
                 showAlert("Error:", "Ha sido imposible conectarse al servidor ");
             });
         }
-    };
-    
+    };    
     function _verificarCiudadano(){           
         var serVer = verificacionCiudadanoService._obtenerCuestionario($scope.usuario.tipoDocumento, $scope.usuario.documento);
         serVer.then(function (pl) {
@@ -55,8 +83,7 @@ angular.module('starter.controllers', [])
             showAlert("Error:", "Ha sido imposible conectarse al servidor ");
             $scope.ocultoLoader = false;
         });
-    };
-    
+    };    
     function showAlert(title,data) {
         var alertPopup = $ionicPopup.alert({
             title: title,
@@ -65,37 +92,9 @@ angular.module('starter.controllers', [])
         alertPopup.then(function (res) {
             console.log('Thank you');
         });
-    };
-  
-    $scope.regresar = function(){}
-    
-    $scope.validarDocumento = function(){
-        $scope.mensajeError = "";
-        var documento = $scope.usuario.documento;
-        var tipoDocumento = $scope.usuario.tipoDocumento;
-        console.log((''+documento).length);
-        if(documento == ""){
-            $scope.mensajeError = "Debe seleccionar por lo menos un parámetro de búsqueda";
-            $scope.ocultoMensaje = true;
-        }else if (! /^[0-9]+/.test(documento)) {
-            $scope.mensajeError = "No se admiten caracteres especiales o Longitud máxima de 10";
-            $scope.usuario.documento = "";
-            $scope.ocultoMensaje = true;
-        }else if(tipoDocumento == ""){
-            $scope.mensajeError = "Debe seleccionar por lo menos un parámetro de búsqueda";           
-        }else if(tipoDocumento == "CE" && (''+documento).length > 6){
-            $scope.mensajeError = "Longitud máxima de 6";
-            $scope.ocultoMensaje = true;            
-        }else{
-            $scope.ocultoLoader = true;
-            _verificarCiudadano();
-        }
-    }
-    
+    };  
 })
-
 .controller('PreguntasPersonasCtrl', function ($scope, $ionicPopup, $timeout) {
-
     $scope.lPreguntas = {};
     $scope.ids_preguntas = [];
     $scope.index_preguntas = 0;
@@ -111,7 +110,6 @@ angular.module('starter.controllers', [])
     };
      
     _init();
-
     function _init() {
         _obtenerPreguntas();
     };
@@ -178,14 +176,19 @@ angular.module('starter.controllers', [])
     function _continuar() {
         if (_esValidoRespuesta()) {
             _buscarRespuestaSeleccionada();
-            showAlert("Respuestas", JSON.stringify($scope.obj_respuestas));
             if (($scope.index_preguntas + 1) < $scope.ids_preguntas.length) {
                 $scope.index_preguntas = $scope.index_preguntas + 1;
                 _preguntar();
             }
+            else {
+                _enviarRespuestas();
+            }
         } else {
             showAlert("Atención", "Debe seleccionar una de las respuestas");
         }
+    };
+    function _enviarRespuestas() {
+        showAlert("Atención","Se enviaran sus respuestas para ser validadas");
     };
     function showAlert(title, data) {
         var alertPopup = $ionicPopup.alert({
@@ -197,8 +200,6 @@ angular.module('starter.controllers', [])
         });
     };
 })
-
-
 .controller('CumplimientoCtrl', function ($scope) {
   $scope.groups = [];
   $scope.toggleGroup = function(group) {
@@ -234,66 +235,66 @@ angular.module('starter.controllers', [])
 })
 .controller('LiquidacionYPagoCtrl', function ($scope) {
     $scope.groups = [];
-  $scope.toggleGroup = function(group) {
-    if ($scope.isGroupShown(group)) {
-      $scope.shownGroup = null;
-    } else {
-      $scope.shownGroup = group;
-    }
-  };
-  $scope.isGroupShown = function(group) {     
-    return $scope.shownGroup === group;  
-  };
+    $scope.toggleGroup = function(group) {
+        if ($scope.isGroupShown(group)) {
+            $scope.shownGroup = null;
+        } else {
+            $scope.shownGroup = group;
+        }
+    };
+    $scope.isGroupShown = function(group) {     
+        return $scope.shownGroup === group;  
+    };
   
-  _llenarGrupos();
-  function _llenarGrupos(){
-      var e = {};
-      e.name = "Periodo Cumplimiento Salud";
-      e.fecha1 = "11-11-2015   ";
-      e.name2 = "Periodo Cumplimiento Educación";
-      e.fecha2 = "12-12-2015   ";
-      e.items = ["Beneficiario","Tipo Inscripción","Cumplió","Fecha Cumplimiento"];
+    _llenarGrupos();
+    function _llenarGrupos(){
+        var e = {};
+        e.name = "Periodo Cumplimiento Salud";
+        e.fecha1 = "11-11-2015   ";
+        e.name2 = "Periodo Cumplimiento Educación";
+        e.fecha2 = "12-12-2015   ";
+        e.items = ["Beneficiario","Tipo Inscripción","Cumplió","Fecha Cumplimiento"];
       
-      var d = {};
-      d.name = "Periodo Cumplimiento Salud";
-      d.fecha1 = "11-11-2015"
-      d.name2 = "Periodo Cumplimiento Educación";
-      d.fecha2 = "12-12-2015";
-      d.items = ["Beneficiario","Tipo Inscripción","Cumplió","Fecha Cumplimiento"];
+        var d = {};
+        d.name = "Periodo Cumplimiento Salud";
+        d.fecha1 = "11-11-2015"
+        d.name2 = "Periodo Cumplimiento Educación";
+        d.fecha2 = "12-12-2015";
+        d.items = ["Beneficiario","Tipo Inscripción","Cumplió","Fecha Cumplimiento"];
       
-      $scope.groups.push(e);
-      $scope.groups.push(d);
-  };
+        $scope.groups.push(e);
+        $scope.groups.push(d);
+    };
 })
 .controller('MenuFamiliasEnAccionCtrl', function ($scope) {
-  $scope._goTo = function(value){
+    $scope._goTo = function(value){
     window.location.href=value;
-  };
+    };
 })
 .controller('EstadoFamiliaCtrl', function ($scope) {
-  $scope.groups = [];
-  $scope.toggleGroup = function(group) {
+    $scope.groups = [];
+    $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
-      $scope.shownGroup = null;
+        $scope.shownGroup = null;
     } else {
-      $scope.shownGroup = group;
+        $scope.shownGroup = group;
     }
-  };
-  $scope.isGroupShown = function(group) {
+    };
+    $scope.isGroupShown = function(group) {
     return $scope.shownGroup === group;
-  };
+    };
   
-  _llenarGrupos();
-  function _llenarGrupos(){
-      var e = {};
-      e.name = "Nombre Miembro";
-      e.items = ["Estado del Beneficiario","Targeta de Identidad","12345678","Camilo Perez","Nombre del Colegio","Priorizado","Graduado","Datos de Salud"];
+    _llenarGrupos();
+    function _llenarGrupos(){
+        var e = {};
+        e.name = "Nombre Miembro";
+        e.items = ["Estado del Beneficiario","Targeta de Identidad","12345678","Camilo Perez","Nombre del Colegio","Priorizado","Graduado","Datos de Salud"];
      
-      var d = {};
-      d.name = "Nombre Miembro";
-      d.items = ["Estado del Beneficiario","Targeta de Identidad","12345678","Camilo Perez","Nombre del Colegio","Priorizado","Graduado","Datos de Salud"];
+        var d = {};
+        d.name = "Nombre Miembro";
+        d.items = ["Estado del Beneficiario","Targeta de Identidad","12345678","Camilo Perez","Nombre del Colegio","Priorizado","Graduado","Datos de Salud"];
       
-      $scope.groups.push(e);
-      $scope.groups.push(d);
-  };
+        $scope.groups.push(e);
+        $scope.groups.push(d);
+    };
 });

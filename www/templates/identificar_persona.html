@@ -17,7 +17,7 @@
         </label>
         <label class="item item-input item-stacked-label">
                 <span class="input-label">Número de Documento</span>
-                <input type="number" placeholder="" ng-model="usuario.documento">
+                <input type="number" placeholder="" ng-model="usuario.documento" ng-maxlength="10">
         </label> 
         <h6 class="assertive" ng-hide="{{ocultoMensaje}}">{{mensajeError}}</h6>
         <button class="button button-block button-positive" ng-click="validarDocumento()">Consultar</button>

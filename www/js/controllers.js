@@ -1,16 +1,184 @@
 angular.module('starter.controllers', [])
-.controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacion) { 
+.controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacionService) { 
   
   _init();
   function _init(){
-    var serAut = autenticacion._getToken();
-    serAut.then(function(pl){
-      console.log(JSON.stringify(pl));
-    },function(pl){
-      console.log(JSON.stringify(pl))
-    }); 
+     _getToken();
   };  
+  function _getToken(){
+    var serAut = autenticacionService._getToken();
+    serAut.then(function(pl){
+        byaSite._setToken(pl.data.access_token);
+    },function(pl){
+        alert(JSON.stringify(pl));
+    });
+  };
   
+})
+.controller('IdentificarPersonaCtrl', function($scope, verificacionCiudadanoService) { 
+  $scope.objConsulta = {};
+  $scope._verificarCiudadano = function(){
+    _verificarCiudadano();
+  };
+  
+  _init();
+  function _init(){     
+  };  
+  function _verificarCiudadano(){           
+      var serVer = verificacionCiudadanoService._obtenerCuestionario($scope.tip_identificacion, $scope.identificacion);
+      serVer.then(function (pl) {
+          alert(JSON.stringify(pl));
+      },function(pl){
+          alert(JSON.stringify(pl));
+      });
+  };
+  
+})
+.controller('PreguntasPersonasCtrl', function ($scope) {
+    $scope.lPreguntas = {};
+    $scope.ids_preguntas = [];
+     
+    _init();
+
+
+    function _init() {
+        _llenarPreguntas();
+        _obtenerPreguntas();
+    };
+    function _llenarPreguntas() {
+        var lpreguntas =
+            {
+                "CuestionarioProgramasPersonaResponse": {
+                    "cuestionarioPersonaField": [
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 9,
+                            "descripcionPreguntaField": "¿Con cuál de estos correos electrónicos ha tenido relación?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 9,
+                            "respuestaDePreguntaField": "contactenos63@latinmail.com"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 5,
+                            "descripcionPreguntaField": "¿Cuál de las siguientes es su fecha de nacimiento (aaaa-mm-dd)?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 5,
+                            "respuestaDePreguntaField": "2016-01-07"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 9,
+                            "descripcionPreguntaField": "¿Con cuál de estos correos electrónicos ha tenido relación?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 9,
+                            "respuestaDePreguntaField": "ninguna de las anteriores"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 1,
+                            "descripcionPreguntaField": "¿Con cuál de estas direcciones ha tenido relación?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 1,
+                            "respuestaDePreguntaField": "cll 26 n13 -60"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 1,
+                            "descripcionPreguntaField": "¿Con cuál de estas direcciones ha tenido relación?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 1,
+                            "respuestaDePreguntaField": "auto norte n 93 -27"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 1,
+                            "descripcionPreguntaField": "¿Con cuál de estas direcciones ha tenido relación?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 1,
+                            "respuestaDePreguntaField": "ninguna de las anteriores"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 9,
+                            "descripcionPreguntaField": "¿Con cuál de estos correos electrónicos ha tenido relación?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 9,
+                            "respuestaDePreguntaField": "contactenos66@gmail.com"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 5,
+                            "descripcionPreguntaField": "¿Cuál de las siguientes es su fecha de nacimiento (aaaa-mm-dd)?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 5,
+                            "respuestaDePreguntaField": "ninguna de las anteriores"
+                        }
+                    },
+                    {
+                        "preguntaField": {
+                            "idPreguntaField": 5,
+                            "descripcionPreguntaField": "¿Cuál de las siguientes es su fecha de nacimiento (aaaa-mm-dd)?",
+                            "tipoPreguntaField": 0
+                        },
+                        "respuestaField": {
+                            "idTransaccionField": null,
+                            "idPreguntaField": 5,
+                            "respuestaDePreguntaField": "2016-01-04"
+                        }
+                    }
+                    ],
+                    "programasPersonaField": null,
+                    "idTransactionField": "258d0459-bacc-456b-bd91-6e1bf04d08f1"
+                }
+            }
+
+        byaSite._setVar("lPreguntas", lpreguntas)
+    };
+    function _obtenerPreguntas() {
+        $scope.lPreguntas = byaSite._getVar("lPreguntas");       
+        _extraerIdsPreguntas();
+    };
+    function _extraerIdsPreguntas() {
+        $.each($scope.lPreguntas.CuestionarioProgramasPersonaResponse.cuestionarioPersonaField, function (index, item) {
+            var ban = false;
+            $.each($scope.ids_preguntas, function (index2, item2) {
+                if (item.preguntaField.idPreguntaField == item2) ban = true;
+            });            
+            if (!ban) $scope.ids_preguntas.push(item.preguntaField.idPreguntaField);
+        });        
+    };
 })
 .controller('CumplimientoCtrl', function ($scope) {
   $scope.groups = [];

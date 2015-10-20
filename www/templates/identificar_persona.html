@@ -6,20 +6,20 @@
 	        </div>
 	    </div>
       <div class="list">
-        <span class="input-label" style="width:100%">Tipo de Documento</span>
+        <span class="input-label" style="width:100%">*Tipo de Documento</span>
         <label class="item item-select">
-        <select>
-            <option>Tarjeta de Identidad</option>
-            <option>Cédula de Ciudadania</option>
-            <option>Cédula de Extranjería</option>
+        <select ng-model="objConsulta.tip_identificacion">
+            <option value="TI">Tarjeta de Identidad</option>
+            <option value="CC">Cédula de Ciudadania</option>
+            <option value="CE">Cédula de Extranjería</option>
         </select>
         </label>
         <label class="item item-input item-stacked-label">
-            <span class="input-label">Número de Documento</span>
-            <input type="text" placeholder="">
+            <span class="input-label">*Número de Documento</span>
+            <input type="text" placeholder="" ng-model="objConsulta.identificacion">
         </label> 
         <div class="text-center" style="margin-top:20px;">
-            <a class="button button-block button-positive" href="#/app/pregunta_validacion">
+            <a class="button button-block button-positive" ng-click="_verificarCiudadano()">
 		 	    <p class="text-button-large">Consultar</p> 
 		    </a>
         </div>   

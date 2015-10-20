@@ -1,7 +1,39 @@
 angular.module('starter.controllers', [])
-.controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacion) { 
-  
+.controller('HomeCtrl', function($scope, $ionicModal, $timeout, $http) { 
+
 })
+
+.controller('IdentificarPersonaCtrl',function($scope){
+  
+  $scope.oculto = false;
+  $scope.mensajeError = "";
+  $scope.usuario = {};
+  $scope.usuario.tipoDocumento = null;
+  $scope.usuario.documento = "";
+  
+  $scope.regresar = function(){
+    
+  }
+  
+  $scope.unitChanged = function(){
+    alert($scope.usuario.tipoDocumento.tipo);
+  }
+  
+  $scope.validarDocumento = function(){
+    var documento = $scope.usuario.documento;
+    if(documento == ""){
+      $scope.mensajeError = "Debe seleccionar por lo menos un parámetro de búsqueda";
+      $scope.oculto = true;
+    }else if (! /^[0-9]+$/.test(documento)) {
+      $scope.mensajeError = "No se admiten caracteres especiales";
+      $scope.usuario.documento = "";
+      $scope.oculto = true;
+    }
+    
+  }
+})
+
+
 .controller('CumplimientoCtrl', function ($scope) {
   $scope.groups = [];
   $scope.toggleGroup = function(group) {

@@ -5,24 +5,23 @@
 	  	        <p style="color:#F29400;">Se&ntildeor Usuario: por favor seleccione los datos que correspondan a su informaci&oacuten personal y haga clic en consultar.</p>
 	        </div>
 	    </div>
-      <div class="list">
+      <div class="list">  
         <span class="input-label" style="width:100%">Tipo de Documento</span>
         <label class="item item-select">
-        <select>
-            <option>Tarjeta de Identidad</option>
-            <option>Cédula de Ciudadania</option>
-            <option>Cédula de Extranjería</option>
-        </select>
+            <select ng-model="usuario.tipoDocumento">
+                <option>Seleciones</option>
+                <option >Tarjeta de Identidad</option>
+                <option>Cédula de Ciudadania</option>
+                <option>Cédula de Extranjería</option>
+            </select>
         </label>
         <label class="item item-input item-stacked-label">
-            <span class="input-label">Número de Documento</span>
-            <input type="text" placeholder="">
+                <span class="input-label">Número de Documento</span>
+                <input type="number" placeholder="" ng-model="usuario.documento">
         </label> 
-        <div class="text-center" style="margin-top:20px;">
-            <a class="button button-block button-positive" href="#/app/pregunta_validacion">
-		 	    <p class="text-button-large">Consultar</p> 
-		    </a>
-        </div>   
+        <h6 class="assertive" ng-hide="{{oculto}}">{{mensajeError}}</h6>
+        <button class="button button-positive" ng-click="validarDocumento()">Consultar</button>
+        <button class="button button-positive" ng-click="regresar()">Regresar</button>
     </div>
     </ion-content>
 </ion-view>	

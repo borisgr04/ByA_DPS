@@ -77,8 +77,17 @@ angular.module('starter.controllers', [])
         serVer.then(function (pl) {
             byaSite._setVar("lPreguntas",pl.data);
             $scope.ocultoLoader = false;
-            //$state.go("app.pregunta_validacion");
-            window.location.href = "#/app/pregunta_validacion";
+            var FechaHoy = new Date();
+            var FH = FechaHoy.getFullYear() + "-" + FechaHoy.getMonth() + "-" + FechaHoy.getDate();
+            var FV = byaSite._getVar($scope.usuario.documento + "-fecha_verificacion");
+            var IV = byaSite._getVar($scope.usuario.documento + "-intentos_verificacion");
+
+            if ((FV == FH) && (IV == 2)) showAlert("Atención", "Usted ya ha realizado el máximo de intentos permitidos, por favor intente nuevamente mañana");
+            else {
+                var per = { tip_ide: $scope.usuario.tipoDocumento, ide: $scope.usuario.documento };
+                byaSite._setVar("PersonaActual", per);
+                $state.go("app.pregunta_validacion");
+            }
         }, function (pl) {
             showAlert("Error:", "Ha sido imposible conectarse al servidor ");
             $scope.ocultoLoader = false;
@@ -94,7 +103,7 @@ angular.module('starter.controllers', [])
         });
     };  
 })
-.controller('PreguntasPersonasCtrl', function ($scope, $ionicPopup, $timeout) {
+.controller('PreguntasPersonasCtrl', function ($scope, $window, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout) {
     $scope.lPreguntas = {};
     $scope.ids_preguntas = [];
     $scope.index_preguntas = 0;
@@ -111,7 +120,18 @@ angular.module('starter.controllers', [])
      
     _init();
     function _init() {
+        _getToken();
         _obtenerPreguntas();
+    };
+    function _getToken() {
+        if (byaSite._pedirToken()) {
+            var serAut = autenticacionService._getTokenFirst();
+            serAut.then(function (pl) {
+                byaSite._setToken(pl.data.access_token);
+            }, function (pl) {
+                showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+            });
+        }
     };
     function _obtenerPreguntas() {
         $scope.lPreguntas = byaSite._getVar("lPreguntas");
@@ -188,7 +208,77 @@ angular.module('starter.controllers', [])
         }
     };
     function _enviarRespuestas() {
-        showAlert("Atención","Se enviaran sus respuestas para ser validadas");
+        var serVerPre = verificacionCiudadanoService._validarCuestionario($scope.obj_respuestas); 
+        serVerPre.then(function (pl) {
+            if (pl.data.EsPersonaVerificada) {
+                byaSite._removeVar("fecha_verificacion");
+                byaSite._removeVar("intentos_verificacion");
+                $state.go("app.programas_inscritos");
+            } else _preguntasErroneas();
+        }, function (pl) {
+            showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+        });
+    };
+    function _preguntasErroneas() {
+        var persona = byaSite._getVar("PersonaActual");
+        var FechaHoy = new Date();
+        var cadenaFechaVerificacion = persona.ide + "-fecha_verificacion";
+        var cadenaIntentosVerificacion = persona.ide + "-intentos_verificacion";
+        var FH = FechaHoy.getFullYear() + "-" + FechaHoy.getMonth() + "-" + FechaHoy.getDate();
+        var FV = byaSite._getVar(cadenaFechaVerificacion);
+        var IV = byaSite._getVar(cadenaIntentosVerificacion);
+
+        
+
+        if ((FV == null) && (IV == null)) {            
+            byaSite._setVar(cadenaFechaVerificacion, FH.toString());
+            byaSite._setVar(cadenaIntentosVerificacion, 1);
+            showAlert("Atención", "Alguna de sus respuestas fue incorrecta, intente nuevamente");
+            $scope.index_preguntas = 0;
+            _preguntar();
+        } else {
+            if ((FH == FV) && (IV == 1)) {
+                showAlert("Atención", "No paso validación inténtelo nuevamente mañana");
+                byaSite._setVar(cadenaIntentosVerificacion, 2);
+                $window.history.back();
+            }
+            else {
+                if (FH != FV) {
+                    byaSite._setVar(cadenaFechaVerificacion, FH);
+                    byaSite._setVar(cadenaIntentosVerificacion, 1);
+                    showAlert("Atención", "Alguna de sus respuestas fue incorrecta, intente nuevamente");
+                    $scope.index_preguntas = 0;
+                    _preguntar();
+                }
+                else if (IV == 2) {
+                    showAlert("Atención", "No paso validación inténtelo nuevamente mañana");
+                    $window.history.back();
+                }                
+            }
+        }        
+    };
+    function showAlert(title, data) {
+        var alertPopup = $ionicPopup.alert({
+            title: title,
+            template: data
+        });
+        alertPopup.then(function (res) {
+            console.log('Thank you');
+        });
+    };
+})
+.controller('ProgramasInscritosCtrl', function ($scope, $ionicModal, $timeout, autenticacionService, utilidadMaestraService) {
+    _init();
+    function _init() {
+        _getTokenUM();
+    };
+    function _getTokenUM() {
+        var serAut = autenticacionService._getTokenUtilidadMaertra();
+        serAut.then(function (pl) {
+            byaSite._setTokenUM(pl.data.access_token);
+        }, function (pl) {
+            showAlert("Error", "Ha sido imposible conectarse al servidor");
+        });
     };
     function showAlert(title, data) {
         var alertPopup = $ionicPopup.alert({

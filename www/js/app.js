@@ -1,11 +1,4 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.controllers' is found in controllers.js
 var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'])
-
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -20,7 +13,6 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         }
     });
 })
-
 .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider
       .state('app', {
@@ -59,6 +51,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/programas_inscritos',
         views: {
             'menuContent': {
+                controller: 'ProgramasInscritosCtrl',
                 templateUrl: 'templates/programas_inscritos.html'
             }
         }

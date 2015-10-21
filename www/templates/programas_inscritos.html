@@ -2,21 +2,14 @@
     <ion-content>
         <div class="item item-avatar">
             <img ng-src="img/profile.png">
-            <h2>CC 10000000</h2>
-            <p>Pedro Gomez Bernal</p>
+            <h2 style="margin-top:10px;">{{persona.tip_ide}} {{persona.ide}}</h2>
         </div> 
         <br>
-        <div class="item item-avatar borde-item item-programa">
-            <img ng-src="img/familias-en-accion.png">
-            <h2>Familias en Acción</h2>
-            <p>Texto de Programa</p>
-            <a class="button button-clear button-small link" href="#/app/menu-familias-en-accion" style="color:#F29400;">VER DETALLE</a>
-        </div>
-        <div class="item item-avatar borde-item item-programa">
-            <img ng-src="img/jovenes-en-accion.png">
-            <h2>Jovenes en Acción</h2>
-            <p>Texto de Programa</p>
-            <a class="button button-clear button-small link" href="#" style="color:#F29400;">VER DETALLE</a>
-        </div>      
+        <div class="item item-avatar borde-item item-programa" ng-repeat="programa in lProgramasInscritos.Programas">
+            <img ng-src="{{programa.img}}">            
+            <h2>{{programa.programaField.programa1Field}}</h2>
+            <p>{{programa.programaField.nombreCortoProgramaField}}</p>
+            <a class="button button-clear button-small link" ng-click="_irDetallesPrograma(programa)" style="color:#F29400;">VER DETALLE</a>
+        </div>    
     </ion-content>
 </ion-view>	

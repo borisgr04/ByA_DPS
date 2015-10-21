@@ -119,14 +119,14 @@ angular.module('starter.controllers', [])
      
     _init();
     function _init() {
-        _getToken();
-        _obtenerPreguntas();
+        _getToken();        
     };
     function _getToken() {
         if (byaSite._pedirToken()) {
             var serAut = autenticacionService._getTokenFirst();
             serAut.then(function (pl) {
                 byaSite._setToken(pl.data.access_token);
+                _obtenerPreguntas();
             }, function (pl) {
                 showAlert("Error:", "Ha sido imposible conectarse al servidor ");
             });
@@ -266,7 +266,13 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('ProgramasInscritosCtrl', function ($scope, $ionicModal, $timeout, autenticacionService, utilidadMaestraService) {
+.controller('ProgramasInscritosCtrl', function ($scope,$ionicPopup, $ionicModal, $timeout, autenticacionService, utilidadMaestraService, atencionPeticionesService) {
+    $scope.lProgramasInscritos = [];
+    $scope.persona = {};
+    $scope._irDetallesPrograma = function (programa) {
+        showAlert("Atención", "Pasaremos a otra vista");
+    };
+
     _init();
     function _init() {
         _getTokenUM();
@@ -275,6 +281,7 @@ angular.module('starter.controllers', [])
         var serAut = autenticacionService._getTokenUtilidadMaertra();
         serAut.then(function (pl) {
             byaSite._setTokenUM(pl.data.access_token);
+            _programasInscritos();
         }, function (pl) {
             showAlert("Error", "Ha sido imposible conectarse al servidor");
         });
@@ -288,6 +295,21 @@ angular.module('starter.controllers', [])
             console.log('Thank you');
         });
     };
+    function _programasInscritos() {
+        $scope.persona = byaSite._getVar("PersonaActual");
+        var serUtiMaes = utilidadMaestraService._obtenerProgramasInstritos($scope.persona.tip_ide, $scope.persona.ide);
+        serUtiMaes.then(function (pl) {
+            $scope.lProgramasInscritos = pl.data;
+
+            $.each($scope.lProgramasInscritos.Programas, function (index, item) {
+                if (item.programaField.idProgramaField == 1) item.img = "img/familias-en-accion.png";
+                else item.img = "img/logo_default.png";
+            });
+
+        }, function (pl) {
+            showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+        });
+    };    
 })
 .controller('CumplimientoCtrl', function ($scope) {
   $scope.groups = [];
@@ -355,9 +377,19 @@ angular.module('starter.controllers', [])
         $scope.groups.push(d);
     };
 })
-.controller('MenuFamiliasEnAccionCtrl', function ($scope) {
+.controller('MenuFamiliasEnAccionCtrl', function ($scope, $state) {    
     $scope._goTo = function(value){
-    window.location.href=value;
+        $state.go(value);
+    };
+
+    function _getTokenDIS() {
+        var serAut = autenticacionService._getTokenDIS();
+        serAut.then(function (pl) {
+            byaSite._setTokenDIS(pl.data.access_token);
+            _programasInscritos();
+        }, function (pl) {
+            showAlert("Error", "Ha sido imposible conectarse al servidor");
+        });
     };
 })
 .controller('EstadoFamiliaCtrl', function ($scope) {

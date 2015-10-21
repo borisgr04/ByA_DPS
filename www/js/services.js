@@ -27,6 +27,20 @@ app.service("autenticacionService", function ($http) {
         var req = $http(pet);
         return req;
     };
+    this._getTokenDIS = function () {
+        var dat = "username=FocalizacionUser&password=JentcF9c7liz72o15o6$&grant_type=password&client_Id=ce29f4d9e3a04a6aaf44746adad8f31d";
+        var pet = {
+            method: 'POST',
+            url: 'http://186.170.31.187/DPS/Utilidad/InfraRESTAuthorization/oauth2/token',
+            headers: {
+                'Accept': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            data: dat
+        }
+        var req = $http(pet);
+        return req;
+    };
 });
 app.service("verificacionCiudadanoService", function ($http) {
     this._obtenerCuestionario = function (tip_ide, ide) {
@@ -71,6 +85,20 @@ app.service("utilidadMaestraService", function ($http) {
             headers: {
                 'Accept': 'application/json',
                 'Authorization': 'Bearer ' + byaSite._getTokenUM()
+            }
+        }
+        var req = $http(pet);
+        return req;
+    };
+});
+app.service("atencionPeticionesService", function ($http) {
+    this._hojaVidaMFA = function (cod_ide) {
+        var pet = {
+            method: 'GET',
+            url: 'http://186.170.31.187/DPS/GestionAtencionCiudadano/AtencionPeticionesDISWebAPI/HojaVidaMFA/' + cod_ide,
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + byaSite._getTokenDIS()
             }
         }
         var req = $http(pet);

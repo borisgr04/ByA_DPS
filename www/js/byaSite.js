@@ -4,6 +4,7 @@ var byaSite = {
     siAlert:true,
     token_dps_VC: "token_DPS_VC",
     token_dps_UM: "token_DPS_UM",
+    token_dps_DIS: "token_DPS_DIS",
     _pedirToken: function(){
         return this.pedirTokenSiempre;
     },
@@ -18,6 +19,12 @@ var byaSite = {
      },
      _setTokenUM: function (token) {
          localStorage.setItem(this.token_dps_UM, token);
+     },
+     _getTokenDIS: function (fc_success) {
+         return localStorage.getItem(this.token_dps_DIS);
+     },
+     _setTokenDIS: function (token) {
+         localStorage.setItem(this.token_dps_DIS, token);
      },
      _setVar: function (name,obj) {
         localStorage.setItem(name, JSON.stringify(obj));

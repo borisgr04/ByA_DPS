@@ -35,22 +35,21 @@ angular.module('starter.controllers', [])
         _verificarCiudadano();
     };
     $scope.validarDocumento = function () {
-        $scope.mensajeError = "";
         var documento = $scope.usuario.documento;
         var tipoDocumento = $scope.usuario.tipoDocumento;
         if (documento == "") {
             $scope.mensajeError = "Debe completar el número de documento";
             $scope.ocultoMensaje = true;
-        } else if (tipoDocumento == "CE" && ('' + documento).length > 6) {
+        }else if (! /^[0-9]+/.test(documento) && tipoDocumento != "") {
+            $scope.mensajeError = "No se admiten caracteres especiales y la longitud máxima del número de documento es 10";
+            $scope.usuario.documento = "";
+            $scope.ocultoMensaje = true;            
+        }else if (tipoDocumento == "CE" && ('' + documento).length > 6) {
             $scope.mensajeError = "La longitud máxima del número de documento es 6";
             $scope.usuario.documento = "";
             $scope.ocultoMensaje = true;
         } else if (tipoDocumento == "") {
             $scope.mensajeError = "Debe completar el tipo de identificación";
-        } else if (! /^[0-9]+/.test(documento)) {
-            $scope.mensajeError = "No se admiten caracteres especiales y la longitud máxima del número de documento es 10";
-            $scope.usuario.documento = "";
-            $scope.ocultoMensaje = true;            
         } else {
             $scope.ocultoLoader = true;
             _verificarCiudadano();
@@ -62,12 +61,15 @@ angular.module('starter.controllers', [])
         _getToken();
     };    
     function _getToken() {
+        $scope.ocultoLoader = true;
         if (byaSite._pedirToken()) {
             var serAut = autenticacionService._getTokenFirst();
             serAut.then(function (pl) {
                 byaSite._setToken(pl.data.access_token);
+                $scope.ocultoLoader = false;
             }, function (pl) {
                 showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+                $scope.ocultoLoader = false;
             });
         }
     };    
@@ -108,6 +110,7 @@ angular.module('starter.controllers', [])
     $scope.index_preguntas = 0;
     $scope.pregunta_actual = {};
     $scope.obj_respuestas = {};
+    $scope.ocultarLoader = false;
     $scope._continuar = function(){
         _continuar();
     };
@@ -122,13 +125,19 @@ angular.module('starter.controllers', [])
         _getToken();        
     };
     function _getToken() {
+        $scope.ocultarLoader = true
         if (byaSite._pedirToken()) {
             var serAut = autenticacionService._getTokenFirst();
             serAut.then(function (pl) {
                 byaSite._setToken(pl.data.access_token);
+<<<<<<< HEAD
                 _obtenerPreguntas();
+=======
+                $scope.ocultarLoader = false;
+>>>>>>> e2d1cc32865df696a9523b6a72cb1405d70b7632
             }, function (pl) {
                 showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+                $scope.ocultarLoader = false;
             });
         }
     };
@@ -207,11 +216,13 @@ angular.module('starter.controllers', [])
         }
     };
     function _enviarRespuestas() {
+        $scope.ocultarLoader = true;
         var serVerPre = verificacionCiudadanoService._validarCuestionario($scope.obj_respuestas); 
         serVerPre.then(function (pl) {
             if (pl.data.EsPersonaVerificada) {
                 byaSite._removeVar("fecha_verificacion");
                 byaSite._removeVar("intentos_verificacion");
+                $scope.ocultarLoader = false;
                 $state.go("app.programas_inscritos");
             } else _preguntasErroneas();
         }, function (pl) {
@@ -233,6 +244,7 @@ angular.module('starter.controllers', [])
             byaSite._setVar(cadenaFechaVerificacion, FH.toString());
             byaSite._setVar(cadenaIntentosVerificacion, 1);
             showAlert("Atención", "Alguna de sus respuestas fue incorrecta, intente nuevamente");
+            $scope.ocultarLoader = false;
             $scope.index_preguntas = 0;
             _preguntar();
         } else {
@@ -246,6 +258,7 @@ angular.module('starter.controllers', [])
                     byaSite._setVar(cadenaFechaVerificacion, FH);
                     byaSite._setVar(cadenaIntentosVerificacion, 1);
                     showAlert("Atención", "Alguna de sus respuestas fue incorrecta, intente nuevamente");
+                    $scope.ocultarLoader = false;
                     $scope.index_preguntas = 0;
                     _preguntar();
                 }

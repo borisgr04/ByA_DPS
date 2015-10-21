@@ -282,18 +282,23 @@ angular.module('starter.controllers', [])
     $scope._irDetallesPrograma = function (programa) {
         _irDetallesPrograma(programa);
     };
+    
+    $scope.ocultoMensaje = false;
+    $scope.ocultoLoader = false;
 
     _init();
     function _init() {
         _getTokenUM();
     };
     function _getTokenUM() {
+        $scope.ocultoLoader = true;
         var serAut = autenticacionService._getTokenUtilidadMaertra();
         serAut.then(function (pl) {
             byaSite._setTokenUM(pl.data.access_token);
             _programasInscritos();
         }, function (pl) {
             showAlert("Error", "Ha sido imposible conectarse al servidor");
+            $scope.ocultoLoader = false;
         });
     };
     function showAlert(title, data) {
@@ -309,15 +314,22 @@ angular.module('starter.controllers', [])
         $scope.persona = byaSite._getVar("PersonaActual");
         var serUtiMaes = utilidadMaestraService._obtenerProgramasInstritos($scope.persona.tip_ide, $scope.persona.ide);
         serUtiMaes.then(function (pl) {
-            $scope.lProgramasInscritos = pl.data;
-
-            $.each($scope.lProgramasInscritos.Programas, function (index, item) {
-                if (item.programaField.idProgramaField == 1) item.img = "img/familias-en-accion.png";
-                else item.img = "img/logo_default.png";
-            });
-
+            $scope.ocultoLoader = false;
+            if(pl.data.Programas.length == 0){  
+                $scope.ocultoMensaje = true;         
+            }else{
+                $scope.lProgramasInscritos = pl.data;
+    
+                $.each($scope.lProgramasInscritos.Programas, function (index, item) {
+                    if (item.programaField.idProgramaField == 1) item.img = "img/familias-en-accion.png";
+                    else item.img = "img/logo_default.png";
+                });
+                $scope.ocultoMensaje = false;
+            }
+            
         }, function (pl) {
             showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+            $scope.ocultoLoader = false;
         });
     };
     function _irDetallesPrograma(programa) {

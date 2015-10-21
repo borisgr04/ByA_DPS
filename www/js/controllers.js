@@ -130,11 +130,8 @@ angular.module('starter.controllers', [])
             var serAut = autenticacionService._getTokenFirst();
             serAut.then(function (pl) {
                 byaSite._setToken(pl.data.access_token);
-<<<<<<< HEAD
                 _obtenerPreguntas();
-=======
                 $scope.ocultarLoader = false;
->>>>>>> e2d1cc32865df696a9523b6a72cb1405d70b7632
             }, function (pl) {
                 showAlert("Error:", "Ha sido imposible conectarse al servidor ");
                 $scope.ocultarLoader = false;

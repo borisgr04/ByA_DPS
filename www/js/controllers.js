@@ -38,7 +38,6 @@ angular.module('starter.controllers', [])
         $scope.mensajeError = "";
         var documento = $scope.usuario.documento;
         var tipoDocumento = $scope.usuario.tipoDocumento;
-        console.log(('' + documento).length);
         if (documento == "") {
             $scope.mensajeError = "Debe completar el número de documento";
             $scope.ocultoMensaje = true;
@@ -99,11 +98,11 @@ angular.module('starter.controllers', [])
             template: data
         });
         alertPopup.then(function (res) {
-            console.log('Thank you');
+            console.log('');
         });
     };  
 })
-.controller('PreguntasPersonasCtrl', function ($scope, $window, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout) {
+.controller('PreguntasPersonasCtrl', function ($scope, $window, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $state) {
     $scope.lPreguntas = {};
     $scope.ids_preguntas = [];
     $scope.index_preguntas = 0;

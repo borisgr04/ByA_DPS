@@ -1,7 +1,6 @@
 <ion-view view-title='<img class="logoEncabezado" src="img/logo2.png"/> Más Familias en Acción'>
     <ion-content>
-		<div class="contenedor">	
-			
+		<div class="contenedor">			
 			<div class="row margin-bottom-20 margin-top-20">
 				<div class="col col-50" ng-click="_goTo('app.datos-familia')">
 					<div><p class="text-large blue">Datos Familiares</p></div>
@@ -27,7 +26,10 @@
 					<div><p class="text-large blue">Liquidación y Pagos</p></div>
 					<div><i class="ion-clipboard i-x80 gray-light-2"></i></div>	
 				</div>
-			</div>				
+			</div>	
+            <div class="row text-center">
+                <ion-spinner class="spinner" ng-show="ocultarLoader"></ion-spinner>
+            </div>			
 		</div>
     </ion-content>
 </ion-view>	

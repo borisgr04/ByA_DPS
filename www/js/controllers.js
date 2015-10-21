@@ -125,7 +125,7 @@ angular.module('starter.controllers', [])
         _getToken();        
     };
     function _getToken() {
-        $scope.ocultarLoader = true
+        $scope.ocultarLoader = true;
         if (byaSite._pedirToken()) {
             var serAut = autenticacionService._getTokenFirst();
             serAut.then(function (pl) {
@@ -403,18 +403,47 @@ angular.module('starter.controllers', [])
         $scope.groups.push(d);
     };
 })
-.controller('MenuFamiliasEnAccionCtrl', function ($scope, $state) {    
-    $scope._goTo = function(value){
+.controller('MenuFamiliasEnAccionCtrl', function ($scope, $state, autenticacionService, $ionicPopup, $ionicModal, $timeout, atencionPeticionesService) {
+    $scope.ocultarLoader = false;
+    $scope._goTo = function (value) {
         $state.go(value);
     };
 
+    _init();
+    function _init() {
+        _getTokenDIS();
+    };
     function _getTokenDIS() {
+        $scope.ocultarLoader = true;
         var serAut = autenticacionService._getTokenDIS();
         serAut.then(function (pl) {
+            $scope.ocultarLoader = false;
             byaSite._setTokenDIS(pl.data.access_token);
-            _programasInscritos();
+            _hojaVidaMasFamiliasEnAccion();
         }, function (pl) {
+            $scope.ocultarLoader = false;
             showAlert("Error", "Ha sido imposible conectarse al servidor");
+        });
+    };    
+    function _hojaVidaMasFamiliasEnAccion() {
+        $scope.ocultarLoader = true;
+        var serHVM = atencionPeticionesService._hojaVidaMFA(byaSite._getVar("CodigoBeneficiario"));
+        serHVM.then(function (pl) {
+            $scope.ocultarLoader = false;
+            console.log(JSON.stringify(pl.data));
+            byaSite._setVar("HV_MFA", pl.data);
+        }, function (pl) {
+            $scope.ocultarLoader = false;
+            showAlert("Error", "Ha sido imposible conectarse al servidor"); 
+        });
+    };
+    function showAlert(title, data) {
+        var alertPopup = $ionicPopup.alert({
+            title: title,
+            template: data
+        });
+        alertPopup.then(function (res) {
+            console.log('Thank you');
         });
     };
 })

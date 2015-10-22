@@ -430,7 +430,6 @@ angular.module('starter.controllers', [])
         var serHVM = atencionPeticionesService._hojaVidaMFA(byaSite._getVar("CodigoBeneficiario"));
         serHVM.then(function (pl) {
             $scope.ocultarLoader = false;
-            console.log(JSON.stringify(pl.data));
             byaSite._setVar("HV_MFA", pl.data);
         }, function (pl) {
             $scope.ocultarLoader = false;
@@ -449,6 +448,7 @@ angular.module('starter.controllers', [])
 })
 .controller('EstadoFamiliaCtrl', function ($scope) {
     $scope.groups = [];
+    $scope.nucleo_familiar = [];
     $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
         $scope.shownGroup = null;
@@ -457,20 +457,20 @@ angular.module('starter.controllers', [])
     }
     };
     $scope.isGroupShown = function(group) {
-    return $scope.shownGroup === group;
+        return $scope.shownGroup === group;
+    };
+    $scope._tipoDocumento = function (value) {
+        if (value == 0) return "Cedula de Ciudadanía";
+        else if (value == 4) return "Tarjeta de identidad";
+        else return "";
     };
   
-    _llenarGrupos();
-    function _llenarGrupos(){
-        var e = {};
-        e.name = "Nombre Miembro";
-        e.items = ["Estado del Beneficiario","Targeta de Identidad","12345678","Camilo Perez","Nombre del Colegio","Priorizado","Graduado","Datos de Salud"];
-     
-        var d = {};
-        d.name = "Nombre Miembro";
-        d.items = ["Estado del Beneficiario","Targeta de Identidad","12345678","Camilo Perez","Nombre del Colegio","Priorizado","Graduado","Datos de Salud"];
-      
-        $scope.groups.push(e);
-        $scope.groups.push(d);
+    _init();
+    function _init() {
+        _TraerDatosFamiliares();
+    };
+    function _TraerDatosFamiliares() {
+        var obj_completo = byaSite._getVar("HV_MFA");
+        $scope.nucleo_familiar = obj_completo.NucleoFamiliar;
     };
 });

@@ -449,6 +449,7 @@ angular.module('starter.controllers', [])
 .controller('EstadoFamiliaCtrl', function ($scope) {
     $scope.groups = [];
     $scope.nucleo_familiar = [];
+    $scope.hojavida_MFA = {};
     $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
         $scope.shownGroup = null;
@@ -471,6 +472,7 @@ angular.module('starter.controllers', [])
     };
     function _TraerDatosFamiliares() {
         var obj_completo = byaSite._getVar("HV_MFA");
+        $scope.hojavida_MFA = obj_completo;
         $scope.nucleo_familiar = obj_completo.NucleoFamiliar;
     };
 });

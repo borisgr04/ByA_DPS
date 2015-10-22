@@ -319,10 +319,13 @@ angular.module('starter.controllers', [])
                 $scope.ocultoMensaje = true;         
             }else{
                 $scope.lProgramasInscritos = pl.data;
+
+                console.log(pl.data);
     
                 $.each($scope.lProgramasInscritos.Programas, function (index, item) {
                     if (item.programaField.idProgramaField == 1) item.img = "img/familias-en-accion.png";
-                    else item.img = "img/logo_default.png";
+                    else if (item.programaField.idProgramaField == 3) item.img = "img/jovenes-en-accion.png";
+                    else  item.img = "img/logo_default.png";
                 });
                 $scope.ocultoMensaje = false;
             }
@@ -373,7 +376,7 @@ angular.module('starter.controllers', [])
 .controller('MenuFamiliasEnAccionCtrl', function ($scope, $state, autenticacionService, $ionicPopup, $ionicModal, $timeout, atencionPeticionesService) {
     $scope.ocultarLoader = false;
     $scope._goTo = function (value) {
-        $state.go(value);
+        if(!$scope.ocultarLoader) $state.go(value);
     };
 
     _init();
@@ -432,6 +435,9 @@ angular.module('starter.controllers', [])
         else if (value == 4) return "Tarjeta de identidad";
         else return "";
     };
+    $scope._getGrado = function (value) {
+        return _grado(value);
+    };
   
     _init();
     function _init() {
@@ -440,10 +446,36 @@ angular.module('starter.controllers', [])
     function _TraerDatosFamiliares() {
         var obj_completo = byaSite._getVar("HV_MFA");
         $scope.hojavida_MFA = obj_completo;
+        console.log(JSON.stringify($scope.hojavida_MFA));
         $scope.nucleo_familiar = obj_completo.NucleoFamiliar;
+
+        $.each($scope.nucleo_familiar, function (index, persona) {
+            $.each($scope.hojavida_MFA.Educacion, function (index, item_educacion) {
+                if (persona.idPersonaField == item_educacion.datosBaseField.idPersonaField) {
+                    persona.Colegio = item_educacion.educacionField.institucionEducativaField;
+                    persona.Grado = item_educacion.educacionField.gradoEscolarField;
+                    persona.Graduado = item_educacion.educacionField.graduadoBachillerField == "NO" ? "Sin Graduar" : "Graduado";
+                }
+            });
+        });
+    };
+    function _grado(value) {
+        if (value == 0) return "Prejardin";
+        if (value == 1) return "Jardin";
+        if (value == 2) return "Transición";
+        if (value == 3) return "Primero";
+        if (value == 4) return "Segundo";
+        if (value == 5) return "Tercero";
+        if (value == 6) return "Cuarto";
+        if (value == 7) return "Quinto";
+        if (value == 8) return "Sexto";
+        if (value == 9) return "Septimo";
+        if (value == 10) return "Octavo";
+        if (value == 11) return "Noveno";
+        if (value == 12) return "Decimo";
+        if (value == 13) return "Undecimo";
     };
 })
-
 .controller('CumplimientoCtrl', function ($scope) {
     $scope.listaCumplimientos = [];
     $scope.groups = [];
@@ -467,7 +499,6 @@ angular.module('starter.controllers', [])
         $scope.listaCumplimientos = obj_completo.Cumplimientos;
     };
 })
-
 .controller('NovedadesCtrl',function($scope){
     var novedades = byaSite._getVar("HV_MFA");
     $scope.listaNovedades = [];
@@ -480,7 +511,4 @@ angular.module('starter.controllers', [])
         $scope.listaNovedades = novedades.Novedades;
     }
     
-})
-
-
-;
+});

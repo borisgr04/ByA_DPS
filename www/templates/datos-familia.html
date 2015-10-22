@@ -3,9 +3,9 @@
         <div>
             <div class="item item-avatar">
                 <img ng-src="img/users.png">
-                <h3>{{hojavida_MFA.Persona.estadoFamiliaField}}</h3>
+                <h4>{{hojavida_MFA.Persona.estadoFamiliaField}}</h4>
                 <h4>{{hojavida_MFA.Persona.primerNombreField}} {{hojavida_MFA.Persona.segundoNombreField}} {{hojavida_MFA.Persona.primerApellidoField}} {{hojavida_MFA.Persona.segundoApellidoField}}</h4>
-                <h5>{{hojavida_MFA.Persona.estadoBeneficiarioField}}</h5>
+                <h4>{{hojavida_MFA.Persona.estadoBeneficiarioField}}</h4>
             </div>
             <div ng-repeat="miembro in nucleo_familiar">
                 <ion-item class="item-stable" ng-click="toggleGroup(miembro)" ng-class="{active: isGroupShown(miembro)}" style="background-color: #fff;">
@@ -14,19 +14,22 @@
                             <img ng-src="img/profile.png" style="width:100%;">
                         </div>
                         <div class="col col-80 text-center" style="padding-top:0px;">
-                            <p style="font-size:70%">{{miembro.primerNombreField}} {{miembro.segundoNombreField}} {{miembro.primerApellidoField}} {{miembro.segundoApellidoField}} </p>                            
+                            <p style="font-size:80%">{{miembro.primerNombreField}} {{miembro.segundoNombreField}} {{miembro.primerApellidoField}} {{miembro.segundoApellidoField}} </p>                            
                         </div>
                         <div class="col col-10">
                             <i class="icon" ng-class="isGroupShown(miembro) ? 'ion-minus-circled' : 'ion-plus-circled'" style="color:#3E97CF;"></i>
                         </div>
                     </div>    
                 </ion-item>
-                <ion-item class="item-accordion item-accordion-button" ng-show="isGroupShown(miembro)" style="padding-left:80px;margin-top:-25px;padding-top:0px;">
-                    <p style="font-size:80%">{{_tipoDocumento(miembro.tipoDocumentoField)}}</p>
-                    <p style="font-size:80%">{{miembro.numeroDocumentoField}}</p>
-                    <p><strong>Parentesco: </strong>{{miembro.parentescoField}}</p>
-                    <p><strong>Priorizado: </strong>{{miembro.priorizadoField}}</p>
-                    <p><strong>Sisben: </strong>{{miembro.seguridadSocialField.beneficiarioSISBENField}}</p>
+                <ion-item class="item-accordion item-accordion-button" ng-show="isGroupShown(miembro)" style="padding-left:70px;margin-top:-25px;padding-top:0px;">
+                    <p><strong>{{_tipoDocumento(miembro.tipoDocumentoField)}}</strong></p>
+                    <p>{{miembro.numeroDocumentoField}}</p>
+                    <p ng-show="miembro.parentescoField != null"><strong>Parentesco: </strong>{{miembro.parentescoField}}</p>
+                    <p ng-show="miembro.Colegio != null"><strong>Colegio</strong></p>
+                    <p>{{miembro.Colegio}}</p>
+                    <p ng-show="miembro.Grado != null"><strong>Grado: </strong> {{_getGrado(miembro.Grado)}}</p>
+                    <p>{{miembro.Graduado}}</p>
+                    <p>{{miembro.priorizadoField}}</p>
                 </ion-item>
             </div>     
         </div>     

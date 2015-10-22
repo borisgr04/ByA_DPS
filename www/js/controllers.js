@@ -337,39 +337,6 @@ angular.module('starter.controllers', [])
         if(programa.programaField.idProgramaField == 1) $state.go('app.menu-familias-en-accion');
     };
 })
-.controller('CumplimientoCtrl', function ($scope) {
-  $scope.groups = [];
-  $scope.toggleGroup = function(group) {
-    if ($scope.isGroupShown(group)) {
-      $scope.shownGroup = null;
-    } else {
-      $scope.shownGroup = group;
-    }
-  };
-  $scope.isGroupShown = function(group) {     
-    return $scope.shownGroup === group;  
-  };
-  
-  _llenarGrupos();
-  function _llenarGrupos(){
-      var e = {};
-      e.name = "Periodo Cumplimiento Salud";
-      e.fecha1 = "11-11-2015";
-      e.name2 = "Periodo Cumplimiento Educación";
-      e.fecha2 = "12-12-2015";
-      e.items = ["Beneficiario","Tipo Inscripción","Cumplió","Fecha Cumplimiento"];
-      
-      var d = {};
-      d.name = "Periodo Cumplimiento Salud";
-      d.fecha1 = "11-11-2015"
-      d.name2 = "Periodo Cumplimiento Educación";
-      d.fecha2 = "12-12-2015";
-      d.items = ["Beneficiario","Tipo Inscripción","Cumplió","Fecha Cumplimiento"];
-      
-      $scope.groups.push(e);
-      $scope.groups.push(d);
-  };
-})
 .controller('LiquidacionYPagoCtrl', function ($scope) {
     $scope.groups = [];
     $scope.toggleGroup = function(group) {
@@ -473,4 +440,45 @@ angular.module('starter.controllers', [])
         var obj_completo = byaSite._getVar("HV_MFA");
         $scope.nucleo_familiar = obj_completo.NucleoFamiliar;
     };
-});
+})
+
+.controller('CumplimientoCtrl', function ($scope) {
+    $scope.listaCumplimientos = [];
+    $scope.groups = [];
+    $scope.toggleGroup = function(group) {
+        if ($scope.isGroupShown(group)) {
+            $scope.shownGroup = null;
+        } else {
+            $scope.shownGroup = group;
+        }
+    };
+    $scope.isGroupShown = function(group) {     
+        return $scope.shownGroup === group;  
+    };
+    
+    _init();
+    function _init() {
+        _TraerDatosCumplimientos();
+    };
+    function _TraerDatosCumplimientos() {
+        var obj_completo = byaSite._getVar("HV_MFA");
+        $scope.listaCumplimientos = obj_completo.Cumplimientos;
+    };
+})
+
+.controller('NovedadesCtrl',function($scope){
+    var novedades = byaSite._getVar("HV_MFA");
+    $scope.listaNovedades = [];
+    $scope.mostrarMensaje = false
+    console.log(novedades.Novedades.length);
+    if(novedades.Novedades.length == 0){
+        $scope.mostrarMensaje = true;
+    }else{
+        $scope.mostrarMensaje = false;
+        $scope.listaNovedades = novedades.Novedades;
+    }
+    
+})
+
+
+;

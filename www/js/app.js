@@ -78,6 +78,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/novedades',
         views: {
             'menuContent': {
+                controller: 'NovedadesCtrl',
                 templateUrl: 'templates/novedades.html'
             }
         }

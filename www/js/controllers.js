@@ -470,6 +470,7 @@ angular.module('starter.controllers', [])
     var novedades = byaSite._getVar("HV_MFA");
     $scope.listaNovedades = [];
     $scope.mostrarMensaje = false
+    console.log(novedades.Novedades);
     console.log(novedades.Novedades.length);
     if(novedades.Novedades.length == 0){
         $scope.mostrarMensaje = true;

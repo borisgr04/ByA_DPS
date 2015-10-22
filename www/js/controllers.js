@@ -372,6 +372,7 @@ angular.module('starter.controllers', [])
 })
 .controller('MenuFamiliasEnAccionCtrl', function ($scope, $state, autenticacionService, $ionicPopup, $ionicModal, $timeout, atencionPeticionesService) {
     $scope.ocultarLoader = false;
+    $scope.mostarMenu = false;
     $scope._goTo = function (value) {
         $state.go(value);
     };
@@ -398,9 +399,11 @@ angular.module('starter.controllers', [])
         serHVM.then(function (pl) {
             $scope.ocultarLoader = false;
             byaSite._setVar("HV_MFA", pl.data);
+            $scope.mostarMenu = true;
         }, function (pl) {
             $scope.ocultarLoader = false;
             showAlert("Error", "Ha sido imposible conectarse al servidor"); 
+            true;
         });
     };
     function showAlert(title, data) {
@@ -470,8 +473,6 @@ angular.module('starter.controllers', [])
     var novedades = byaSite._getVar("HV_MFA");
     $scope.listaNovedades = [];
     $scope.mostrarMensaje = false
-    console.log(novedades.Novedades);
-    console.log(novedades.Novedades.length);
     if(novedades.Novedades.length == 0){
         $scope.mostrarMensaje = true;
     }else{

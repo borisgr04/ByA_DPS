@@ -68,6 +68,7 @@ angular.module('starter.controllers', [])
                 byaSite._setToken(pl.data.access_token);
                 $scope.ocultoLoader = false;
             }, function (pl) {
+                alert(JSON.stringify(pl));
                 showAlert("Error:", "Ha sido imposible conectarse al servidor ");
                 $scope.ocultoLoader = false;
             });
@@ -90,6 +91,7 @@ angular.module('starter.controllers', [])
                 $state.go("app.pregunta_validacion");
             }
         }, function (pl) {
+            alert(JSON.stringify(pl));
             showAlert("Error:", "Ha sido imposible conectarse al servidor ");
             $scope.ocultoLoader = false;
         });
@@ -416,8 +418,9 @@ angular.module('starter.controllers', [])
 })
 .controller('EstadoFamiliaCtrl', function ($scope) {
     $scope.groups = [];
+    $scope.nucleo_familiar_completo = [];
     $scope.nucleo_familiar = [];
-    $scope.hojavida_MFA = {};
+    $scope.hojavida_MFA = {};   
     $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
         $scope.shownGroup = null;
@@ -436,6 +439,23 @@ angular.module('starter.controllers', [])
     $scope._getGrado = function (value) {
         return _grado(value);
     };
+
+    $scope.indexActual = 0;
+    $scope.canItems = 5;
+    $scope.inicio = 0;
+    $scope.fin = 0;
+    $scope.fal = 0;
+    $scope._verSiguientes = function () {
+        $scope.indexActual += 1;
+        _filtrarNucleo();
+    };
+    $scope._verAnterior = function () {
+        $scope.indexActual = $scope.indexActual - $scope.canItems - $scope.canItems + 1;
+        _filtrarNucleo();
+    };
+    $scope._prueba = function () {
+        alert($scope.indexActual);
+    };
   
     _init();
     function _init() {
@@ -444,9 +464,478 @@ angular.module('starter.controllers', [])
     function _TraerDatosFamiliares() {
         var obj_completo = byaSite._getVar("HV_MFA");
         $scope.hojavida_MFA = obj_completo;
+<<<<<<< HEAD
         $scope.nucleo_familiar = obj_completo.NucleoFamiliar;
+=======
+        $scope.nucleo_familiar_completo = obj_completo.NucleoFamiliar;
 
-        $.each($scope.nucleo_familiar, function (index, persona) {
+        var e = {
+            "idPersonaField": 252,
+            "idPersonaFieldSpecified": true,
+            "primerNombreField": "LEIDI",
+            "segundoNombreField": "TATIANA",
+            "primerApellidoField": "VELEZ",
+            "segundoApellidoField": "MONTOYA",
+            "tipoPoblacionField": "SIN INFORMACION",
+            "sexoField": "F",
+            "tipoDocumentoField": 0,
+            "numeroDocumentoField": "1113594758",
+            "parentescoField": "HIJOS",
+            "fechaNacimientoField": "1994-09-01T00:00:00",
+            "fechaNacimientoFieldSpecified": true,
+            "etniaField": "SIN INFORMACION",
+            "discapacidadField": "SIN INFORMACION",
+            "ubicacionField": null,
+            "bancarizadoField": "NO REPORTA",
+            "codigoFamiliaField": 95,
+            "codigoFamiliaFieldSpecified": true,
+            "condicionSexualField": null,
+            "correoElectronicoField": null,
+            "estadoBeneficiarioField": "BENEFICIARIO",
+            "estadoCivilField": "NO TIENE",
+            "fechaExpedicionDocumentoField": "2012-09-04T00:00:00",
+            "fechaExpedicionDocumentoFieldSpecified": true,
+            "seguridadSocialField": {
+                "beneficiarioSISBENField": "NO REPORTA",
+                "codigoEPSField": null,
+                "nombreEPSField": null,
+                "codigoIPSField": "",
+                "nombreIPSField": "",
+                "estratoField": 0,
+                "puntajeField": 0,
+                "PropertyChanged": null
+            },
+            "lugarAtencionField": null,
+            "lugarExpedicionDocumentoField": null,
+            "lugarNacimientoField": null,
+            "numeroCelular1Field": null,
+            "numeroCelular2Field": null,
+            "titularField": null,
+            "educacionField": null,
+            "estadoPersonaField": null,
+            "cUBField": null,
+            "cabezaFamiliaField": null,
+            "priorizadoField": null,
+            "estadoFamiliaField": "BENEFICIARIO",
+            "PropertyChanged": null
+        };
+        var p = {
+            "idPersonaField": 252,
+            "idPersonaFieldSpecified": true,
+            "primerNombreField": "fffff",
+            "segundoNombreField": "ffff",
+            "primerApellidoField": "fffff",
+            "segundoApellidoField": "fffff",
+            "tipoPoblacionField": "SIN INFORMACION",
+            "sexoField": "F",
+            "tipoDocumentoField": 0,
+            "numeroDocumentoField": "1113594758",
+            "parentescoField": "HIJOS",
+            "fechaNacimientoField": "1994-09-01T00:00:00",
+            "fechaNacimientoFieldSpecified": true,
+            "etniaField": "SIN INFORMACION",
+            "discapacidadField": "SIN INFORMACION",
+            "ubicacionField": null,
+            "bancarizadoField": "NO REPORTA",
+            "codigoFamiliaField": 95,
+            "codigoFamiliaFieldSpecified": true,
+            "condicionSexualField": null,
+            "correoElectronicoField": null,
+            "estadoBeneficiarioField": "BENEFICIARIO",
+            "estadoCivilField": "NO TIENE",
+            "fechaExpedicionDocumentoField": "2012-09-04T00:00:00",
+            "fechaExpedicionDocumentoFieldSpecified": true,
+            "seguridadSocialField": {
+                "beneficiarioSISBENField": "NO REPORTA",
+                "codigoEPSField": null,
+                "nombreEPSField": null,
+                "codigoIPSField": "",
+                "nombreIPSField": "",
+                "estratoField": 0,
+                "puntajeField": 0,
+                "PropertyChanged": null
+            },
+            "lugarAtencionField": null,
+            "lugarExpedicionDocumentoField": null,
+            "lugarNacimientoField": null,
+            "numeroCelular1Field": null,
+            "numeroCelular2Field": null,
+            "titularField": null,
+            "educacionField": null,
+            "estadoPersonaField": null,
+            "cUBField": null,
+            "cabezaFamiliaField": null,
+            "priorizadoField": null,
+            "estadoFamiliaField": "BENEFICIARIO",
+            "PropertyChanged": null
+        };
+        var w = {
+            "idPersonaField": 252,
+            "idPersonaFieldSpecified": true,
+            "primerNombreField": "xxxxxx",
+            "segundoNombreField": "xxxxx",
+            "primerApellidoField": "xxxxx",
+            "segundoApellidoField": "xxxx",
+            "tipoPoblacionField": "SIN INFORMACION",
+            "sexoField": "F",
+            "tipoDocumentoField": 0,
+            "numeroDocumentoField": "1113594758",
+            "parentescoField": "HIJOS",
+            "fechaNacimientoField": "1994-09-01T00:00:00",
+            "fechaNacimientoFieldSpecified": true,
+            "etniaField": "SIN INFORMACION",
+            "discapacidadField": "SIN INFORMACION",
+            "ubicacionField": null,
+            "bancarizadoField": "NO REPORTA",
+            "codigoFamiliaField": 95,
+            "codigoFamiliaFieldSpecified": true,
+            "condicionSexualField": null,
+            "correoElectronicoField": null,
+            "estadoBeneficiarioField": "BENEFICIARIO",
+            "estadoCivilField": "NO TIENE",
+            "fechaExpedicionDocumentoField": "2012-09-04T00:00:00",
+            "fechaExpedicionDocumentoFieldSpecified": true,
+            "seguridadSocialField": {
+                "beneficiarioSISBENField": "NO REPORTA",
+                "codigoEPSField": null,
+                "nombreEPSField": null,
+                "codigoIPSField": "",
+                "nombreIPSField": "",
+                "estratoField": 0,
+                "puntajeField": 0,
+                "PropertyChanged": null
+            },
+            "lugarAtencionField": null,
+            "lugarExpedicionDocumentoField": null,
+            "lugarNacimientoField": null,
+            "numeroCelular1Field": null,
+            "numeroCelular2Field": null,
+            "titularField": null,
+            "educacionField": null,
+            "estadoPersonaField": null,
+            "cUBField": null,
+            "cabezaFamiliaField": null,
+            "priorizadoField": null,
+            "estadoFamiliaField": "BENEFICIARIO",
+            "PropertyChanged": null
+        };
+        var l = {
+            "idPersonaField": 252,
+            "idPersonaFieldSpecified": true,
+            "primerNombreField": "bbbbbbbbb",
+            "segundoNombreField": "bbbbb",
+            "primerApellidoField": "bbbbb",
+            "segundoApellidoField": "bb",
+            "tipoPoblacionField": "SIN INFORMACION",
+            "sexoField": "F",
+            "tipoDocumentoField": 0,
+            "numeroDocumentoField": "1113594758",
+            "parentescoField": "HIJOS",
+            "fechaNacimientoField": "1994-09-01T00:00:00",
+            "fechaNacimientoFieldSpecified": true,
+            "etniaField": "SIN INFORMACION",
+            "discapacidadField": "SIN INFORMACION",
+            "ubicacionField": null,
+            "bancarizadoField": "NO REPORTA",
+            "codigoFamiliaField": 95,
+            "codigoFamiliaFieldSpecified": true,
+            "condicionSexualField": null,
+            "correoElectronicoField": null,
+            "estadoBeneficiarioField": "BENEFICIARIO",
+            "estadoCivilField": "NO TIENE",
+            "fechaExpedicionDocumentoField": "2012-09-04T00:00:00",
+            "fechaExpedicionDocumentoFieldSpecified": true,
+            "seguridadSocialField": {
+                "beneficiarioSISBENField": "NO REPORTA",
+                "codigoEPSField": null,
+                "nombreEPSField": null,
+                "codigoIPSField": "",
+                "nombreIPSField": "",
+                "estratoField": 0,
+                "puntajeField": 0,
+                "PropertyChanged": null
+            },
+            "lugarAtencionField": null,
+            "lugarExpedicionDocumentoField": null,
+            "lugarNacimientoField": null,
+            "numeroCelular1Field": null,
+            "numeroCelular2Field": null,
+            "titularField": null,
+            "educacionField": null,
+            "estadoPersonaField": null,
+            "cUBField": null,
+            "cabezaFamiliaField": null,
+            "priorizadoField": null,
+            "estadoFamiliaField": "BENEFICIARIO",
+            "PropertyChanged": null
+        };
+        var a = {
+            "idPersonaField": 252,
+            "idPersonaFieldSpecified": true,
+            "primerNombreField": "aaaaa",
+            "segundoNombreField": "aaaaaaa",
+            "primerApellidoField": "aaaaaaa",
+            "segundoApellidoField": "aaaaaaaaa",
+            "tipoPoblacionField": "SIN INFORMACION",
+            "sexoField": "F",
+            "tipoDocumentoField": 0,
+            "numeroDocumentoField": "1113594758",
+            "parentescoField": "HIJOS",
+            "fechaNacimientoField": "1994-09-01T00:00:00",
+            "fechaNacimientoFieldSpecified": true,
+            "etniaField": "SIN INFORMACION",
+            "discapacidadField": "SIN INFORMACION",
+            "ubicacionField": null,
+            "bancarizadoField": "NO REPORTA",
+            "codigoFamiliaField": 95,
+            "codigoFamiliaFieldSpecified": true,
+            "condicionSexualField": null,
+            "correoElectronicoField": null,
+            "estadoBeneficiarioField": "BENEFICIARIO",
+            "estadoCivilField": "NO TIENE",
+            "fechaExpedicionDocumentoField": "2012-09-04T00:00:00",
+            "fechaExpedicionDocumentoFieldSpecified": true,
+            "seguridadSocialField": {
+                "beneficiarioSISBENField": "NO REPORTA",
+                "codigoEPSField": null,
+                "nombreEPSField": null,
+                "codigoIPSField": "",
+                "nombreIPSField": "",
+                "estratoField": 0,
+                "puntajeField": 0,
+                "PropertyChanged": null
+            },
+            "lugarAtencionField": null,
+            "lugarExpedicionDocumentoField": null,
+            "lugarNacimientoField": null,
+            "numeroCelular1Field": null,
+            "numeroCelular2Field": null,
+            "titularField": null,
+            "educacionField": null,
+            "estadoPersonaField": null,
+            "cUBField": null,
+            "cabezaFamiliaField": null,
+            "priorizadoField": null,
+            "estadoFamiliaField": "BENEFICIARIO",
+            "PropertyChanged": null
+        };
+        var b = {
+            "idPersonaField": 252,
+            "idPersonaFieldSpecified": true,
+            "primerNombreField": "kkkkkkkk",
+            "segundoNombreField": "bbkkkkkkkkbbb",
+            "primerApellidoField": "kkkkkkkkk",
+            "segundoApellidoField": "kkkkkkkk",
+            "tipoPoblacionField": "SIN INFORMACION",
+            "sexoField": "F",
+            "tipoDocumentoField": 0,
+            "numeroDocumentoField": "1113594758",
+            "parentescoField": "HIJOS",
+            "fechaNacimientoField": "1994-09-01T00:00:00",
+            "fechaNacimientoFieldSpecified": true,
+            "etniaField": "SIN INFORMACION",
+            "discapacidadField": "SIN INFORMACION",
+            "ubicacionField": null,
+            "bancarizadoField": "NO REPORTA",
+            "codigoFamiliaField": 95,
+            "codigoFamiliaFieldSpecified": true,
+            "condicionSexualField": null,
+            "correoElectronicoField": null,
+            "estadoBeneficiarioField": "BENEFICIARIO",
+            "estadoCivilField": "NO TIENE",
+            "fechaExpedicionDocumentoField": "2012-09-04T00:00:00",
+            "fechaExpedicionDocumentoFieldSpecified": true,
+            "seguridadSocialField": {
+                "beneficiarioSISBENField": "NO REPORTA",
+                "codigoEPSField": null,
+                "nombreEPSField": null,
+                "codigoIPSField": "",
+                "nombreIPSField": "",
+                "estratoField": 0,
+                "puntajeField": 0,
+                "PropertyChanged": null
+            },
+            "lugarAtencionField": null,
+            "lugarExpedicionDocumentoField": null,
+            "lugarNacimientoField": null,
+            "numeroCelular1Field": null,
+            "numeroCelular2Field": null,
+            "titularField": null,
+            "educacionField": null,
+            "estadoPersonaField": null,
+            "cUBField": null,
+            "cabezaFamiliaField": null,
+            "priorizadoField": null,
+            "estadoFamiliaField": "BENEFICIARIO",
+            "PropertyChanged": null
+        };
+        var c = {
+            "idPersonaField": 252,
+            "idPersonaFieldSpecified": true,
+            "primerNombreField": "cccc",
+            "segundoNombreField": "ccccc",
+            "primerApellidoField": "ccccc",
+            "segundoApellidoField": "cccc",
+            "tipoPoblacionField": "SIN INFORMACION",
+            "sexoField": "F",
+            "tipoDocumentoField": 0,
+            "numeroDocumentoField": "1113594758",
+            "parentescoField": "HIJOS",
+            "fechaNacimientoField": "1994-09-01T00:00:00",
+            "fechaNacimientoFieldSpecified": true,
+            "etniaField": "SIN INFORMACION",
+            "discapacidadField": "SIN INFORMACION",
+            "ubicacionField": null,
+            "bancarizadoField": "NO REPORTA",
+            "codigoFamiliaField": 95,
+            "codigoFamiliaFieldSpecified": true,
+            "condicionSexualField": null,
+            "correoElectronicoField": null,
+            "estadoBeneficiarioField": "BENEFICIARIO",
+            "estadoCivilField": "NO TIENE",
+            "fechaExpedicionDocumentoField": "2012-09-04T00:00:00",
+            "fechaExpedicionDocumentoFieldSpecified": true,
+            "seguridadSocialField": {
+                "beneficiarioSISBENField": "NO REPORTA",
+                "codigoEPSField": null,
+                "nombreEPSField": null,
+                "codigoIPSField": "",
+                "nombreIPSField": "",
+                "estratoField": 0,
+                "puntajeField": 0,
+                "PropertyChanged": null
+            },
+            "lugarAtencionField": null,
+            "lugarExpedicionDocumentoField": null,
+            "lugarNacimientoField": null,
+            "numeroCelular1Field": null,
+            "numeroCelular2Field": null,
+            "titularField": null,
+            "educacionField": null,
+            "estadoPersonaField": null,
+            "cUBField": null,
+            "cabezaFamiliaField": null,
+            "priorizadoField": null,
+            "estadoFamiliaField": "BENEFICIARIO",
+            "PropertyChanged": null
+        };
+        var d = {
+            "idPersonaField": 252,
+            "idPersonaFieldSpecified": true,
+            "primerNombreField": "ddddd",
+            "segundoNombreField": "dddddd",
+            "primerApellidoField": "ddddddddd",
+            "segundoApellidoField": "ddddddd",
+            "tipoPoblacionField": "SIN INFORMACION",
+            "sexoField": "F",
+            "tipoDocumentoField": 0,
+            "numeroDocumentoField": "1113594758",
+            "parentescoField": "HIJOS",
+            "fechaNacimientoField": "1994-09-01T00:00:00",
+            "fechaNacimientoFieldSpecified": true,
+            "etniaField": "SIN INFORMACION",
+            "discapacidadField": "SIN INFORMACION",
+            "ubicacionField": null,
+            "bancarizadoField": "NO REPORTA",
+            "codigoFamiliaField": 95,
+            "codigoFamiliaFieldSpecified": true,
+            "condicionSexualField": null,
+            "correoElectronicoField": null,
+            "estadoBeneficiarioField": "BENEFICIARIO",
+            "estadoCivilField": "NO TIENE",
+            "fechaExpedicionDocumentoField": "2012-09-04T00:00:00",
+            "fechaExpedicionDocumentoFieldSpecified": true,
+            "seguridadSocialField": {
+                "beneficiarioSISBENField": "NO REPORTA",
+                "codigoEPSField": null,
+                "nombreEPSField": null,
+                "codigoIPSField": "",
+                "nombreIPSField": "",
+                "estratoField": 0,
+                "puntajeField": 0,
+                "PropertyChanged": null
+            },
+            "lugarAtencionField": null,
+            "lugarExpedicionDocumentoField": null,
+            "lugarNacimientoField": null,
+            "numeroCelular1Field": null,
+            "numeroCelular2Field": null,
+            "titularField": null,
+            "educacionField": null,
+            "estadoPersonaField": null,
+            "cUBField": null,
+            "cabezaFamiliaField": null,
+            "priorizadoField": null,
+            "estadoFamiliaField": "BENEFICIARIO",
+            "PropertyChanged": null
+        };
+        var u = {
+            "idPersonaField": 252,
+            "idPersonaFieldSpecified": true,
+            "primerNombreField": "uuuuuu",
+            "segundoNombreField": "uuuuuuu",
+            "primerApellidoField": "uuuuuuuu",
+            "segundoApellidoField": "uuuuuuuu",
+            "tipoPoblacionField": "SIN INFORMACION",
+            "sexoField": "F",
+            "tipoDocumentoField": 0,
+            "numeroDocumentoField": "1113594758",
+            "parentescoField": "HIJOS",
+            "fechaNacimientoField": "1994-09-01T00:00:00",
+            "fechaNacimientoFieldSpecified": true,
+            "etniaField": "SIN INFORMACION",
+            "discapacidadField": "SIN INFORMACION",
+            "ubicacionField": null,
+            "bancarizadoField": "NO REPORTA",
+            "codigoFamiliaField": 95,
+            "codigoFamiliaFieldSpecified": true,
+            "condicionSexualField": null,
+            "correoElectronicoField": null,
+            "estadoBeneficiarioField": "BENEFICIARIO",
+            "estadoCivilField": "NO TIENE",
+            "fechaExpedicionDocumentoField": "2012-09-04T00:00:00",
+            "fechaExpedicionDocumentoFieldSpecified": true,
+            "seguridadSocialField": {
+                "beneficiarioSISBENField": "NO REPORTA",
+                "codigoEPSField": null,
+                "nombreEPSField": null,
+                "codigoIPSField": "",
+                "nombreIPSField": "",
+                "estratoField": 0,
+                "puntajeField": 0,
+                "PropertyChanged": null
+            },
+            "lugarAtencionField": null,
+            "lugarExpedicionDocumentoField": null,
+            "lugarNacimientoField": null,
+            "numeroCelular1Field": null,
+            "numeroCelular2Field": null,
+            "titularField": null,
+            "educacionField": null,
+            "estadoPersonaField": null,
+            "cUBField": null,
+            "cabezaFamiliaField": null,
+            "priorizadoField": null,
+            "estadoFamiliaField": "BENEFICIARIO",
+            "PropertyChanged": null
+        };
+>>>>>>> 656887b440431cc3b30899200ad6bd47ca6bf3d6
+
+        $scope.nucleo_familiar_completo.push(e);
+        $scope.nucleo_familiar_completo.push(w);
+        $scope.nucleo_familiar_completo.push(p);
+        $scope.nucleo_familiar_completo.push(l);
+        $scope.nucleo_familiar_completo.push(a);
+        $scope.nucleo_familiar_completo.push(b);
+        $scope.nucleo_familiar_completo.push(c);
+        $scope.nucleo_familiar_completo.push(d);
+        $scope.nucleo_familiar_completo.push(u);
+
+        _asignarDatosEducacion();
+        _filtrarNucleo();
+    };
+    function _asignarDatosEducacion() {
+        $.each($scope.nucleo_familiar_completo, function (index, persona) {
             $.each($scope.hojavida_MFA.Educacion, function (index, item_educacion) {
                 if (persona.idPersonaField == item_educacion.datosBaseField.idPersonaField) {
                     persona.Colegio = item_educacion.educacionField.institucionEducativaField;
@@ -455,6 +944,21 @@ angular.module('starter.controllers', [])
                 }
             });
         });
+    };
+    function _filtrarNucleo() {
+        var i = 0;
+        var indexAux = $scope.indexActual;
+        $scope.nucleo_familiar = [];
+        $scope.fal = 0;
+        for (i = $scope.indexActual; i - $scope.indexActual < $scope.canItems; i++) {            
+            if ($scope.nucleo_familiar_completo[i] != null) {
+                $scope.nucleo_familiar.push($scope.nucleo_familiar_completo[i]);
+            } else $scope.fal++;
+            indexAux = i;
+        }
+        $scope.indexActual = indexAux;
+        $scope.inicio = $scope.indexActual + 1 - $scope.canItems + 1;
+        $scope.fin = $scope.indexActual + 1 - $scope.fal;
     };
     function _grado(value) {
         if (value == 0) return "Prejardin";

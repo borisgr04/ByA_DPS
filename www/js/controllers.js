@@ -352,30 +352,21 @@ angular.module('starter.controllers', [])
     $scope.isGroupShown = function(group) {     
         return $scope.shownGroup === group;  
     };
-  
-    _llenarGrupos();
-    function _llenarGrupos(){
-        var e = {};
-        e.name = "Periodo Cumplimiento Salud";
-        e.fecha1 = "11-11-2015   ";
-        e.name2 = "Periodo Cumplimiento Educación";
-        e.fecha2 = "12-12-2015   ";
-        e.items = ["Beneficiario","Tipo Inscripción","Cumplió","Fecha Cumplimiento"];
-      
-        var d = {};
-        d.name = "Periodo Cumplimiento Salud";
-        d.fecha1 = "11-11-2015"
-        d.name2 = "Periodo Cumplimiento Educación";
-        d.fecha2 = "12-12-2015";
-        d.items = ["Beneficiario","Tipo Inscripción","Cumplió","Fecha Cumplimiento"];
-      
-        $scope.groups.push(e);
-        $scope.groups.push(d);
+    $scope.hojavida_MFA = {};
+    $scope.liquidaciones = [];
+    
+    _init();
+    function _init() {
+        _TraerLiquidaciones();
+    };
+    function _TraerLiquidaciones() {
+        var obj_completo = byaSite._getVar("HV_MFA");
+        $scope.hojavida_MFA = obj_completo;
+        $scope.liquidaciones = obj_completo.Liquidacion;
     };
 })
 .controller('MenuFamiliasEnAccionCtrl', function ($scope, $state, autenticacionService, $ionicPopup, $ionicModal, $timeout, atencionPeticionesService) {
     $scope.ocultarLoader = false;
-    $scope.mostarMenu = false;
     $scope._goTo = function (value) {
         if(!$scope.ocultarLoader) $state.go(value);
     };
@@ -402,7 +393,6 @@ angular.module('starter.controllers', [])
         serHVM.then(function (pl) {
             $scope.ocultarLoader = false;
             byaSite._setVar("HV_MFA", pl.data);
-            $scope.mostarMenu = true;
         }, function (pl) {
             $scope.ocultarLoader = false;
             showAlert("Error", "Ha sido imposible conectarse al servidor"); 

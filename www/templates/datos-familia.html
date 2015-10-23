@@ -31,7 +31,18 @@
                     <p>{{miembro.Graduado}}</p>
                     <p>{{miembro.priorizadoField}}</p>
                 </ion-item>
-            </div>     
+            </div>   
+            <div class="row">
+                <div class="col col-30 text-right">
+                    <a class="button icon-left ion-chevron-left button-clear button-dark" style="color:#3E97CF;font-size:90%;" ng-click="_verAnterior()" ng-hide="indexActual-canItems+1==0">Anteriores</a>
+                </div>
+                <div class="col col-40 text-center">
+                    <a class="button button-clear button-dark" ng-click="_prueba()" style="color:#3E97CF;font-size:90%;">{{inicio}} ... {{fin}}</a>
+                </div>
+                <div class="col col-30 text-left">
+                   <a class="button icon-right ion-chevron-right button-clear button-dark" style="color:#3E97CF;font-size:90%;" ng-click="_verSiguientes()" ng-hide="indexActual-fal+1==nucleo_familiar_completo.length">Siguientes</a>
+                </div>
+            </div>  
         </div>     
     </ion-content>
 </ion-view>	

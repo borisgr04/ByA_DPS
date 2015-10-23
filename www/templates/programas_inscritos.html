@@ -5,13 +5,13 @@
             <h2 style="margin-top:10px;">{{persona.tip_ide}} {{persona.ide}}</h2>
         </div> 
         <br>
-        <div class="item item-avatar borde-item item-programa" ng-repeat="programa in lProgramasInscritos.Programas" ng-show="programa.programaField.idProgramaField == 1 || programa.programaField.idProgramaField == 3"> 
+        <div class="item item-avatar borde-item item-programa" ng-repeat="programa in lProgramasInscritos.Programas" ng-show="programa.programaField.idProgramaField == 1 || programa.programaField.idProgramaField == 3">
             <img ng-src="{{programa.img}}">            
             <h2>{{programa.programaField.programa1Field}}</h2>
             <p>{{programa.programaField.nombreCortoProgramaField}}</p>
             <a class="button button-clear button-small link" ng-click="_irDetallesPrograma(programa)" style="color:#F29400;">VER DETALLE</a>
-        </div>
-        <h5 class="assertive text-center" ng-show="ocultoMensaje">No te encuentras inscrito en ningún programa</h5>
+         </div>
+        <h5 class="assertive text-center" ng-show="ocultoMensaje">No se encuentra inscrito en nuestros programa</h5>
         <ion-spinner class="spinner" ng-show="ocultoLoader"></ion-spinner>
     </ion-content>
 </ion-view>	

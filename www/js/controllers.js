@@ -283,8 +283,7 @@ angular.module('starter.controllers', [])
     $scope.persona = {};
     $scope._irDetallesPrograma = function (programa) {
         _irDetallesPrograma(programa);
-    };
-    
+    };    
     $scope.ocultoMensaje = false;
     $scope.ocultoLoader = false;
 
@@ -320,20 +319,23 @@ angular.module('starter.controllers', [])
             if(pl.data.Programas.length == 0){  
                 $scope.ocultoMensaje = true;         
             }else{
-                $scope.lProgramasInscritos = pl.data;
-
-                console.log(pl.data);
-    
+                $scope.lProgramasInscritos = pl.data;   
                 $.each($scope.lProgramasInscritos.Programas, function (index, item) {
                     if (item.programaField.idProgramaField == 1) item.img = "img/familias-en-accion.png";
                     else if (item.programaField.idProgramaField == 3) item.img = "img/jovenes-en-accion.png";
                     else  item.img = "img/logo_default.png";
-                });
-                $scope.ocultoMensaje = false;
+                });                   
+                var ban = false;
+                for (var i = 0; i < $scope.lProgramasInscritos.Programas.length; i++) {
+                    if($scope.lProgramasInscritos.Programas[i].programaField.idProgramaField == 1 || $scope.lProgramasInscritos.Programas[i].programaField.idProgramaField == 3){
+                        ban = true;
+                    }
+                }
+                if (ban) { $scope.ocultoMensaje = false; }
             }
             
         }, function (pl) {
-            showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+            showAlert("Error: ", "Ha sido imposible conectarse al servidor ");
             $scope.ocultoLoader = false;
         });
     };
@@ -459,6 +461,7 @@ angular.module('starter.controllers', [])
     function _TraerDatosFamiliares() {
         var obj_completo = byaSite._getVar("HV_MFA");
         $scope.hojavida_MFA = obj_completo;
+        $scope.nucleo_familiar = obj_completo.NucleoFamiliar;
         $scope.nucleo_familiar_completo = obj_completo.NucleoFamiliar;
         _asignarDatosEducacion();
         _filtrarNucleo();

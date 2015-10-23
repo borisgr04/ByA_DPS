@@ -1,7 +1,7 @@
 <ion-view view-title='<img class="logoEncabezado" src="img/logo2.png"/> Liquidación y Pagos'>
     <ion-content>
         <div>
-        <div ng-repeat="liquidacion in liquidaciones">
+        <div ng-repeat="liquidacion in liquidaciones | limitTo:3">
           <ion-item class="item-stable" ng-click="toggleGroup(liquidacion)" ng-class="{active: isGroupShown(liquidacion)}" style="background-color: #fff;">
               <div class="row">
                 <div class="col col-10">

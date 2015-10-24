@@ -12,16 +12,21 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
             StatusBar.styleDefault();
         }
     });
-    
     $ionicPlatform.registerBackButtonAction(function(event) {
         if (true) 
-        { 
-            if($ionicHistory.currentStateName() != "app.identificar_persona")
-                $state.go("app.identificar_persona");
-             else
-                ionic.Platform.exitApp();
+        {
+            if ($ionicHistory.currentStateName() == "app.home" || $ionicHistory.currentStateName() == "app.identificar_persona") ionic.Platform.exitApp();
+            else if ($ionicHistory.currentStateName() == "app.programas_inscritos") $ionicHistory.goBack(-2);
+            else $ionicHistory.goBack();            
         }
     }, 100);
+    $ionicPlatform.on('resume', function () {
+        $ionicHistory.nextViewOptions({
+            disableAnimate: true,
+            disableBack: true
+        });
+        $state.go("app.home");
+    });
 })
 
 .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {

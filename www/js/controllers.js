@@ -1,4 +1,13 @@
 angular.module('starter.controllers', [])
+
+.controller('MenuCtrl',function($scope,$state,$ionicHistory){
+    $scope.back = function(){
+        if($ionicHistory.currentStateName() != "app.identificar_persona")
+            $state.go("app.identificar_persona");   
+    };         
+})
+
+
 .controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacionService) {   
   _init();
   function _init(){
@@ -464,9 +473,7 @@ angular.module('starter.controllers', [])
     function _TraerDatosFamiliares() {
         var obj_completo = byaSite._getVar("HV_MFA");
         $scope.hojavida_MFA = obj_completo;
-<<<<<<< HEAD
-        $scope.nucleo_familiar = obj_completo.NucleoFamiliar;
-=======
+        //$scope.nucleo_familiar = obj_completo.NucleoFamiliar;
         $scope.nucleo_familiar_completo = obj_completo.NucleoFamiliar;
 
         var e = {
@@ -919,7 +926,6 @@ angular.module('starter.controllers', [])
             "estadoFamiliaField": "BENEFICIARIO",
             "PropertyChanged": null
         };
->>>>>>> 656887b440431cc3b30899200ad6bd47ca6bf3d6
 
         $scope.nucleo_familiar_completo.push(e);
         $scope.nucleo_familiar_completo.push(w);

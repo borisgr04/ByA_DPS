@@ -1,5 +1,5 @@
 var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'])
-.run(function ($ionicPlatform) {
+.run(function ($ionicPlatform,$ionicPopup,$state,$ionicHistory) {
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -12,7 +12,18 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
             StatusBar.styleDefault();
         }
     });
+    
+    $ionicPlatform.registerBackButtonAction(function(event) {
+        if (true) 
+        { 
+            if($ionicHistory.currentStateName() != "app.identificar_persona")
+                $state.go("app.identificar_persona");
+             else
+                ionic.Platform.exitApp();
+        }
+    }, 100);
 })
+
 .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
     $stateProvider
       .state('app', {

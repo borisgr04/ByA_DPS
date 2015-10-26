@@ -134,12 +134,30 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
             }
         }
     })
-    .state('app.seleccion_programa', {
-        url: '/seleccion_programa',
+    .state('app.seleccionar_personas', {
+        url: '/seleccionar_persona',
         views: {
             'menuContent': {
-                controller: "SeleccionProgramaCtrl",
-                templateUrl: 'templates/seleccion_programa.html'
+                controller: "SeleccionarPersonaCtrl",
+                templateUrl: 'templates/seleccionar_persona.html'
+            }
+        }
+    })
+    .state('app.programas_potencial', {
+        url: '/programas_potencial',
+        views: {
+            'menuContent': {
+                controller: "ProgramasPotencialCtrl",
+                templateUrl: 'templates/programas_potencial.html'
+            }
+        }
+    })
+    .state('app.informacion_programa', {
+        url: '/informacion_programa',
+        views: {
+            'menuContent': {
+                controller: "InformacionProgramaCtrl",
+                templateUrl: 'templates/informacion_programa.html'
             }
         }
     })

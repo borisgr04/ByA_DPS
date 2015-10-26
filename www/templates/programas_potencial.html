@@ -1,0 +1,22 @@
+<ion-view view-title='<img class="logoEncabezado" src="img/logo2.png"/> A qué soy Potencial?'>
+    <ion-content>
+        <div class="item item-avatar">
+            <img ng-src="img/profile.png">
+            <p>R.C. 107397846</p>
+            <p style="color:#C0C0C0;">ANGELICA MARIA POLO ISIDRO</p>
+        </div> 
+        <br>
+        <div class="item item-avatar borde-item item-programa">
+            <img ng-src="img/jovenes-en-accion.png">            
+            <h2>Jovenes en Acción</h2>
+            <a class="button button-clear button-small link" style="color:#F29400;" href="#/app/informacion_programa">VER DETALLE</a>
+         </div>
+        <div class="item item-avatar borde-item item-programa">
+            <img ng-src="img/familias-en-accion.png">            
+            <h2>Mas Familias en Acción</h2>
+            <a class="button button-clear button-small link" style="color:#F29400;" href="#/app/informacion_programa">VER DETALLE</a>
+         </div>
+        <h5 class="assertive text-center" ng-show="ocultoMensaje">No se encuentra inscrito en nuestros programa</h5>
+        <ion-spinner class="spinner" ng-show="ocultoLoader"></ion-spinner>
+    </ion-content>
+</ion-view>	

@@ -1,0 +1,29 @@
+<ion-view view-title='<img class="logoEncabezado" src="img/logo2.png"/> A qué soy Potencial?'>
+    <ion-content>        
+	    <div class="card text-center">
+	        <div class="item item-text-wrap" style="text-align:justify">
+	  	        <p style="color:#F29400;">Señor Usuario: por favor complete los datos que correspondan a su información personal y haga clic en Consultar.</p>
+	        </div>
+	    </div>
+      <div class="list">  
+        <span class="input-label" style="width:100%">Tipo de Documento</span>
+        <label class="item item-select">
+            <select ng-model="usuario.tipoDocumento">
+                <option value="">Seleccione</option>
+                <option value="TI">Tarjeta de Identidad</option>
+                <option value="CC">Cédula de Ciudadanía</option>
+                <option value="CE">Cédula de Extranjería</option>
+            </select>
+        </label>
+        <label class="item item-input item-stacked-label">
+                <span class="input-label">Número de Documento</span>
+                <input type="number" placeholder="" ng-model="usuario.documento" ng-maxlength="10">
+        </label> 
+        <h6 class="assertive" ng-hide="{{ocultoMensaje}}">{{mensajeError}}</h6>
+        <a class="button button-block button-positive" href="#/app/seleccion_programa">Consultar</a>
+        <br>
+        <ion-spinner class="spinner" ng-show="ocultoLoader"></ion-spinner>
+    </div>
+    </ion-content>
+</ion-view>	
+

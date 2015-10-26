@@ -550,4 +550,11 @@ angular.module('starter.controllers', [])
         $scope.listaNovedades = novedades.Novedades;
     }
     
-});
+})
+.controller('IdentificarPersonaPotencialCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
+
+})
+.controller('SeleccionProgramaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
+
+})
+;

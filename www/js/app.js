@@ -125,6 +125,24 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
             }
         }
     })
+    .state('app.identificar_persona_potencial', {
+        url: '/identificar_persona_potencial',
+        views: {
+            'menuContent': {
+                controller: "IdentificarPersonaPotencialCtrl",
+                templateUrl: 'templates/identificar_persona_potencial.html'
+            }
+        }
+    })
+    .state('app.seleccion_programa', {
+        url: '/seleccion_programa',
+        views: {
+            'menuContent': {
+                controller: "SeleccionProgramaCtrl",
+                templateUrl: 'templates/seleccion_programa.html'
+            }
+        }
+    })
     ;
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/app/home');

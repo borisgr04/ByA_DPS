@@ -65,7 +65,7 @@ angular.module('starter.controllers', [])
     _init();
     function _init() {
         _getToken();
-    };    
+    };        
     function _getToken() {
         $scope.ocultoLoader = true;
         if (byaSite._pedirToken()) {
@@ -114,20 +114,28 @@ angular.module('starter.controllers', [])
         });
     };  
 })
-.controller('PreguntasPersonasCtrl', function ($scope, $window, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $state) {
-    $scope.lPreguntas = {};
-    $scope.ids_preguntas = [];
-    $scope.index_preguntas = 0;
-    $scope.pregunta_actual = {};
-    $scope.obj_respuestas = {};
+.controller('PreguntasPersonasCtrl', function ($scope, $rootScope, $window, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $state) {
+    $rootScope.lPreguntas = {};
+    $rootScope.ids_preguntas = [];
+    $rootScope.index_preguntas = 0;
+    $rootScope.pregunta_actual = {};
+    $rootScope.obj_respuestas = {};
     $scope.ocultarLoader = false;
     $scope._continuar = function(){
         _continuar();
     };
     $scope._verificarValidarRespuestaActual = function (respuesta) {
-        $.each($scope.pregunta_actual.respuestas, function (index, item) {
+        $.each($rootScope.pregunta_actual.respuestas, function (index, item) {
             if (item.nombre != respuesta.nombre) item.value = false;
         });
+    };
+    $rootScope._initPreguntas = function () {
+        $rootScope.lPreguntas = {};
+        $rootScope.ids_preguntas = [];
+        $rootScope.index_preguntas = 0;
+        $rootScope.pregunta_actual = {};
+        $rootScope.obj_respuestas = {};
+        _init();
     };
      
     _init();
@@ -147,37 +155,37 @@ angular.module('starter.controllers', [])
                 $scope.ocultarLoader = false;
             });
         }
-    };
+    };   
     function _obtenerPreguntas() {
-        $scope.lPreguntas = byaSite._getVar("lPreguntas");
-        $scope.obj_respuestas.cuestionarioField = [];
-        $scope.obj_respuestas.idTransactionField = $scope.lPreguntas.CuestionarioProgramasPersonaResponse.idTransactionField;        
+        $rootScope.lPreguntas = byaSite._getVar("lPreguntas");
+        $rootScope.obj_respuestas.cuestionarioField = [];
+        $rootScope.obj_respuestas.idTransactionField = $rootScope.lPreguntas.CuestionarioProgramasPersonaResponse.idTransactionField;        
         _extraerIdsPreguntas();
     };
     function _extraerIdsPreguntas() {
-        $.each($scope.lPreguntas.CuestionarioProgramasPersonaResponse.cuestionarioPersonaField, function (index, item) {
+        $.each($rootScope.lPreguntas.CuestionarioProgramasPersonaResponse.cuestionarioPersonaField, function (index, item) {
             var ban = false;
-            $.each($scope.ids_preguntas, function (index2, item2) {
+            $.each($rootScope.ids_preguntas, function (index2, item2) {
                 if (item.preguntaField.idPreguntaField == item2) ban = true;
             });            
-            if (!ban) $scope.ids_preguntas.push(item.preguntaField.idPreguntaField);
+            if (!ban) $rootScope.ids_preguntas.push(item.preguntaField.idPreguntaField);
         });
         _preguntar(); 
     };
     function _preguntar() {
-        $scope.pregunta_actual = {};
-        $scope.pregunta_actual.respuestas = [];
+        $rootScope.pregunta_actual = {};
+        $rootScope.pregunta_actual.respuestas = [];
         var respuesta_pendiente = {};
         var ban_res = false;
-        $.each($scope.lPreguntas.CuestionarioProgramasPersonaResponse.cuestionarioPersonaField, function (index, item) {
-            if (item.preguntaField.idPreguntaField == $scope.ids_preguntas[$scope.index_preguntas]) {
-                $scope.pregunta_actual.pregunta = item.preguntaField.descripcionPreguntaField;
+        $.each($rootScope.lPreguntas.CuestionarioProgramasPersonaResponse.cuestionarioPersonaField, function (index, item) {
+            if (item.preguntaField.idPreguntaField == $rootScope.ids_preguntas[$rootScope.index_preguntas]) {
+                $rootScope.pregunta_actual.pregunta = item.preguntaField.descripcionPreguntaField;
                 var res = {};
                 res.value = false;
                 res.nombre = item.respuestaField.respuestaDePreguntaField;
 
                 if (("" + res.nombre + "").toUpperCase() != ("ninguna de las anteriores").toUpperCase()) {
-                    $scope.pregunta_actual.respuestas.push(res);
+                    $rootScope.pregunta_actual.respuestas.push(res);
                 }
                 else {
                     respuesta_pendiente = res;
@@ -186,33 +194,33 @@ angular.module('starter.controllers', [])
             }
         });
         if (ban_res) {
-            $scope.pregunta_actual.respuestas.push(respuesta_pendiente);
+            $rootScope.pregunta_actual.respuestas.push(respuesta_pendiente);
         }
     };
     function _esValidoRespuesta() {
         var respondio = false;
-        $.each($scope.pregunta_actual.respuestas, function (index, respuesta) {
+        $.each($rootScope.pregunta_actual.respuestas, function (index, respuesta) {
             if (respuesta.value) respondio = true;
         });
         return respondio;
     };
     function _buscarRespuestaSeleccionada() {
         var respuesta = "";
-        $.each($scope.pregunta_actual.respuestas, function (index, item) {
+        $.each($rootScope.pregunta_actual.respuestas, function (index, item) {
             if (item.value) respuesta = item.nombre;
         });
     
-        $.each($scope.lPreguntas.CuestionarioProgramasPersonaResponse.cuestionarioPersonaField, function (index, item) {
-            if ((item.respuestaField.idPreguntaField == $scope.ids_preguntas[$scope.index_preguntas]) && (item.respuestaField.respuestaDePreguntaField == respuesta)) {
-                $scope.obj_respuestas.cuestionarioField.push(item);
+        $.each($rootScope.lPreguntas.CuestionarioProgramasPersonaResponse.cuestionarioPersonaField, function (index, item) {
+            if ((item.respuestaField.idPreguntaField == $rootScope.ids_preguntas[$rootScope.index_preguntas]) && (item.respuestaField.respuestaDePreguntaField == respuesta)) {
+                $rootScope.obj_respuestas.cuestionarioField.push(item);
             }
         });
     };
     function _continuar() {
         if (_esValidoRespuesta()) {
             _buscarRespuestaSeleccionada();
-            if (($scope.index_preguntas + 1) < $scope.ids_preguntas.length) {
-                $scope.index_preguntas = $scope.index_preguntas + 1;
+            if (($rootScope.index_preguntas + 1) < $rootScope.ids_preguntas.length) {
+                $rootScope.index_preguntas = $rootScope.index_preguntas + 1;
                 _preguntar();
             }
             else {
@@ -224,7 +232,7 @@ angular.module('starter.controllers', [])
     };
     function _enviarRespuestas() {
         $scope.ocultarLoader = true;
-        var serVerPre = verificacionCiudadanoService._validarCuestionario($scope.obj_respuestas); 
+        var serVerPre = verificacionCiudadanoService._validarCuestionario($rootScope.obj_respuestas); 
         serVerPre.then(function (pl) {
             if (pl.data.EsPersonaVerificada) {
                 byaSite._removeVar("fecha_verificacion");
@@ -252,7 +260,7 @@ angular.module('starter.controllers', [])
             byaSite._setVar(cadenaIntentosVerificacion, 1);
             showAlert("Atención", "Alguna de sus respuestas fue incorrecta, intente nuevamente");
             $scope.ocultarLoader = false;
-            $scope.index_preguntas = 0;
+            $rootScope.index_preguntas = 0;
             _preguntar();
         } else {
             if ((FH == FV) && (IV == 1)) {
@@ -266,7 +274,7 @@ angular.module('starter.controllers', [])
                     byaSite._setVar(cadenaIntentosVerificacion, 1);
                     showAlert("Atención", "Alguna de sus respuestas fue incorrecta, intente nuevamente");
                     $scope.ocultarLoader = false;
-                    $scope.index_preguntas = 0;
+                    $rootScope.index_preguntas = 0;
                     _preguntar();
                 }
                 else if (IV == 2) {

@@ -1,5 +1,12 @@
 var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'])
-.run(function ($ionicPlatform,$ionicPopup,$state,$ionicHistory) {
+.run(function ($ionicPlatform, $ionicPopup, $state, $ionicHistory, $rootScope) {
+
+    $rootScope.lPreguntas = {};
+    $rootScope.ids_preguntas = [];
+    $rootScope.index_preguntas = 0;
+    $rootScope.pregunta_actual = {};
+    $rootScope.obj_respuestas = {};
+
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -25,6 +32,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
             disableAnimate: true,
             disableBack: true
         });
+        $rootScope._initPreguntas();
         $state.go("app.home");
     });
 })

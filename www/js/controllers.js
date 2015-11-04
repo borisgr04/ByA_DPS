@@ -30,7 +30,7 @@ angular.module('starter.controllers', [])
 })
 .controller('IdentificarPersonaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
     
-    $scope.ocultoMensaje = false;
+    $scope.mostarMensaje = false;
     $scope.ocultoLoader = false;
     $scope.mensajeError = "";
     $scope.usuario = {};
@@ -40,25 +40,25 @@ angular.module('starter.controllers', [])
     $scope._verificarCiudadano = function(){
         _verificarCiudadano();
     };
-    $scope.validarDocumento = function () {
-        var documento = $scope.usuario.documento;
+    
+    $scope.maxLengthDocumento = function(){
+        $scope.mostarMensaje = false;
         var tipoDocumento = $scope.usuario.tipoDocumento;
-        if (documento == "") {
-            $scope.mensajeError = "Debe completar el número de documento";
-            $scope.ocultoMensaje = true;
-        }else if (! /^[0-9]+/.test(documento) && tipoDocumento != "") {
-            $scope.mensajeError = "No se admiten caracteres especiales y la longitud máxima del número de documento es 10";
-            $scope.usuario.documento = "";
-            $scope.ocultoMensaje = true;            
-        }else if (tipoDocumento == "CE" && ('' + documento).length > 6) {
-            $scope.mensajeError = "La longitud máxima del número de documento es 6";
-            $scope.usuario.documento = "";
-            $scope.ocultoMensaje = true;
-        } else if (tipoDocumento == "") {
-            $scope.mensajeError = "Debe completar el tipo de identificación";
-        } else {
+        if(tipoDocumento == "TI" || tipoDocumento == "CC"){
+            $scope.maxLength = 10;
+        }else if (tipoDocumento == "CE"){
+            $scope.maxLength = 6;
+        }
+    }
+    
+    $scope.validarDocumento = function (form) {
+        var tipoDocumento = $scope.usuario.tipoDocumento;
+        if (form.$valid && tipoDocumento != "") {
             $scope.ocultoLoader = true;
+            $scope.mostarMensaje = false;
             _verificarCiudadano();
+        }else{
+            $scope.mostarMensaje = true;
         }
     };
     

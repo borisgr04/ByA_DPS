@@ -22,14 +22,14 @@
                     </div>    
                 </ion-item>
                 <ion-item class="item-accordion item-accordion-button" ng-show="isGroupShown(miembro)" style="padding-left:70px;margin-top:-25px;padding-top:0px;">
-                    <p><strong>{{_tipoDocumento(miembro.tipoDocumentoField)}}</strong></p>
+                    <p><strong>Estado: </strong> {{miembro.estadoBeneficiarioField}}</p>
+                    <p><strong>{{_tipoDocumento(miembro.tipoDocumentoField)}} </strong> </p>
                     <p>{{miembro.numeroDocumentoField}}</p>
-                    <p ng-show="miembro.parentescoField != null"><strong>Parentesco: </strong>{{miembro.parentescoField}}</p>
-                    <p ng-show="miembro.Colegio != null"><strong>Colegio</strong></p>
+                    <p><strong>Colegio: </strong></p>
                     <p>{{miembro.Colegio}}</p>
-                    <p ng-show="miembro.Grado != null"><strong>Grado: </strong> {{_getGrado(miembro.Grado)}}</p>
-                    <p>{{miembro.Graduado}}</p>
-                    <p>{{miembro.priorizadoField}}</p>
+                    <p><strong>Grado: </strong> {{_getGrado(miembro.Grado)}}</p>
+                    <p><strong>Graduado: </strong> {{miembro.Graduado}}</p>
+                    <p><strong>Priosizado: </strong> {{miembro.priorizadoField}}</p>
                 </ion-item>
             </div>   
             <div class="row" ng-show="nucleo_familiar_completo.length > 5">

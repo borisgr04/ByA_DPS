@@ -62,7 +62,7 @@ angular.module('starter.controllers', [])
     };
     
     _init();
-    function _init() {
+    function _init() {        
         _getToken();   
     };        
     function _getToken() {
@@ -94,6 +94,7 @@ angular.module('starter.controllers', [])
                 byaSite._setVar("PersonaActual", per);
                 $scope.usuario.tipoDocumento = "";
                 $scope.usuario.documento = "";
+                $rootScope.mostrarMensajesError = false;
                 $state.go("app.pregunta_validacion");
             }
         }, function (pl) {
@@ -409,6 +410,7 @@ angular.module('starter.controllers', [])
         var serHVM = atencionPeticionesService._hojaVidaMFA(byaSite._getVar("CodigoBeneficiario"));
         serHVM.then(function (pl) {
             $scope.ocultarLoader = false;
+            console.log(JSON.stringify(pl.data));
             byaSite._setVar("HV_MFA", pl.data);
         }, function (pl) {
             $scope.ocultarLoader = false;

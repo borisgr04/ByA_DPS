@@ -6,6 +6,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
     $rootScope.index_preguntas = 0;
     $rootScope.pregunta_actual = {};
     $rootScope.obj_respuestas = {};
+    $rootScope.mostrarMensajesError = true;
 
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -32,7 +33,12 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
             disableAnimate: true,
             disableBack: true
         });
-        $rootScope._initPreguntas();
+        $rootScope.mostrarMensajesError = false;
+        try {
+            $rootScope._initPreguntas();
+        }
+        catch (err) {
+        }        
         $state.go("app.home");
     });
 })

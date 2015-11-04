@@ -28,7 +28,7 @@ angular.module('starter.controllers', [])
       });
   };
 })
-.controller('IdentificarPersonaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
+.controller('IdentificarPersonaCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
     
     $scope.mostarMensaje = false;
     $scope.ocultoLoader = false;
@@ -39,19 +39,18 @@ angular.module('starter.controllers', [])
     $scope.objConsulta = {};
     $scope._verificarCiudadano = function(){
         _verificarCiudadano();
-    };
-    
-    $scope.maxLengthDocumento = function(){
+    };    
+    $scope.maxLengthDocumento = function () {
         $scope.mostarMensaje = false;
         var tipoDocumento = $scope.usuario.tipoDocumento;
-        if(tipoDocumento == "TI" || tipoDocumento == "CC"){
+        if (tipoDocumento == "TI" || tipoDocumento == "CC") {
             $scope.maxLength = 10;
-        }else if (tipoDocumento == "CE"){
+        } else if (tipoDocumento == "CE") {
             $scope.maxLength = 6;
         }
-    }
-    
+    };    
     $scope.validarDocumento = function (form) {
+        $rootScope.mostrarMensajesError = true;
         var tipoDocumento = $scope.usuario.tipoDocumento;
         if (form.$valid && tipoDocumento != "") {
             $scope.ocultoLoader = true;
@@ -64,7 +63,7 @@ angular.module('starter.controllers', [])
     
     _init();
     function _init() {
-        _getToken();
+        _getToken();   
     };        
     function _getToken() {
         $scope.ocultoLoader = true;
@@ -73,9 +72,8 @@ angular.module('starter.controllers', [])
             serAut.then(function (pl) {
                 byaSite._setToken(pl.data.access_token);
                 $scope.ocultoLoader = false;
-            }, function (pl) {
-                byaSite.alert(JSON.stringify(pl));
-                showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+            }, function (pl) {   
+                showAlert("Error:", "Ha sido   imposible conectarse al servidor ");
                 $scope.ocultoLoader = false;
             });
         }
@@ -99,8 +97,7 @@ angular.module('starter.controllers', [])
                 $state.go("app.pregunta_validacion");
             }
         }, function (pl) {
-            byaSite.alert(pl);
-            showAlert("Error:", "Ha sido imposible conectarse al servidor ");
+            showAlert("Error:", "Ha sido imposible concetarnos al servidor ");
             $scope.ocultoLoader = false;
         });
     };    

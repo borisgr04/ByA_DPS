@@ -555,8 +555,18 @@ angular.module('starter.controllers', [])
     }else{
         $scope.mostrarMensaje = false;
         $scope.listaNovedades = novedades.Novedades;
+    }    
+})
+.controller('AntifraudeCtrl', function ($scope) {
+    var novedades = byaSite._getVar("HV_MFA");
+    $scope.listaNovedades = [];
+    $scope.mostrarMensaje = false
+    if (novedades.Novedades.length == 0) {
+        $scope.mostrarMensaje = true;
+    } else {
+        $scope.mostrarMensaje = false;
+        $scope.listaNovedades = novedades.Novedades;
     }
-    
 })
 .controller('IdentificarPersonaPotencialCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
 

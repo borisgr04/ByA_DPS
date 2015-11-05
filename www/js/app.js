@@ -126,6 +126,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/antifraude',
         views: {
             'menuContent': {
+                controller: 'AntifraudeCtrl',
                 templateUrl: 'templates/antifraude.html'
             }
         }

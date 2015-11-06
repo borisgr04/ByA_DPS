@@ -3,7 +3,7 @@
         <div class="item item-avatar" ng-repeat="novedad in listaNovedades | orderBy:'-novedadField.fechaAplicacionNovedadField' | limitTo:5">
             <img ng-src="img/profile.png">     
             <h2 style="color:#f29400; text-size: 70%;">{{novedad.datosBaseField.primerNombreField}} {{novedad.datosBaseField.segundoNombreField}} {{novedad.datosBaseField.primerApellidoField}} {{novedad.datosBaseField.segundoApellidoField}}</h2>
-            <p>Categoría: {{novedad.novedadField.tipoDeNovedadField}}</p>
+            <p>Tipo: {{novedad.novedadField.tipoDeNovedadField}}</p>
             <p>Aplicado: {{novedad.novedadField.estadoNovedadField}}</p>
             <p>Fecha de Aplicación : {{novedad.novedadField.fechaAplicacionNovedadField | date:"dd-MM-yyyy"}}</p>  
         </div>

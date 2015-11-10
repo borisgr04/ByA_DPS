@@ -87,12 +87,8 @@ angular.module('starter.controllers', [])
         }else{
             $scope.mostarMensaje = true;
         }
-<<<<<<< HEAD
-    };
-    
-=======
     };  
->>>>>>> 8b905d56a5f4f204bc1c4098cd7deb9608fa5d46
+    
     $scope.keydown = function() {
         var str = "" + $rootScope.usuario.documento + "";        
         var tamaño = str.length+1;              

@@ -76,12 +76,9 @@ angular.module('starter.controllers', [])
         }
     };
     
-    var num = 0;
-    
     $scope.keydown = function() {
         var str = "" + $rootScope.usuario.documento + "";        
-        var tamaño = str.length+1;        
-        console.log(tamaño+" "+$scope.maxLength);       
+        var tamaño = str.length+1;              
         
         if(tamaño > $scope.maxLength){    
             $rootScope.usuario.documento = parseInt(str.substr(0,$scope.maxLength-1)); 
@@ -498,8 +495,8 @@ angular.module('starter.controllers', [])
         return $scope.shownGroup === group;
     };
     $scope._tipoDocumento = function (value) {
-        if (value == 0) return "Cedula de Ciudadanía";
-        else if (value == 4) return "Tarjeta de identidad";
+        if (value == "CC") return "Cedula de Ciudadanía";
+        else if (value == "TI") return "Tarjeta de identidad";
         else return "";
     };
     $scope._getGrado = function (value) {
@@ -590,6 +587,16 @@ angular.module('starter.controllers', [])
     $scope.isGroupShown = function(group) {     
         return $scope.shownGroup === group;  
     };
+    
+    $scope.mostrarTituloSalud = function(cumplimiento){
+        if(cumplimiento.cumplimientoField.cumplimientoTipoIncentivoField == "SALUD")
+            return true;
+    }
+    
+    $scope.mostrarTituloEducacion = function(cumplimiento){
+        if(cumplimiento.cumplimientoField.cumplimientoTipoIncentivoField == "EDUCACION")
+            return true;
+    }
     
     _init();
     function _init() {

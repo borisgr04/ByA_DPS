@@ -1,11 +1,12 @@
 <ion-view view-title='<img class="logoEncabezado" src="img/logo2.png"/> Antifraudes'>
     <ion-content>
-        <div class="item item-avatar" ng-repeat="novedad in listaNovedades | orderBy:'-novedadField.fechaAplicacionNovedadField' | limitTo:5">
+        <div class="item item-avatar" ng-repeat="novedad in listaNovedades | orderBy:'-novedadField.fechaAplicacionNovedadField' | limitTo:4">
             <img ng-src="img/profile.png">     
-            <h2 style="color:#f29400; text-size: 70%;">{{novedad.datosBaseField.primerNombreField}} {{novedad.datosBaseField.segundoNombreField}} {{novedad.datosBaseField.primerApellidoField}} {{novedad.datosBaseField.segundoApellidoField}}</h2>
-            <p>Tipo: {{novedad.novedadField.tipoDeNovedadField}}</p>
-            <p>Aplicado: {{novedad.novedadField.estadoNovedadField}}</p>
-            <p>Fecha de Aplicación : {{novedad.novedadField.fechaAplicacionNovedadField | date:"dd-MM-yyyy"}}</p>  
+            <h2 style="color:#f29400;">{{novedad.datosBaseField.primerNombreField |capitalize}} {{novedad.datosBaseField.segundoNombreField |capitalize}} {{novedad.datosBaseField.primerApellidoField |capitalize}} {{novedad.datosBaseField.segundoApellidoField |capitalize}}</h2>
+            <p>Tipo: {{novedad.novedadField.tipoDeNovedadField | lowercase |capitalize}}</p>
+            <p>Causal: @@</p>
+            <p>Aplicado: {{novedad.novedadField.estadoNovedadField |capitalize}}</p>
+            <p>Fecha de Aplicación : {{novedad.novedadField.fechaAplicacionNovedadField | date:'MMM d, y'}}</p>  
         </div>
         <h5 class="assertive text-center mensaje" ng-show="mostrarMensaje">No existe información</h5>    
     </ion-content>

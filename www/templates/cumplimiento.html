@@ -8,21 +8,21 @@
                     <img ng-src="img/profile.png" style="width:75%;">
                 </div>
                 <div class="col col-80">
-                    <p><strong>Cumplimiento Salud</strong></p>
-                    <p class='gray-light-2'>{{cumplimiento.cumplimientoField.fechaInicioPeriodoVerificacionField | date:"dd/MM/yyyy"}}</p>
-                    <p><strong>Cumplimientos Educación</strong></p>
-                    <p class='gray-light-2'>{{cumplimiento.cumplimientoField.fechaFinPeriodoVerificacionField | date:"dd/MM/yyyy"}}</p>
+                    
+                    <p><strong ng-show="mostrarTituloSalud(cumplimiento)">Cumplimiento Salud</strong></p>
+                    <p><strong ng-show="mostrarTituloEducacion(cumplimiento)">Cumplimientos Educación</strong></p>
+                    <p class='gray-light-2'>{{cumplimiento.cumplimientoField.fechaInicioPeriodoVerificacionField | date:'MMM d, y'}} - {{cumplimiento.cumplimientoField.fechaFinPeriodoVerificacionField | date:'MMM d, y'}}</p>
                 </div>
                 <div class="col col-10">
-                    <i class="icon" ng-class="isGroupShown(cumplimiento) ? 'ion-minus-circled' : 'ion-plus-circled'" style="color:#3E97CF"></i>
+                    <i class="icon" ng-class="isGroupShown(cumplimiento) ? 'ion-minus-circled' : 'ion-plus-circled'" style="color:#F29400;"></i>
                 </div>
               </div>   
           </ion-item>
           <ion-item class="item-accordion item-accordion-button" ng-show="isGroupShown(cumplimiento)" style="padding-left:15%;margin-top:0px;padding-top:0px;">
-            <p style="font-size: 70%;">{{cumplimiento.datosBaseField.primerNombreField}} {{cumplimiento.datosBaseField.segundoNombreField}} {{cumplimiento.datosBaseField.primerApellidoField}} {{cumplimiento.datosBaseField.segundoApellidoField}}</p>
-            <!--<p>Tipo de Inscripción</p>-->
-            <p>Cumplió: {{cumplimiento.cumplimientoField.cumplioField}}</p>
-            <!--<p>Fecha de Cumplimiento</p>-->
+            <p>{{cumplimiento.datosBaseField.primerNombreField | capitalize}} {{cumplimiento.datosBaseField.segundoNombreField | capitalize}} {{cumplimiento.datosBaseField.primerApellidoField | capitalize}} {{cumplimiento.datosBaseField.segundoApellidoField | capitalize}}</p>
+            <p>{{cumplimiento.cumplimientoField.causalCumplimientoTipoIncentivoField | lowercase | capitalize}}</p>  
+            <p>Cumplió: {{cumplimiento.cumplimientoField.cumplioField | capitalize}}</p>
+            <p>Fecha de Cumplimiento: @@</p>
           </ion-item>
         </div>
       </div>

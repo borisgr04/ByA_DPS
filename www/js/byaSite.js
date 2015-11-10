@@ -39,5 +39,10 @@ var byaSite = {
          if (this.siAlert) {
              alert(JSON.stringify(value));
          }
+     },
+     console: function (value) {
+         if (this.siAlert) {
+             console.log(JSON.stringify(value));
+         }
      }
 };

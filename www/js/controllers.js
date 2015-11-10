@@ -11,16 +11,33 @@ angular.module('starter.controllers', [])
         $rootScope.usuario.documento = "";
     };
 })
-.controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacionService) {   
+.controller('HomeCtrl', function ($scope, $ionicModal, $timeout, autenticacionService, mensajesService) {
+    $scope.ocultarLoader = false;
+
   _init();
   function _init(){
-     _getToken();
-  };  
+      _getToken();
+      _Mensajes();
+  };
+  function _Mensajes() {
+      $scope.ocultarLoader = true;
+      var ser = mensajesService._mensjes();
+      ser.then(function (pl) {
+          $scope.ocultarLoader = false;
+          byaSite._setVar("obj_mensajes", pl.data);
+      }, function (pl) {
+          $scope.ocultarLoader = false;
+          showAlert("Error", "Ha sido imposible conectarse al servidor");
+      });
+  };
   function _getToken(){
+      $scope.ocultarLoader = true;
       var serAut = autenticacionService._getTokenFirst();
       serAut.then(function (pl) {
+          $scope.ocultarLoader = false;
           byaSite._setToken(pl.data.access_token);
       }, function (pl) {
+          $scope.ocultarLoader = false;
           showAlert("Error", "Ha sido imposible conectarse al servidor");
       });
   };
@@ -39,19 +56,16 @@ angular.module('starter.controllers', [])
     $scope.mostarMensaje = false;
     $scope.ocultoLoader = false;
     $scope.mensajeError = "";
-
     $rootScope.usuario = {};
     $rootScope.usuario.tipoDocumento = "";
     $rootScope.usuario.documento = "";
-
     $scope.maxLength = 10;   
     $scope.objConsulta = {};
     $scope.errorLongitudDocumento = false;
-    
+    var num = 0;
     $scope._verificarCiudadano = function () {
         _verificarCiudadano();
-    };    
-    
+    };      
     $scope.maxLengthDocumento = function () {
         $rootScope.mostrarMensajesError = true;
         $rootScope.usuario.documento = "";
@@ -62,8 +76,7 @@ angular.module('starter.controllers', [])
         } else if (tipoDocumento == "CE") {
             $scope.maxLength = 6;
         }
-    };  
-      
+    };        
     $scope.validarDocumento = function (form) {
         $rootScope.mostrarMensajesError = true;
         var tipoDocumento = $rootScope.usuario.tipoDocumento;
@@ -74,10 +87,7 @@ angular.module('starter.controllers', [])
         }else{
             $scope.mostarMensaje = true;
         }
-    };
-    
-    var num = 0;
-    
+    };  
     $scope.keydown = function() {
         var str = "" + $rootScope.usuario.documento + "";        
         var tamaño = str.length+1;        
@@ -622,11 +632,196 @@ angular.module('starter.controllers', [])
         $scope.listaNovedades = novedades.Novedades;
     }
 })
-.controller('IdentificarPersonaPotencialCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
+.controller('IdentificarPersonaPotencialCtrl', function ($scope, $rootScope, focalizacionService, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
 
+    $scope.mostarMensaje = false;
+    $scope.ocultoLoader = false;
+    $scope.mensajeError = "";
+    $rootScope.usuario = {};
+    $rootScope.usuario.tipoDocumento = "";
+    $rootScope.usuario.documento = "";
+    $scope.maxLength = 10;
+    $scope.objConsulta = {};
+    $scope.errorLongitudDocumento = false;
+    var num = 0;
+    $scope._verificarCiudadano = function () {
+        _verificarCiudadano();
+    };
+    $scope.maxLengthDocumento = function () {
+        $rootScope.mostrarMensajesError = true;
+        $rootScope.usuario.documento = "";
+        $scope.mostarMensaje = false;
+        var tipoDocumento = $rootScope.usuario.tipoDocumento;
+        if (tipoDocumento == "1" || tipoDocumento == "2" || tipoDocumento == "5") {
+            $scope.maxLength = 10;
+        } else if (tipoDocumento == "3") {
+            $scope.maxLength = 6;
+        }
+    };
+    $scope.validarDocumento = function (form) {
+        $rootScope.mostrarMensajesError = true;
+        var tipoDocumento = $rootScope.usuario.tipoDocumento;
+        if (form.$valid && tipoDocumento != "") {
+            $scope.ocultoLoader = true;
+            $scope.mostarMensaje = false;
+            _verificarCiudadano();
+        } else {
+            $scope.mostarMensaje = true;
+        }
+    };
+    $scope.keydown = function () {
+        var str = "" + $rootScope.usuario.documento + "";
+        var tamaño = str.length + 1;
+        console.log(tamaño + " " + $scope.maxLength);
+
+        if (tamaño > $scope.maxLength) {
+            $rootScope.usuario.documento = parseInt(str.substr(0, $scope.maxLength - 1));
+            $scope.errorLongitudDocumento = true;
+        } else $scope.errorLongitudDocumento = false;
+    };
+
+    _init();
+    function _init() {
+        _getTokenDIS();
+    };
+    function _getTokenDIS() {
+        $scope.ocultarLoader = true;
+        var serAut = autenticacionService._getTokenDIS();
+        serAut.then(function (pl) {
+            $scope.ocultarLoader = false;
+            byaSite._setTokenDIS(pl.data.access_token);
+        }, function (pl) {
+            $scope.ocultarLoader = false;
+            showAlert("Error", "Ha sido imposible conectarse al servidor");
+        });
+    };
+    function _verificarCiudadano() {
+        $scope.ocultarLoader = true;
+        var serFoca = focalizacionService._focalizacion($rootScope.usuario.tipoDocumento, $rootScope.usuario.documento);
+        serFoca.then(function (pl) {
+            $scope.ocultarLoader = false;
+            byaSite._setVar("Focalizacion", pl.data);
+            $state.go("app.seleccionar_personas");
+        }, function (pl) {
+            $scope.ocultarLoader = false;
+            showAlert("Error", "Ha sido imposible conectarse al servidor");
+        });
+    };
+    function showAlert(title, data) {
+        var alertPopup = $ionicPopup.alert({
+            title: title,
+            template: data
+        });
+        alertPopup.then(function (res) {
+            console.log('');
+        });
+    };
 })
 .controller('SeleccionarPersonaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
+    $scope.focalizacion = [];
+    $scope.personas_programas = [];
 
+    _init();
+    function _init() {
+        _traerFocalizacion();
+    };
+    function _traerFocalizacion() {
+        $scope.focalizacion = byaSite._getVar("Focalizacion");
+        _procesarObjeto();
+    };
+    function _procesarObjeto() {
+        _primeraLista();
+        _segundoLista();
+        _terceraLista();
+        byaSite.alert($scope.personas_programas);
+    };
+    function _primeraLista() {
+        $.each($scope.focalizacion[0], function (index, item) {
+            var ban = false;
+            var indexEncontrado = 0;
+            var nombre1 = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
+            $.each($scope.personas_programas, function (index2, item2) {    
+                if (nombre1 == item2.Nombre) {
+                    ban = true;
+                    indexEncontrado = index2;
+                }
+            });
+            if (ban) {
+                var banP = false;
+                $.each($scope.personas_programas[indexEncontrado].lProgramas, function (index3, item3) {
+                    if (item3 == item.IdPrograma) banP = true;
+                });
+                if (!banP) $scope.personas_programas[indexEncontrado].lProgramas.push(item.IdPrograma);
+            }
+            else {
+                var persona = {};
+                persona.TipoIdentificacion = item.TipoDocumento;
+                persona.Documento = item.DocumentoIdentificacion;
+                persona.Nombre = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
+                persona.lProgramas = [];
+                persona.lProgramas.push(item.IdPrograma);
+                $scope.personas_programas.push(persona);
+            }
+        });
+    };
+    function _segundoLista() {
+        $.each($scope.focalizacion[1], function (index, item) {
+            var ban = false;
+            var indexEncontrado = 0;
+            var nombre1 = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
+            $.each($scope.personas_programas, function (index2, item2) {
+                if (nombre1 == item2.Nombre) {
+                    ban = true;
+                    indexEncontrado = index2;
+                }
+            });
+            if (ban) {
+                var banP = false;
+                $.each($scope.personas_programas[indexEncontrado].lProgramas, function (index3, item3) {
+                    if (item3 == item.IdPrograma) banP = true;
+                });
+                if (!banP) $scope.personas_programas[indexEncontrado].lProgramas.push(item.IdPrograma);
+            }
+            else {
+                var persona = {};
+                persona.TipoIdentificacion = item.TipoDocumento;
+                persona.Documento = item.DocumentoIdentificacion;
+                persona.Nombre = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
+                persona.lProgramas = [];
+                persona.lProgramas.push(item.IdPrograma);
+                $scope.personas_programas.push(persona);
+            }
+        });
+    };
+    function _terceraLista() {
+        $.each($scope.focalizacion[2], function (index, item) {
+            var ban = false;
+            var indexEncontrado = 0;
+            var nombre1 = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
+            $.each($scope.personas_programas, function (index2, item2) {
+                if (nombre1 == item2.Nombre) {
+                    ban = true;
+                    indexEncontrado = index2;
+                }
+            });
+            if (ban) {
+                var banP = false;
+                $.each($scope.personas_programas[indexEncontrado].lProgramas, function (index3, item3) {
+                    if (item3 == item.IdPrograma) banP = true;
+                });
+                if (!banP) $scope.personas_programas[indexEncontrado].lProgramas.push(item.IdPrograma);
+            }
+            else {
+                var persona = {};
+                persona.TipoIdentificacion = item.TipoDocumento;
+                persona.Documento = item.DocumentoIdentificacion;
+                persona.Nombre = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
+                persona.lProgramas = [];
+                persona.lProgramas.push(item.IdPrograma);
+                $scope.personas_programas.push(persona);
+            }
+        });
+    };
 })
 .controller('ProgramasPotencialCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
 

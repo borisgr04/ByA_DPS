@@ -105,3 +105,35 @@ app.service("atencionPeticionesService", function ($http) {
         return req;
     };
 });
+app.service("focalizacionService", function ($http) {
+    this._focalizacion = function (tip_ide, ide) {
+        tip_ide = tip_ide != null ? tip_ide : "";
+        ide = tip_ide != null ? ide : "";
+
+        var pet = {
+            method: 'GET',
+            url: 'http://186.170.31.187/DPS/MasFamiliasAccion/InfraestructuraFocalizacionREST/api/values?pTipoIdentificacion=' + tip_ide + '&pTipoPrograma=0&pNumeroIdentificacion=' + ide,
+            headers: {
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ' + byaSite._getTokenDIS(),
+                'Content-Type': 'application/json'
+            }
+        }
+        var req = $http(pet);
+        return req;
+    };
+});
+app.service("mensajesService", function ($http) {
+    this._mensjes = function () {
+        var pet = {
+            method: 'GET',
+            url: 'http://186.170.31.187/DPS/DireccionIngresoSocial/InfraestructuraTitulos/ObtenerMensajesAdministrados?pCodMensaje=N',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }
+        var req = $http(pet);
+        return req;
+    };
+});

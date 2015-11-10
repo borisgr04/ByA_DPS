@@ -37,12 +37,18 @@ angular.module('starter.controllers', [])
     $scope.mensajeError = "";
     $scope.usuario = {};
     $scope.usuario.tipoDocumento = "";
-    $scope.usuario.documento = "";    
+    $scope.usuario.documento = ""; 
+    $scope.maxLength = 10;   
     $scope.objConsulta = {};
+    $scope.errorLongitudDocumento = false;
+    
     $scope._verificarCiudadano = function(){
         _verificarCiudadano();
     };    
+    
     $scope.maxLengthDocumento = function () {
+        $scope.mostrarMensajesError = true;
+        $scope.usuario.documento = "";
         $scope.mostarMensaje = false;
         var tipoDocumento = $scope.usuario.tipoDocumento;
         if (tipoDocumento == "TI" || tipoDocumento == "CC") {
@@ -50,7 +56,8 @@ angular.module('starter.controllers', [])
         } else if (tipoDocumento == "CE") {
             $scope.maxLength = 6;
         }
-    };    
+    };  
+      
     $scope.validarDocumento = function (form) {
         $rootScope.mostrarMensajesError = true;
         var tipoDocumento = $scope.usuario.tipoDocumento;
@@ -63,6 +70,19 @@ angular.module('starter.controllers', [])
         }
     };
     
+    var num = 0;
+    
+    $scope.keydown = function() {
+        var str = "" + $scope.usuario.documento + "";        
+        var tamaño = str.length+1;        
+        console.log(tamaño+" "+$scope.maxLength);       
+        
+        if(tamaño > $scope.maxLength){    
+            $scope.usuario.documento = parseInt(str.substr(0,$scope.maxLength-1)); 
+            $scope.errorLongitudDocumento = true;           
+        }else $scope.errorLongitudDocumento = false;
+    };
+
     _init();
     function _init() {        
         _getToken();   

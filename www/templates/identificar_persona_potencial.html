@@ -1,36 +1,37 @@
 <ion-view view-title='<img class="logoEncabezado" src="img/logo2.png"/> A qué soy Potencial?'>
-        <ion-content>        
-            <div class="card text-center">
-                <div class="item item-text-wrap" style="text-align:justify">
-                    <p style="color:#F29400;">Señor Usuario: Por favor seleccione el tipo de documento y digite el número de identificación para CONSULTAR.</p>
+    <ion-content>        
+	    <div class="card text-center">
+	        <div class="item item-text-wrap" style="text-align:justify">
+	  	        <p style="color:#F29400;">Señor Usuario: por favor complete los datos que correspondan a su información personal y haga clic en Consultar.</p>
+	        </div>
+	    </div>
+      <div class="list"> 
+          <form name="frmInscrito">
+              <span class="input-label" style="width:100%">Tipo de Documento</span>
+              <label class="item item-select">
+                <select ng-model="usuario.tipoDocumento" name="tipoDocumento" ng-change="maxLengthDocumento()">                    
+                    <option value="">Seleccione</option>     
+                    <option value="5">Registro Civil</option>               
+                    <option value="2">Tarjeta de Identidad</option>
+                    <option value="1">Cédula de Ciudadanía</option>
+                    <option value="3">Cédula de Extranjería</option>                    
+                </select>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Número de Documento</span>
+                    <input type="number" placeholder="" ng-model="usuario.documento" name="numeroDocumento" required ng-keypress="keydown(usuario.documento)">
+                </label>
+                <div role="alert" ng-show="mostrarMensajesError">
+                    <span class="assertive" ng-show="!frmInscrito.numeroDocumento.$pristine && frmInscrito.numeroDocumento.$error.required">Debe completar el número de documento</span>
+                    <span class="assertive" ng-show="!frmInscrito.numeroDocumento.$pristin && frmInscrito.numeroDocumento.$error.number">No se admiten caracteres especiales</span>
+                    <span class="assertive" ng-show="errorLongitudDocumento">La longitud máxima del número de documento es {{maxLength}}</span>
+                    <span class="assertive" ng-show="mostarMensaje">Debe completar el tipo de identificación</span>                
                 </div>
-            </div>
-            <div class="list"> 
-                <form name="frmInscrito">
-                    <span class="input-label" style="width:100%">Tipo de Documento</span>
-                    <label class="item item-select">
-                        <select ng-model="usuario.tipoDocumento" name="tipoDocumento" ng-change="maxLengthDocumento()">
-                            <option value="">Seleccione</option>
-                            <option value="TI">Tarjeta de Identidad</option>
-                            <option value="CC">Cédula de Ciudadanía</option>
-                            <option value="CE">Cédula de Extranjería</option>
-                        </select>
-                        </label>
-                        <label class="item item-input item-stacked-label">
-                            <span class="input-label">Número de Documento</span>
-                            <input type="number" placeholder="" ng-model="usuario.documento" name="numeroDocumento" ng-maxlength="{{maxLength}}" required>
-                        </label>
-                        <div role="alert" ng-show="mostrarMensajesError">
-                            <span class="assertive" ng-show="!frmInscrito.numeroDocumento.$pristine && frmInscrito.numeroDocumento.$error.required">Debe completar el número de documento</span>
-                            <span class="assertive" ng-show="!frmInscrito.numeroDocumento.$pristin && frmInscrito.numeroDocumento.$error.number">No se admiten caracteres especiales</span>
-                            <span class="assertive" ng-show="!frmInscrito.numeroDocumento.$pristin && frmInscrito.numeroDocumento.$error.maxlength">la longitud máxima del número de documento es {{maxLength}}</span>
-                            <span class="assertive" ng-show="mostarMensaje">Debe completar el tipo de identificación</span>                
-                        </div>
-                        <button class="button button-block button-positive" ng-click="validarDocumento(frmInscrito);frmInscrito.$setPristine()">Consultar</button>
-                </form>
-                <br>
-                <ion-spinner class="spinner" ng-show="ocultoLoader"></ion-spinner>
-            </div>
-         </ion-content>
+                <button class="button button-block button-positive" ng-click="validarDocumento(frmInscrito);frmInscrito.$setPristine()">Consultar</button>
+          </form>
+        <br>
+        <ion-spinner class="spinner" ng-show="ocultarLoader"></ion-spinner>
+    </div>
+    </ion-content>
 </ion-view>	
 

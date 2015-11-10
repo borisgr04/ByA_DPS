@@ -1,9 +1,11 @@
 angular.module('starter.controllers', [])
-.controller('MenuCtrl',function($scope,$state,$ionicHistory){
+.controller('MenuCtrl', function ($scope, $state, $ionicHistory, $window) {
     $scope.back = function () {
         if ($ionicHistory.currentStateName() == "app.programas_inscritos") $ionicHistory.goBack(-2);
         else $ionicHistory.goBack();
-    };         
+    };
+    $scope.limpiar = function () {
+    };
 })
 .controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacionService) {   
   _init();
@@ -295,6 +297,7 @@ angular.module('starter.controllers', [])
 .controller('ProgramasInscritosCtrl', function ($scope, $ionicPopup, $ionicModal, $timeout, autenticacionService, utilidadMaestraService, atencionPeticionesService, $state) {
     $scope.lProgramasInscritos = [];
     $scope.persona = {};
+    $scope.HV_MFA = {};
     $scope._irDetallesPrograma = function (programa) {
         _irDetallesPrograma(programa);
     };    
@@ -303,6 +306,7 @@ angular.module('starter.controllers', [])
 
     _init();
     function _init() {
+        _getTokenDIS();
         _getTokenUM();
     };
     function _getTokenUM() {
@@ -356,6 +360,30 @@ angular.module('starter.controllers', [])
     function _irDetallesPrograma(programa) {
         byaSite._setVar("CodigoBeneficiario", programa.codigoBeneficiarioField);
         if(programa.programaField.idProgramaField == 1) $state.go('app.menu-familias-en-accion');
+    };
+    function _getTokenDIS() {
+        $scope.ocultoLoader = true;
+        var serAut = autenticacionService._getTokenDIS();
+        serAut.then(function (pl) {
+            $scope.ocultoLoader = false;
+            byaSite._setTokenDIS(pl.data.access_token);
+            _hojaVidaMasFamiliasEnAccion();
+        }, function (pl) {
+            $scope.ocultoLoader = false;
+            showAlert("Error", "Ha sido imposible conectarse al servidor");
+        });
+    };
+    function _hojaVidaMasFamiliasEnAccion() {
+        $scope.ocultoLoader = true;
+        var serHVM = atencionPeticionesService._hojaVidaMFA(byaSite._getVar("CodigoBeneficiario"));
+        serHVM.then(function (pl) {
+            $scope.ocultoLoader = false;
+            $scope.HV_MFA = pl.data;
+        }, function (pl) {
+            $scope.ocultoLoader = false;
+            showAlert("Error", "Ha sido imposible conectarse al servidor");
+            true;
+        });
     };
 })
 .controller('LiquidacionYPagoCtrl', function ($scope) {

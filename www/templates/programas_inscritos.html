@@ -3,6 +3,7 @@
         <div class="item item-avatar">
             <img ng-src="img/profile.png">
             <h2 style="margin-top:10px;">{{persona.tip_ide}} {{persona.ide}}</h2>
+            <p>{{HV_MFA.Persona.primerNombreField}} {{HV_MFA.Persona.segundoNombreField}} {{HV_MFA.Persona.primerApellidoField}} {{HV_MFA.Persona.segundoApellidoField}}</p>
         </div> 
         <br>
         <div class="item item-avatar borde-item item-programa" ng-repeat="programa in lProgramasInscritos.Programas" ng-show="programa.programaField.idProgramaField == 1 || programa.programaField.idProgramaField == 3">

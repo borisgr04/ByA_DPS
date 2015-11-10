@@ -1,5 +1,5 @@
-<ion-side-menus enable-menu-with-back-views="false">
-  <ion-side-menu-content ng-controller="MenuCtrl">
+<ion-side-menus enable-menu-with-back-views="false" ng-controller="MenuCtrl">
+  <ion-side-menu-content>
     <ion-nav-bar align-title="left" class="bar-positive" ng-style="estilos">
       <ion-nav-back-button ng-click="back()">
       </ion-nav-back-button>
@@ -15,15 +15,15 @@
     <ion-content>
     <img src="img/img-menu.jpg" width="100%" />
       <div class="list">
-      <a menu-close class="item item-icon-left" href="#/app/home">
+      <a menu-close class="item item-icon-left" href="#/app/home" ng-click="limpiar()">
         <i class="icon ion-home"></i>
         Inicio
       </a>
-      <a menu-close class="item item-icon-left" href="#/app/identificar_persona_potencial">
+      <a menu-close class="item item-icon-left" href="#/app/identificar_persona_potencial" ng-click="limpiar()">
         <i class="icon ion-person"></i>
         A qué soy Potencial?
       </a>
-      <a menu-close class="item item-icon-left" href="#/app/identificar_persona">
+      <a menu-close class="item item-icon-left" href="#/app/identificar_persona" ng-click="limpiar()">
         <i class="icon ion-clipboard"></i>
         En qué estoy Inscrito?
       </a>       

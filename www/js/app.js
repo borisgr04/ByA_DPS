@@ -2,6 +2,8 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
 .run(function ($ionicPlatform, $ionicPopup, $state, $ionicHistory, $rootScope) {
 
     $rootScope.usuario = {};
+    $rootScope.usuario.tipoDocumento = "";
+    $rootScope.usuario.documento = "";
 
     $rootScope.lPreguntas = {};
     $rootScope.ids_preguntas = [];

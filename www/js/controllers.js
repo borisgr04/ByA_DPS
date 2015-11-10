@@ -1,10 +1,14 @@
 angular.module('starter.controllers', [])
-.controller('MenuCtrl', function ($scope, $state, $ionicHistory, $window) {
+.controller('MenuCtrl', function ($scope, $state, $ionicHistory, $window, $rootScope) {
     $scope.back = function () {
         if ($ionicHistory.currentStateName() == "app.programas_inscritos") $ionicHistory.goBack(-2);
         else $ionicHistory.goBack();
     };
     $scope.limpiar = function () {
+        $rootScope.mostrarMensajesError = false;
+        $rootScope.usuario = {};
+        $rootScope.usuario.tipoDocumento = "";
+        $rootScope.usuario.documento = "";
     };
 })
 .controller('HomeCtrl', function($scope, $ionicModal, $timeout, autenticacionService) {   
@@ -35,9 +39,11 @@ angular.module('starter.controllers', [])
     $scope.mostarMensaje = false;
     $scope.ocultoLoader = false;
     $scope.mensajeError = "";
-    $scope.usuario = {};
-    $scope.usuario.tipoDocumento = "";
-    $scope.usuario.documento = ""; 
+
+    $rootScope.usuario = {};
+    $rootScope.usuario.tipoDocumento = "";
+    $rootScope.usuario.documento = "";
+
     $scope.maxLength = 10;   
     $scope.objConsulta = {};
     $scope.errorLongitudDocumento = false;
@@ -48,9 +54,9 @@ angular.module('starter.controllers', [])
     
     $scope.maxLengthDocumento = function () {
         $rootScope.mostrarMensajesError = true;
-        $scope.usuario.documento = "";
+        $rootScope.usuario.documento = "";
         $scope.mostarMensaje = false;
-        var tipoDocumento = $scope.usuario.tipoDocumento;
+        var tipoDocumento = $rootScope.usuario.tipoDocumento;
         if (tipoDocumento == "TI" || tipoDocumento == "CC") {
             $scope.maxLength = 10;
         } else if (tipoDocumento == "CE") {
@@ -60,7 +66,7 @@ angular.module('starter.controllers', [])
       
     $scope.validarDocumento = function (form) {
         $rootScope.mostrarMensajesError = true;
-        var tipoDocumento = $scope.usuario.tipoDocumento;
+        var tipoDocumento = $rootScope.usuario.tipoDocumento;
         if (form.$valid && tipoDocumento != "") {
             $scope.ocultoLoader = true;
             $scope.mostarMensaje = false;
@@ -73,12 +79,12 @@ angular.module('starter.controllers', [])
     var num = 0;
     
     $scope.keydown = function() {
-        var str = "" + $scope.usuario.documento + "";        
+        var str = "" + $rootScope.usuario.documento + "";        
         var tamaño = str.length+1;        
         console.log(tamaño+" "+$scope.maxLength);       
         
         if(tamaño > $scope.maxLength){    
-            $scope.usuario.documento = parseInt(str.substr(0,$scope.maxLength-1)); 
+            $rootScope.usuario.documento = parseInt(str.substr(0,$scope.maxLength-1)); 
             $scope.errorLongitudDocumento = true;           
         }else $scope.errorLongitudDocumento = false;
     };
@@ -101,21 +107,21 @@ angular.module('starter.controllers', [])
         }
     };    
     function _verificarCiudadano(){           
-        var serVer = verificacionCiudadanoService._obtenerCuestionario($scope.usuario.tipoDocumento, $scope.usuario.documento);
+        var serVer = verificacionCiudadanoService._obtenerCuestionario($rootScope.usuario.tipoDocumento, $rootScope.usuario.documento);
         serVer.then(function (pl) {
             byaSite._setVar("lPreguntas",pl.data);
             $scope.ocultoLoader = false;
             var FechaHoy = new Date();
             var FH = FechaHoy.getFullYear() + "-" + FechaHoy.getMonth() + "-" + FechaHoy.getDate();
-            var FV = byaSite._getVar($scope.usuario.documento + "-fecha_verificacion");
-            var IV = byaSite._getVar($scope.usuario.documento + "-intentos_verificacion");
+            var FV = byaSite._getVar($rootScope.usuario.documento + "-fecha_verificacion");
+            var IV = byaSite._getVar($rootScope.usuario.documento + "-intentos_verificacion");
 
             if ((FV == FH) && (IV == 2)) showAlert("Atención", "Usted ya ha realizado el máximo de intentos permitidos, por favor intente nuevamente mañana");
             else {
-                var per = { tip_ide: $scope.usuario.tipoDocumento, ide: $scope.usuario.documento };
+                var per = { tip_ide: $rootScope.usuario.tipoDocumento, ide: $rootScope.usuario.documento };
                 byaSite._setVar("PersonaActual", per);
-                $scope.usuario.tipoDocumento = "";
-                $scope.usuario.documento = "";
+                $rootScope.usuario.tipoDocumento = "";
+                $rootScope.usuario.documento = "";
                 $rootScope.mostrarMensajesError = false;
                 $state.go("app.pregunta_validacion");
             }
@@ -616,7 +622,7 @@ angular.module('starter.controllers', [])
         $scope.listaNovedades = novedades.Novedades;
     }
 })
-.controller('IdentificarPersonaPotencialCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
+.controller('IdentificarPersonaPotencialCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
 
 })
 .controller('SeleccionarPersonaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {

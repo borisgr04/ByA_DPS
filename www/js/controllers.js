@@ -42,12 +42,12 @@ angular.module('starter.controllers', [])
     $scope.objConsulta = {};
     $scope.errorLongitudDocumento = false;
     
-    $scope._verificarCiudadano = function(){
+    $scope._verificarCiudadano = function () {
         _verificarCiudadano();
     };    
     
     $scope.maxLengthDocumento = function () {
-        $scope.mostrarMensajesError = true;
+        $rootScope.mostrarMensajesError = true;
         $scope.usuario.documento = "";
         $scope.mostarMensaje = false;
         var tipoDocumento = $scope.usuario.tipoDocumento;

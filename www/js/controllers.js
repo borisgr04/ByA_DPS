@@ -643,7 +643,6 @@ angular.module('starter.controllers', [])
     }
 })
 .controller('IdentificarPersonaPotencialCtrl', function ($scope, $rootScope, focalizacionService, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
-
     $scope.mostarMensaje = false;
     $scope.ocultoLoader = false;
     $scope.mensajeError = "";
@@ -711,12 +710,22 @@ angular.module('starter.controllers', [])
         serFoca.then(function (pl) {
             $scope.ocultarLoader = false;
             byaSite._setVar("Focalizacion", pl.data);
-            $state.go("app.seleccionar_personas");
+            $rootScope.usuario = {};
+            $rootScope.usuario.tipoDocumento = "";
+            $rootScope.usuario.documento = "";
+            _siIrPersonas(pl.data);
         }, function (pl) {
             $scope.ocultarLoader = false;
             showAlert("Error", "Ha sido imposible conectarse al servidor");
         });
     };
+    function _siIrPersonas(obj) {
+        if ((obj[0].length > 0) || (obj[1].length > 0) || (obj[2].length > 0)) {
+            $state.go("app.seleccionar_personas");
+        } else {
+            showAlert("Atención", "Lo sentimos, no es potencial para ningún programa");
+        }
+    }
     function showAlert(title, data) {
         var alertPopup = $ionicPopup.alert({
             title: title,
@@ -727,9 +736,24 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('SeleccionarPersonaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
+.controller('SeleccionarPersonaCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state, $ionicHistory) {
     $scope.focalizacion = [];
     $scope.personas_programas = [];
+    $scope.ValidarPreguntaSeleccionada = function (persona) {
+        $.each($scope.personas_programas, function (index, item) {
+            if ((item.TipoIdentificacion == persona.TipoIdentificacion) && (item.Documento == persona.Documento) && (item.Nombre == persona.Nombre)) {
+                item.check = true;
+            } else item.check = false;
+        });
+    };
+    $scope._seleccionarPersona = function () {
+        _seleccionarPersona();
+    };
+    $rootScope._inicializarSeleccionPersonas = function () {
+        $scope.focalizacion = [];
+        $scope.personas_programas = [];
+        _init();
+    };
 
     _init();
     function _init() {
@@ -737,13 +761,21 @@ angular.module('starter.controllers', [])
     };
     function _traerFocalizacion() {
         $scope.focalizacion = byaSite._getVar("Focalizacion");
+        if ($scope.focalizacion == null) {
+            $ionicHistory.goBack()
+        }
+
         _procesarObjeto();
+
+        if (($scope.personas_programas.length == 0) || ($scope.personas_programas == null)) {
+            $ionicHistory.goBack()
+        }
+
     };
     function _procesarObjeto() {
         _primeraLista();
         _segundoLista();
         _terceraLista();
-        byaSite.alert($scope.personas_programas);
     };
     function _primeraLista() {
         $.each($scope.focalizacion[0], function (index, item) {
@@ -751,7 +783,7 @@ angular.module('starter.controllers', [])
             var indexEncontrado = 0;
             var nombre1 = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
             $.each($scope.personas_programas, function (index2, item2) {    
-                if (nombre1 == item2.Nombre) {
+                if ((nombre1 == item2.Nombre) && (item.TipoDocumento == item2.tipIde) && (item.DocumentoIdentificacion == item2.Documento)) {
                     ban = true;
                     indexEncontrado = index2;
                 }
@@ -765,9 +797,11 @@ angular.module('starter.controllers', [])
             }
             else {
                 var persona = {};
-                persona.TipoIdentificacion = item.TipoDocumento;
+                persona.tipIde = item.TipoDocumento;
+                persona.TipoIdentificacion = "C.C.";
                 persona.Documento = item.DocumentoIdentificacion;
                 persona.Nombre = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
+                persona.check = false;
                 persona.lProgramas = [];
                 persona.lProgramas.push(item.IdPrograma);
                 $scope.personas_programas.push(persona);
@@ -780,7 +814,7 @@ angular.module('starter.controllers', [])
             var indexEncontrado = 0;
             var nombre1 = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
             $.each($scope.personas_programas, function (index2, item2) {
-                if (nombre1 == item2.Nombre) {
+                if ((nombre1 == item2.Nombre) && (item.TipoDocumento == item2.tipIde) && (item.DocumentoIdentificacion == item2.Documento)) {
                     ban = true;
                     indexEncontrado = index2;
                 }
@@ -794,7 +828,7 @@ angular.module('starter.controllers', [])
             }
             else {
                 var persona = {};
-                persona.TipoIdentificacion = item.TipoDocumento;
+                persona.TipoIdentificacion = "C.C.";
                 persona.Documento = item.DocumentoIdentificacion;
                 persona.Nombre = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
                 persona.lProgramas = [];
@@ -809,7 +843,7 @@ angular.module('starter.controllers', [])
             var indexEncontrado = 0;
             var nombre1 = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
             $.each($scope.personas_programas, function (index2, item2) {
-                if (nombre1 == item2.Nombre) {
+                if ((nombre1 == item2.Nombre) && (item.TipoDocumento == item2.tipIde) && (item.DocumentoIdentificacion == item2.Documento)) {
                     ban = true;
                     indexEncontrado = index2;
                 }
@@ -823,7 +857,7 @@ angular.module('starter.controllers', [])
             }
             else {
                 var persona = {};
-                persona.TipoIdentificacion = item.TipoDocumento;
+                persona.TipoIdentificacion = "C.C.";
                 persona.Documento = item.DocumentoIdentificacion;
                 persona.Nombre = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
                 persona.lProgramas = [];
@@ -832,11 +866,115 @@ angular.module('starter.controllers', [])
             }
         });
     };
+    function _seleccionarPersona() {
+        var ban = false;
+        var personaSeleccionada = {};
+        $.each($scope.personas_programas, function (index, item) {   
+            if (item.check) {
+                ban = true;
+                personaSeleccionada = item;
+            }
+        });
+        if (ban) {
+            byaSite._setVar("persona_seleccionada_potencial", personaSeleccionada);
+            $state.go("app.programas_potencial");
+        } else {
+            showAlert("Atención","Debe seleccionar una de las opciones");
+        }
+    };
+    function showAlert(title, data) {
+        var alertPopup = $ionicPopup.alert({
+            title: title,
+            template: data
+        });
+        alertPopup.then(function (res) {
+            console.log('');
+        });
+    };
 })
 .controller('ProgramasPotencialCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
+    $scope.persona = {};
+    $scope.lProgramas = [];
+    $scope._elegirPrograma = function (programa) {
+        byaSite._setVar("id_programa_potencial_elegio", programa.Id);
+        $state.go("app.informacion_programa");
+    };
 
+    _init();
+    function _init() {
+        _Programas();
+    };
+    function _Programas() {
+        $scope.persona = byaSite._getVar("persona_seleccionada_potencial");
+        $.each($scope.persona.lProgramas,function(index,item){
+            var e = {};            
+            if (item == 1) {
+                e.NombrePrograma = "Más Familias en Acción";
+                e.TextoPrograma = "MFA";
+                e.Id = 1;
+                e.Img = "img/familias-en-accion.png";
+            }
+            if (item == 2) {
+                e.NombrePrograma = "Jovenes en Acción";
+                e.TextoPrograma = "JEA";
+                e.Id = 2;
+                e.Img = "img/jovenes-en-accion.png";
+            }
+            if (item == 3) {
+                e.NombrePrograma = "Programa Ingreso Prosperidad Social";
+                e.TextoPrograma = "IPS";
+                e.Id = 3;
+                e.Img = "img/logo_default.png";
+            }
+            if (item == 4) {
+                e.NombrePrograma = "Cien mil Viviendas Gratis";
+                e.TextoPrograma = "CVG";
+                e.Id = 4;
+                e.Img = "img/logo_default.png";
+            }
+            $scope.lProgramas.push(e);
+        });
+    };
 })
 .controller('InformacionProgramaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
-
+    $scope.id_programa = {};
+    $scope.programa = {};
+    _init();
+    function _init() {
+        _programa();
+    };
+    function _programa() {
+        $scope.id_programa = byaSite._getVar("id_programa_potencial_elegio");
+        if ($scope.id_programa == 1) {
+            $scope.programa.Img = "img/mas_familias_accion.jpg";
+            $scope.programa.Nombre = "Programa Más Familias en Acción";
+            $scope.programa.Texto = _buscarMensaje(8);
+        }
+        if ($scope.id_programa == 2) {
+            $scope.programa.Img = "img/jovenes_en_accion.jpg";
+            $scope.programa.Nombre = "Programa Jovenes en Acción";
+            $scope.programa.Texto = _buscarMensaje(9);
+        }
+        if ($scope.id_programa == 3) {
+            $scope.programa.Img = "img/logo.png";
+            $scope.programa.Nombre = "Programa Ingreso Prosperidad Social";
+            $scope.programa.Texto = "Contacte a su gestor para averiguar cuando puede inscribirse";
+        }
+        if ($scope.id_programa == 4) {
+            $scope.programa.Img = "img/logo.png";
+            $scope.programa.Nombre = "Programa Cien mil Viviendas Gratis";
+            $scope.programa.Texto = _buscarMensaje(1);
+        }
+    };
+    function _buscarMensaje(cod) {
+        var objMensajes = byaSite._getVar("obj_mensajes");
+        var mens = "";
+        $.each(objMensajes, function (index, item) {
+            if (item.CodMensaje == cod) {
+                mens = item.Mensaje;
+            }
+        });
+        return mens;
+    };
 })
 ;

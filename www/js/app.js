@@ -50,7 +50,19 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
             $rootScope._initPreguntas();
         }
         catch (err) {
-        }        
+        }
+        $rootScope.usuario = {};
+        $rootScope.usuario.tipoDocumento = "";
+        $rootScope.usuario.documento = "";
+
+        localStorage.removeItem("Focalizacion");
+      
+
+        try {
+            $rootScope._inicializarSeleccionPersonas();
+        }
+        catch (err) {
+        }       
         $state.go("app.home");
     });
 })

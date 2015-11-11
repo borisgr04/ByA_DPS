@@ -5,17 +5,13 @@
                 <p style="color:#F29400;">Señor Usuario: Seleccione los datos que corresponden a su información personal y haga clic en CONSULTAR.</p>
 	        </div>
         </div>
-        <div class="list">                        
-            <ion-checkbox>
-                <p>R.C. 107397846</p>
-                <p style="color:#C0C0C0;">ANGELICA MARIA POLO ISIDRO</p>
-            </ion-checkbox>
-            <ion-checkbox>
-                <p>R.C. 107397846</p>
-                <p style="color:#C0C0C0;">EMIRA ESTHER HOYOS PASTRANA</p>
+        <div class="list">               
+            <ion-checkbox ng-repeat="persona in personas_programas" ng-model="persona.check" ng-click="ValidarPreguntaSeleccionada(persona)">
+                <p>{{persona.TipoIdentificacion}} {{persona.Documento}}</p>
+                <p style="color:#C0C0C0;">{{persona.Nombre}}</p>
             </ion-checkbox>
             <div class="text-center" style="margin-top:20px;">
-                <a class="button button-block button-positive" href="#/app/programas_potencial">
+                <a class="button button-block button-positive" ng-click="_seleccionarPersona()">
                     <p class="text-button-large">Continuar</p> 
                 </a>
             </div>

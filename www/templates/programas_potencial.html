@@ -2,19 +2,15 @@
     <ion-content>
         <div class="item item-avatar">
             <img ng-src="img/profile.png">
-            <p>R.C. 107397846</p>
-            <p style="color:#C0C0C0;">ANGELICA MARIA POLO ISIDRO</p>
+            <p>{{persona.TipoIdentificacion}} {{persona.Documento}}</p>
+            <p style="color:#C0C0C0;">{{persona.Nombre}}</p>
         </div> 
         <br>
-        <div class="item item-avatar borde-item item-programa">
-            <img ng-src="img/jovenes-en-accion.png">            
-            <h2>Jovenes en Acción</h2>
-            <a class="button button-clear button-small link" style="color:#F29400;" href="#/app/informacion_programa">VER DETALLE</a>
-         </div>
-        <div class="item item-avatar borde-item item-programa">
-            <img ng-src="img/familias-en-accion.png">            
-            <h2>Mas Familias en Acción</h2>
-            <a class="button button-clear button-small link" style="color:#F29400;" href="#/app/informacion_programa">VER DETALLE</a>
+        <div class="item item-avatar borde-item item-programa" ng-repeat="programa in lProgramas">
+            <img ng-src="{{programa.Img}}">            
+            <h2>{{programa.NombrePrograma}}</h2>
+            <p>{{programa.TextoPrograma}}</p>
+            <a class="button button-clear button-small link" style="color:#F29400;" ng-click="_elegirPrograma(programa)">VER DETALLE</a>
          </div>
         <h5 class="assertive text-center" ng-show="ocultoMensaje">No se encuentra inscrito en nuestros programa</h5>
         <ion-spinner class="spinner" ng-show="ocultoLoader"></ion-spinner>

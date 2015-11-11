@@ -52,19 +52,19 @@ angular.module('starter.controllers', [])
   };
 })
 .controller('IdentificarPersonaCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
-    $scope.$on('$ionicView.enter', function() {
+    $scope.$on('$ionicView.enter', function () {
         $scope.mensajeError = "";
         $rootScope.usuario = {};
         $rootScope.usuario.tipoDocumento = "";
         $rootScope.usuario.documento = "";
-        $scope.maxLength = 10;   
+        $scope.maxLength = 10;
         $scope.objConsulta = {};
         $scope.errorLongitudDocumento = false;
         $scope.mostarMensaje = false;
         $scope.ocultoLoader = false;
         $rootScope.mostrarMensajesError = false;
-    })
-   
+        _init();
+    });   
     $scope._verificarCiudadano = function () {
         _verificarCiudadano();
     };      
@@ -89,8 +89,7 @@ angular.module('starter.controllers', [])
         }else{
             $scope.mostarMensaje = true;
         }
-    };  
-    
+    };      
     $scope.keydown = function() {
         var str = "" + $rootScope.usuario.documento + "";        
         var tamaño = str.length+1;              
@@ -153,6 +152,15 @@ angular.module('starter.controllers', [])
     };  
 })
 .controller('PreguntasPersonasCtrl', function ($scope, $rootScope, $window, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $state) {
+    $scope.$on('$ionicView.enter', function () {
+        $rootScope.lPreguntas = {};
+        $rootScope.ids_preguntas = [];
+        $rootScope.index_preguntas = 0;
+        $rootScope.pregunta_actual = {};
+        $rootScope.obj_respuestas = {};
+        $scope.ocultarLoader = false;
+        _init();
+    });
     $rootScope.lPreguntas = {};
     $rootScope.ids_preguntas = [];
     $rootScope.index_preguntas = 0;
@@ -166,14 +174,6 @@ angular.module('starter.controllers', [])
         $.each($rootScope.pregunta_actual.respuestas, function (index, item) {
             if (item.nombre != respuesta.nombre) item.value = false;
         });
-    };
-    $rootScope._initPreguntas = function () {
-        $rootScope.lPreguntas = {};
-        $rootScope.ids_preguntas = [];
-        $rootScope.index_preguntas = 0;
-        $rootScope.pregunta_actual = {};
-        $rootScope.obj_respuestas = {};
-        _init();
     };
      
     _init();
@@ -645,7 +645,7 @@ angular.module('starter.controllers', [])
     }
 })
 .controller('IdentificarPersonaPotencialCtrl', function ($scope, $rootScope, focalizacionService, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
-    $scope.$on('$ionicView.enter', function() {
+    $scope.$on('$ionicView.enter', function () {
         $scope.mensajeError = "";
         $rootScope.usuario = {};
         $rootScope.usuario.tipoDocumento = "";
@@ -656,7 +656,8 @@ angular.module('starter.controllers', [])
         $scope.mostarMensaje = false;
         $scope.ocultoLoader = false;
         $rootScope.mostrarMensajesError = false;
-    })
+        _init();
+    });
     
     $scope._verificarCiudadano = function () {
         _verificarCiudadano();
@@ -742,6 +743,12 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('SeleccionarPersonaCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state, $ionicHistory) {
+    $scope.$on('$ionicView.enter', function () {
+        $scope.focalizacion = [];
+        $scope.personas_programas = [];
+        _init();
+    });
+
     $scope.focalizacion = [];
     $scope.personas_programas = [];
     $scope.ValidarPreguntaSeleccionada = function (persona) {
@@ -753,11 +760,6 @@ angular.module('starter.controllers', [])
     };
     $scope._seleccionarPersona = function () {
         _seleccionarPersona();
-    };
-    $rootScope._inicializarSeleccionPersonas = function () {
-        $scope.focalizacion = [];
-        $scope.personas_programas = [];
-        _init();
     };
 
     _init();
@@ -781,7 +783,6 @@ angular.module('starter.controllers', [])
         _primeraLista();
         _segundoLista();
         _terceraLista();
-        alert(JSON.stringify($scope.personas_programas));
     };
     function _primeraLista() {
         $.each($scope.focalizacion[0], function (index, item) {

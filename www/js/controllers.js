@@ -741,7 +741,7 @@ angular.module('starter.controllers', [])
     $scope.personas_programas = [];
     $scope.ValidarPreguntaSeleccionada = function (persona) {
         $.each($scope.personas_programas, function (index, item) {
-            if ((item.TipoIdentificacion == persona.TipoIdentificacion) && (item.Documento == persona.Documento) && (item.Nombre == persona.Nombre)) {
+            if ((item.tipIde == persona.tipIde) && (item.Documento == persona.Documento) && (item.Nombre == persona.Nombre)) {
                 item.check = true;
             } else item.check = false;
         });
@@ -776,6 +776,7 @@ angular.module('starter.controllers', [])
         _primeraLista();
         _segundoLista();
         _terceraLista();
+        alert(JSON.stringify($scope.personas_programas));
     };
     function _primeraLista() {
         $.each($scope.focalizacion[0], function (index, item) {
@@ -828,9 +829,11 @@ angular.module('starter.controllers', [])
             }
             else {
                 var persona = {};
+                persona.tipIde = item.TipoDocumento;
                 persona.TipoIdentificacion = "C.C.";
                 persona.Documento = item.DocumentoIdentificacion;
                 persona.Nombre = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
+                persona.check = false;
                 persona.lProgramas = [];
                 persona.lProgramas.push(item.IdPrograma);
                 $scope.personas_programas.push(persona);
@@ -857,9 +860,11 @@ angular.module('starter.controllers', [])
             }
             else {
                 var persona = {};
+                persona.tipIde = item.TipoDocumento;
                 persona.TipoIdentificacion = "C.C.";
                 persona.Documento = item.DocumentoIdentificacion;
                 persona.Nombre = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
+                persona.check = false;
                 persona.lProgramas = [];
                 persona.lProgramas.push(item.IdPrograma);
                 $scope.personas_programas.push(persona);

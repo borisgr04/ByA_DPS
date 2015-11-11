@@ -52,17 +52,19 @@ angular.module('starter.controllers', [])
   };
 })
 .controller('IdentificarPersonaCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
-    
-    $scope.mostarMensaje = false;
-    $scope.ocultoLoader = false;
-    $scope.mensajeError = "";
-    $rootScope.usuario = {};
-    $rootScope.usuario.tipoDocumento = "";
-    $rootScope.usuario.documento = "";
-    $scope.maxLength = 10;   
-    $scope.objConsulta = {};
-    $scope.errorLongitudDocumento = false;
-    var num = 0;
+    $scope.$on('$ionicView.enter', function() {
+        $scope.mensajeError = "";
+        $rootScope.usuario = {};
+        $rootScope.usuario.tipoDocumento = "";
+        $rootScope.usuario.documento = "";
+        $scope.maxLength = 10;   
+        $scope.objConsulta = {};
+        $scope.errorLongitudDocumento = false;
+        $scope.mostarMensaje = false;
+        $scope.ocultoLoader = false;
+        $rootScope.mostrarMensajesError = false;
+    })
+   
     $scope._verificarCiudadano = function () {
         _verificarCiudadano();
     };      
@@ -643,16 +645,19 @@ angular.module('starter.controllers', [])
     }
 })
 .controller('IdentificarPersonaPotencialCtrl', function ($scope, $rootScope, focalizacionService, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
-    $scope.mostarMensaje = false;
-    $scope.ocultoLoader = false;
-    $scope.mensajeError = "";
-    $rootScope.usuario = {};
-    $rootScope.usuario.tipoDocumento = "";
-    $rootScope.usuario.documento = "";
-    $scope.maxLength = 10;
-    $scope.objConsulta = {};
-    $scope.errorLongitudDocumento = false;
-    var num = 0;
+    $scope.$on('$ionicView.enter', function() {
+        $scope.mensajeError = "";
+        $rootScope.usuario = {};
+        $rootScope.usuario.tipoDocumento = "";
+        $rootScope.usuario.documento = "";
+        $scope.maxLength = 10;
+        $scope.objConsulta = {};
+        $scope.errorLongitudDocumento = false;
+        $scope.mostarMensaje = false;
+        $scope.ocultoLoader = false;
+        $rootScope.mostrarMensajesError = false;
+    })
+    
     $scope._verificarCiudadano = function () {
         _verificarCiudadano();
     };

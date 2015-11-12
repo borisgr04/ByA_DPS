@@ -12,44 +12,47 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('HomeCtrl', function ($scope, $ionicModal, $timeout, autenticacionService, mensajesService) {
+    $scope.$on('$ionicView.enter', function () {
+        $scope.ocultarLoader = false;
+        _init();
+    });
     $scope.ocultarLoader = false;
 
-  _init();
-  function _init(){
-      _getToken();
-      _Mensajes();
-  };
-  function _Mensajes() {
-      $scope.ocultarLoader = true;
-      var ser = mensajesService._mensjes();
-      ser.then(function (pl) {
-          $scope.ocultarLoader = false;
-          byaSite._setVar("obj_mensajes", pl.data);
-      }, function (pl) {
-          $scope.ocultarLoader = false;
-          showAlert("Error", "Ha sido imposible conectarse al servidor");
-      });
-  };
-  function _getToken(){
-      $scope.ocultarLoader = true;
-      var serAut = autenticacionService._getTokenFirst();
-      serAut.then(function (pl) {
-          $scope.ocultarLoader = false;
-          byaSite._setToken(pl.data.access_token);
-      }, function (pl) {
-          $scope.ocultarLoader = false;
-          showAlert("Error", "Ha sido imposible conectarse al servidor");
-      });
-  };
-  function showAlert(title, data) {
-      var alertPopup = $ionicPopup.alert({
-          title: title,
-          template: data
-      });
-      alertPopup.then(function (res) {
-          console.log('Thank you');
-      });
-  };
+    function _init(){
+        _getToken();
+        _Mensajes();
+    };
+    function _Mensajes() {
+        $scope.ocultarLoader = true;
+        var ser = mensajesService._mensjes();
+        ser.then(function (pl) {
+            $scope.ocultarLoader = false;
+            byaSite._setVar("obj_mensajes", pl.data);
+        }, function (pl) {
+            $scope.ocultarLoader = false;
+            showAlert("Error", "Ha sido imposible conectarse al servidor");
+        });
+    };
+    function _getToken(){
+        $scope.ocultarLoader = true;
+        var serAut = autenticacionService._getTokenFirst();
+        serAut.then(function (pl) {
+            $scope.ocultarLoader = false;
+            byaSite._setToken(pl.data.access_token);
+        }, function (pl) {
+            $scope.ocultarLoader = false;
+            showAlert("Error", "Ha sido imposible conectarse al servidor");
+        });
+    };
+    function showAlert(title, data) {
+        var alertPopup = $ionicPopup.alert({
+            title: title,
+            template: data
+        });
+        alertPopup.then(function (res) {
+            console.log('Thank you');
+        });
+    };
 })
 .controller('IdentificarPersonaCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
     $scope.$on('$ionicView.enter', function () {
@@ -100,7 +103,6 @@ angular.module('starter.controllers', [])
         }else $scope.errorLongitudDocumento = false;
     };
 
-    _init();
     function _init() {        
         _getToken();   
     };        
@@ -176,7 +178,6 @@ angular.module('starter.controllers', [])
         });
     };
      
-    _init();
     function _init() {
         _getToken();        
     };
@@ -333,16 +334,18 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('ProgramasInscritosCtrl', function ($scope, $ionicPopup, $ionicModal, $timeout, autenticacionService, utilidadMaestraService, atencionPeticionesService, $state) {
-    $scope.lProgramasInscritos = [];
-    $scope.persona = {};
-    $scope.HV_MFA = {};
+    $scope.$on('$ionicView.enter', function () {
+        $scope.lProgramasInscritos = [];
+        $scope.persona = {};
+        $scope.HV_MFA = {};
+        $scope.ocultoMensaje = false;
+        $scope.ocultoLoader = false;
+        _init();
+    });    
     $scope._irDetallesPrograma = function (programa) {
         _irDetallesPrograma(programa);
-    };    
-    $scope.ocultoMensaje = false;
-    $scope.ocultoLoader = false;
+    };      
 
-    _init();
     function _init() {        
         _getTokenUM();
     };
@@ -433,7 +436,12 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('LiquidacionYPagoCtrl', function ($scope) {
-    $scope.groups = [];
+    $scope.$on('$ionicView.enter', function () {
+        $scope.groups = [];
+        $scope.hojavida_MFA = {};
+        $scope.liquidaciones = [];
+        _init();
+    });    
     $scope.toggleGroup = function(group) {
         if ($scope.isGroupShown(group)) {
             $scope.shownGroup = null;
@@ -443,11 +451,8 @@ angular.module('starter.controllers', [])
     };
     $scope.isGroupShown = function(group) {     
         return $scope.shownGroup === group;  
-    };
-    $scope.hojavida_MFA = {};
-    $scope.liquidaciones = [];
+    };    
     
-    _init();
     function _init() {
         _TraerLiquidaciones();
     };
@@ -458,12 +463,14 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('MenuFamiliasEnAccionCtrl', function ($scope, $state, autenticacionService, $ionicPopup, $ionicModal, $timeout, atencionPeticionesService) {
-    $scope.ocultarLoader = false;
+    $scope.$on('$ionicView.enter', function () {
+        $scope.ocultarLoader = false;
+        _init();
+    });    
     $scope._goTo = function (value) {
         if(!$scope.ocultarLoader) $state.go(value);
     };
 
-    _init();
     function _init() {
         _getTokenDIS();
     };
@@ -503,10 +510,18 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('EstadoFamiliaCtrl', function ($scope) {
-    $scope.groups = [];
-    $scope.nucleo_familiar_completo = [];
-    $scope.nucleo_familiar = [];
-    $scope.hojavida_MFA = {};   
+    $scope.$on('$ionicView.enter', function () {
+        $scope.groups = [];
+        $scope.nucleo_familiar_completo = [];
+        $scope.nucleo_familiar = [];
+        $scope.hojavida_MFA = {};
+        $scope.indexActual = 0;
+        $scope.canItems = 5;
+        $scope.inicio = 0;
+        $scope.fin = 0;
+        $scope.fal = 0;
+        _init();
+    });       
     $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
         $scope.shownGroup = null;
@@ -524,13 +539,7 @@ angular.module('starter.controllers', [])
     };
     $scope._getGrado = function (value) {
         return _grado(value);
-    };
-
-    $scope.indexActual = 0;
-    $scope.canItems = 5;
-    $scope.inicio = 0;
-    $scope.fin = 0;
-    $scope.fal = 0;
+    };    
     $scope._verSiguientes = function () {
         $scope.indexActual += 1;
         _filtrarNucleo();
@@ -543,7 +552,6 @@ angular.module('starter.controllers', [])
         alert($scope.indexActual);
     };
   
-    _init();
     function _init() {
         _TraerDatosFamiliares();
     };
@@ -598,8 +606,11 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('CumplimientoCtrl', function ($scope) {
-    $scope.listaCumplimientos = [];
-    $scope.groups = [];
+    $scope.$on('$ionicView.enter', function () {
+        $scope.listaCumplimientos = [];
+        $scope.groups = [];
+        _init();
+    });    
     $scope.toggleGroup = function(group) {
         if ($scope.isGroupShown(group)) {
             $scope.shownGroup = null;
@@ -609,19 +620,16 @@ angular.module('starter.controllers', [])
     };
     $scope.isGroupShown = function(group) {     
         return $scope.shownGroup === group;  
+    };    
+    $scope.mostrarTituloSalud = function (cumplimiento) {
+        if (cumplimiento.cumplimientoField.cumplimientoTipoIncentivoField == "SALUD")
+            return true;
+    };    
+    $scope.mostrarTituloEducacion = function (cumplimiento) {
+        if (cumplimiento.cumplimientoField.cumplimientoTipoIncentivoField == "EDUCACION")
+            return true;
     };
     
-    $scope.mostrarTituloSalud = function(cumplimiento){
-        if(cumplimiento.cumplimientoField.cumplimientoTipoIncentivoField == "SALUD")
-            return true;
-    }
-    
-    $scope.mostrarTituloEducacion = function(cumplimiento){
-        if(cumplimiento.cumplimientoField.cumplimientoTipoIncentivoField == "EDUCACION")
-            return true;
-    }
-    
-    _init();
     function _init() {
         _TraerDatosCumplimientos();
     };
@@ -630,27 +638,45 @@ angular.module('starter.controllers', [])
         $scope.listaCumplimientos = obj_completo.Cumplimientos;
     };
 })
-.controller('NovedadesCtrl',function($scope){
-    var novedades = byaSite._getVar("HV_MFA");
-    $scope.listaNovedades = [];
-    $scope.mostrarMensaje = false
-    if(novedades.Novedades.length == 0){
-        $scope.mostrarMensaje = true;
-    }else{
-        $scope.mostrarMensaje = false;
-        $scope.listaNovedades = novedades.Novedades;
-    }    
+.controller('NovedadesCtrl', function ($scope) {
+    $scope.$on('$ionicView.enter', function () {
+        _init();
+    });
+
+    function _init() {
+        _verNovedades();
+    };
+    function _verNovedades() {
+        var novedades = byaSite._getVar("HV_MFA");
+        $scope.listaNovedades = [];
+        $scope.mostrarMensaje = false
+        if (novedades.Novedades.length == 0) {
+            $scope.mostrarMensaje = true;
+        } else {
+            $scope.mostrarMensaje = false;
+            $scope.listaNovedades = novedades.Novedades;
+        }
+    };       
 })
 .controller('AntifraudeCtrl', function ($scope) {
-    var novedades = byaSite._getVar("HV_MFA");
-    $scope.listaNovedades = [];
-    $scope.mostrarMensaje = false
-    if (novedades.Novedades.length == 0) {
-        $scope.mostrarMensaje = true;
-    } else {
-        $scope.mostrarMensaje = false;
-        $scope.listaNovedades = novedades.Novedades;
-    }
+    $scope.$on('$ionicView.enter', function () {
+        _init();
+    });
+
+    function _init() {
+        _verAntifraudes();
+    };
+    function _verAntifraudes() {
+        var novedades = byaSite._getVar("HV_MFA");
+        $scope.listaNovedades = [];
+        $scope.mostrarMensaje = false
+        if (novedades.Novedades.length == 0) {
+            $scope.mostrarMensaje = true;
+        } else {
+            $scope.mostrarMensaje = false;
+            $scope.listaNovedades = novedades.Novedades;
+        }
+    };
 })
 .controller('IdentificarPersonaPotencialCtrl', function ($scope, $rootScope, focalizacionService, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
     $scope.$on('$ionicView.enter', function () {
@@ -665,8 +691,7 @@ angular.module('starter.controllers', [])
         $scope.ocultoLoader = false;
         $rootScope.mostrarMensajesError = false;
         _init();
-    });
-    
+    });    
     $scope._verificarCiudadano = function () {
         _verificarCiudadano();
     };
@@ -703,7 +728,6 @@ angular.module('starter.controllers', [])
         } else $scope.errorLongitudDocumento = false;
     };
 
-    _init();
     function _init() {
         _getTokenDIS();
     };
@@ -755,10 +779,7 @@ angular.module('starter.controllers', [])
         $scope.focalizacion = [];
         $scope.personas_programas = [];
         _init();
-    });
-
-    $scope.focalizacion = [];
-    $scope.personas_programas = [];
+    });    
     $scope.ValidarPreguntaSeleccionada = function (persona) {
         $.each($scope.personas_programas, function (index, item) {
             if ((item.tipIde == persona.tipIde) && (item.Documento == persona.Documento) && (item.Nombre == persona.Nombre)) {
@@ -770,7 +791,6 @@ angular.module('starter.controllers', [])
         _seleccionarPersona();
     };
 
-    _init();
     function _init() {
         _traerFocalizacion();
     };
@@ -912,14 +932,16 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('ProgramasPotencialCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
-    $scope.persona = {};
-    $scope.lProgramas = [];
+    $scope.$on('$ionicView.enter', function () {
+        $scope.persona = {};
+        $scope.lProgramas = [];
+        _init();
+    });    
     $scope._elegirPrograma = function (programa) {
         byaSite._setVar("id_programa_potencial_elegio", programa.Id);
         $state.go("app.informacion_programa");
     };
 
-    _init();
     function _init() {
         _Programas();
     };
@@ -956,9 +978,12 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('InformacionProgramaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
-    $scope.id_programa = {};
-    $scope.programa = {};
-    _init();
+    $scope.$on('$ionicView.enter', function () {
+        $scope.id_programa = {};
+        $scope.programa = {};
+        _init();
+    });
+
     function _init() {
         _programa();
     };

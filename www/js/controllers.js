@@ -343,8 +343,7 @@ angular.module('starter.controllers', [])
     $scope.ocultoLoader = false;
 
     _init();
-    function _init() {
-        _getTokenDIS();
+    function _init() {        
         _getTokenUM();
     };
     function _getTokenUM() {
@@ -374,7 +373,8 @@ angular.module('starter.controllers', [])
             $scope.ocultoLoader = false;
             if(pl.data.Programas.length == 0){  
                 $scope.ocultoMensaje = true;         
-            }else{
+            } else {
+                _getTokenDIS();
                 $scope.lProgramasInscritos = pl.data;   
                 $.each($scope.lProgramasInscritos.Programas, function (index, item) {
                     if (item.programaField.idProgramaField == 1) item.img = "img/familias-en-accion.png";
@@ -412,16 +412,24 @@ angular.module('starter.controllers', [])
         });
     };
     function _hojaVidaMasFamiliasEnAccion() {
-        $scope.ocultoLoader = true;
-        var serHVM = atencionPeticionesService._hojaVidaMFA(byaSite._getVar("CodigoBeneficiario"));
-        serHVM.then(function (pl) {
-            $scope.ocultoLoader = false;
-            $scope.HV_MFA = pl.data;
-        }, function (pl) {
-            $scope.ocultoLoader = false;
-            showAlert("Error", "Ha sido imposible conectarse al servidor");
-            true;
+        var id = 0;
+        $.each($scope.lProgramasInscritos.Programas, function (index, item) {
+            if (item.programaField.idProgramaField == 1) {
+                id = item.codigoBeneficiarioField;
+            }
         });
+        if (id != 0) {
+            $scope.ocultoLoader = true;
+            var serHVM = atencionPeticionesService._hojaVidaMFA(id);
+            serHVM.then(function (pl) {
+                $scope.ocultoLoader = false;
+                $scope.HV_MFA = pl.data;
+            }, function (pl) {
+                $scope.ocultoLoader = false;
+                showAlert("Error", "Ha sido imposible conectarse al servidor");
+                true;
+            });
+        }
     };
 })
 .controller('LiquidacionYPagoCtrl', function ($scope) {

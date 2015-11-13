@@ -8,7 +8,9 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
   })
 
 .run(function ($ionicPlatform, $ionicPopup, $state, $ionicHistory, $rootScope) {
-
+    $rootScope.TituloMenu = {
+        titulo: ''
+    };
     $rootScope.usuario = {};
     $rootScope.usuario.tipoDocumento = "";
     $rootScope.usuario.documento = "";
@@ -46,23 +48,13 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
             disableBack: true
         });
         $rootScope.mostrarMensajesError = false;
-        try {
-            $rootScope._initPreguntas();
-        }
-        catch (err) {
-        }
         $rootScope.usuario = {};
         $rootScope.usuario.tipoDocumento = "";
         $rootScope.usuario.documento = "";
 
         localStorage.removeItem("Focalizacion");
-      
-
-        try {
-            $rootScope._inicializarSeleccionPersonas();
-        }
-        catch (err) {
-        }       
+        byaSite._removeVar("lPreguntas");
+     
         $state.go("app.home");
     });
 })

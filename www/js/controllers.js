@@ -11,60 +11,64 @@ angular.module('starter.controllers', [])
         $rootScope.usuario.documento = "";
     };
 })
-.controller('HomeCtrl', function ($scope, $ionicModal, $timeout, autenticacionService, mensajesService) {
+.controller('HomeCtrl', function ($scope, $ionicModal, $timeout, autenticacionService, mensajesService, $rootScope) {
+    $scope.$on('$ionicView.enter', function () {
+        $scope.ocultarLoader = false;
+        _init();
+    });
     $scope.ocultarLoader = false;
 
-  _init();
-  function _init(){
-      _getToken();
-      _Mensajes();
-  };
-  function _Mensajes() {
-      $scope.ocultarLoader = true;
-      var ser = mensajesService._mensjes();
-      ser.then(function (pl) {
-          $scope.ocultarLoader = false;
-          byaSite._setVar("obj_mensajes", pl.data);
-      }, function (pl) {
-          $scope.ocultarLoader = false;
-          showAlert("Error", "Ha sido imposible conectarse al servidor");
-      });
-  };
-  function _getToken(){
-      $scope.ocultarLoader = true;
-      var serAut = autenticacionService._getTokenFirst();
-      serAut.then(function (pl) {
-          $scope.ocultarLoader = false;
-          byaSite._setToken(pl.data.access_token);
-      }, function (pl) {
-          $scope.ocultarLoader = false;
-          showAlert("Error", "Ha sido imposible conectarse al servidor");
-      });
-  };
-  function showAlert(title, data) {
-      var alertPopup = $ionicPopup.alert({
-          title: title,
-          template: data
-      });
-      alertPopup.then(function (res) {
-          console.log('Thank you');
-      });
-  };
+    function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> DPS Móvil';
+        _getToken();
+        _Mensajes();
+    };
+    function _Mensajes() {
+        $scope.ocultarLoader = true;
+        var ser = mensajesService._mensjes();
+        ser.then(function (pl) {
+            $scope.ocultarLoader = false;
+            byaSite._setVar("obj_mensajes", pl.data);
+        }, function (pl) {
+            $scope.ocultarLoader = false;
+            showAlert("Error", "Ha sido imposible conectarse al servidor");
+        });
+    };
+    function _getToken(){
+        $scope.ocultarLoader = true;
+        var serAut = autenticacionService._getTokenFirst();
+        serAut.then(function (pl) {
+            $scope.ocultarLoader = false;
+            byaSite._setToken(pl.data.access_token);
+        }, function (pl) {
+            $scope.ocultarLoader = false;
+            showAlert("Error", "Ha sido imposible conectarse al servidor");
+        });
+    };
+    function showAlert(title, data) {
+        var alertPopup = $ionicPopup.alert({
+            title: title,
+            template: data
+        });
+        alertPopup.then(function (res) {
+            console.log('Thank you');
+        });
+    };
 })
 .controller('IdentificarPersonaCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
-    $scope.$on('$ionicView.enter', function() {
+    $scope.$on('$ionicView.enter', function () {
         $scope.mensajeError = "";
         $rootScope.usuario = {};
         $rootScope.usuario.tipoDocumento = "";
         $rootScope.usuario.documento = "";
-        $scope.maxLength = 10;   
+        $scope.maxLength = 10;
         $scope.objConsulta = {};
         $scope.errorLongitudDocumento = false;
         $scope.mostarMensaje = false;
         $scope.ocultoLoader = false;
         $rootScope.mostrarMensajesError = false;
-    })
-   
+        _init();
+    });   
     $scope._verificarCiudadano = function () {
         _verificarCiudadano();
     };      
@@ -89,8 +93,7 @@ angular.module('starter.controllers', [])
         }else{
             $scope.mostarMensaje = true;
         }
-    };  
-    
+    };      
     $scope.keydown = function() {
         var str = "" + $rootScope.usuario.documento + "";        
         var tamaño = str.length+1;              
@@ -101,8 +104,8 @@ angular.module('starter.controllers', [])
         }else $scope.errorLongitudDocumento = false;
     };
 
-    _init();
-    function _init() {        
+    function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> En qué estoy inscrito?';
         _getToken();   
     };        
     function _getToken() {
@@ -153,6 +156,15 @@ angular.module('starter.controllers', [])
     };  
 })
 .controller('PreguntasPersonasCtrl', function ($scope, $rootScope, $window, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $state) {
+    $scope.$on('$ionicView.enter', function () {
+        $rootScope.lPreguntas = {};
+        $rootScope.ids_preguntas = [];
+        $rootScope.index_preguntas = 0;
+        $rootScope.pregunta_actual = {};
+        $rootScope.obj_respuestas = {};
+        $scope.ocultarLoader = false;
+        _init();
+    });
     $rootScope.lPreguntas = {};
     $rootScope.ids_preguntas = [];
     $rootScope.index_preguntas = 0;
@@ -167,17 +179,9 @@ angular.module('starter.controllers', [])
             if (item.nombre != respuesta.nombre) item.value = false;
         });
     };
-    $rootScope._initPreguntas = function () {
-        $rootScope.lPreguntas = {};
-        $rootScope.ids_preguntas = [];
-        $rootScope.index_preguntas = 0;
-        $rootScope.pregunta_actual = {};
-        $rootScope.obj_respuestas = {};
-        _init();
-    };
      
-    _init();
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> En qué estoy inscrito?';
         _getToken();        
     };
     function _getToken() {
@@ -332,19 +336,21 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('ProgramasInscritosCtrl', function ($scope, $ionicPopup, $ionicModal, $timeout, autenticacionService, utilidadMaestraService, atencionPeticionesService, $state) {
-    $scope.lProgramasInscritos = [];
-    $scope.persona = {};
-    $scope.HV_MFA = {};
+.controller('ProgramasInscritosCtrl', function ($scope, $ionicPopup, $rootScope, $ionicModal, $timeout, autenticacionService, utilidadMaestraService, atencionPeticionesService, $state) {
+    $scope.$on('$ionicView.enter', function () {
+        $scope.lProgramasInscritos = [];
+        $scope.persona = {};
+        $scope.HV_MFA = {};
+        $scope.ocultoMensaje = false;
+        $scope.ocultoLoader = false;
+        _init();
+    });    
     $scope._irDetallesPrograma = function (programa) {
         _irDetallesPrograma(programa);
-    };    
-    $scope.ocultoMensaje = false;
-    $scope.ocultoLoader = false;
+    };      
 
-    _init();
     function _init() {
-        _getTokenDIS();
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> En qué estoy inscrito?';
         _getTokenUM();
     };
     function _getTokenUM() {
@@ -374,7 +380,8 @@ angular.module('starter.controllers', [])
             $scope.ocultoLoader = false;
             if(pl.data.Programas.length == 0){  
                 $scope.ocultoMensaje = true;         
-            }else{
+            } else {
+                _getTokenDIS();
                 $scope.lProgramasInscritos = pl.data;   
                 $.each($scope.lProgramasInscritos.Programas, function (index, item) {
                     if (item.programaField.idProgramaField == 1) item.img = "img/familias-en-accion.png";
@@ -412,20 +419,33 @@ angular.module('starter.controllers', [])
         });
     };
     function _hojaVidaMasFamiliasEnAccion() {
-        $scope.ocultoLoader = true;
-        var serHVM = atencionPeticionesService._hojaVidaMFA(byaSite._getVar("CodigoBeneficiario"));
-        serHVM.then(function (pl) {
-            $scope.ocultoLoader = false;
-            $scope.HV_MFA = pl.data;
-        }, function (pl) {
-            $scope.ocultoLoader = false;
-            showAlert("Error", "Ha sido imposible conectarse al servidor");
-            true;
+        var id = 0;
+        $.each($scope.lProgramasInscritos.Programas, function (index, item) {
+            if (item.programaField.idProgramaField == 1) {
+                id = item.codigoBeneficiarioField;
+            }
         });
+        if (id != 0) {
+            $scope.ocultoLoader = true;
+            var serHVM = atencionPeticionesService._hojaVidaMFA(id);
+            serHVM.then(function (pl) {
+                $scope.ocultoLoader = false;
+                $scope.HV_MFA = pl.data;
+            }, function (pl) {
+                $scope.ocultoLoader = false;
+                showAlert("Error", "Ha sido imposible conectarse al servidor");
+                true;
+            });
+        }
     };
 })
-.controller('LiquidacionYPagoCtrl', function ($scope) {
-    $scope.groups = [];
+.controller('LiquidacionYPagoCtrl', function ($scope, $rootScope) {
+    $scope.$on('$ionicView.enter', function () {
+        $scope.groups = [];
+        $scope.hojavida_MFA = {};
+        $scope.liquidaciones = [];
+        _init();
+    });    
     $scope.toggleGroup = function(group) {
         if ($scope.isGroupShown(group)) {
             $scope.shownGroup = null;
@@ -435,12 +455,10 @@ angular.module('starter.controllers', [])
     };
     $scope.isGroupShown = function(group) {     
         return $scope.shownGroup === group;  
-    };
-    $scope.hojavida_MFA = {};
-    $scope.liquidaciones = [];
+    };    
     
-    _init();
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Liquidación y Pagos';
         _TraerLiquidaciones();
     };
     function _TraerLiquidaciones() {
@@ -449,14 +467,17 @@ angular.module('starter.controllers', [])
         $scope.liquidaciones = obj_completo.Liquidacion;
     };
 })
-.controller('MenuFamiliasEnAccionCtrl', function ($scope, $state, autenticacionService, $ionicPopup, $ionicModal, $timeout, atencionPeticionesService) {
-    $scope.ocultarLoader = false;
+.controller('MenuFamiliasEnAccionCtrl', function ($scope, $rootScope, $state, autenticacionService, $ionicPopup, $ionicModal, $timeout, atencionPeticionesService) {
+    $scope.$on('$ionicView.enter', function () {
+        $scope.ocultarLoader = false;
+        _init();
+    });    
     $scope._goTo = function (value) {
         if(!$scope.ocultarLoader) $state.go(value);
     };
 
-    _init();
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Más Familias en Acción';
         _getTokenDIS();
     };
     function _getTokenDIS() {
@@ -494,11 +515,19 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('EstadoFamiliaCtrl', function ($scope) {
-    $scope.groups = [];
-    $scope.nucleo_familiar_completo = [];
-    $scope.nucleo_familiar = [];
-    $scope.hojavida_MFA = {};   
+.controller('EstadoFamiliaCtrl', function ($scope, $rootScope) {
+    $scope.$on('$ionicView.enter', function () {
+        $scope.groups = [];
+        $scope.nucleo_familiar_completo = [];
+        $scope.nucleo_familiar = [];
+        $scope.hojavida_MFA = {};
+        $scope.indexActual = 0;
+        $scope.canItems = 5;
+        $scope.inicio = 0;
+        $scope.fin = 0;
+        $scope.fal = 0;
+        _init();
+    });       
     $scope.toggleGroup = function(group) {
     if ($scope.isGroupShown(group)) {
         $scope.shownGroup = null;
@@ -516,13 +545,7 @@ angular.module('starter.controllers', [])
     };
     $scope._getGrado = function (value) {
         return _grado(value);
-    };
-
-    $scope.indexActual = 0;
-    $scope.canItems = 5;
-    $scope.inicio = 0;
-    $scope.fin = 0;
-    $scope.fal = 0;
+    };    
     $scope._verSiguientes = function () {
         $scope.indexActual += 1;
         _filtrarNucleo();
@@ -535,8 +558,8 @@ angular.module('starter.controllers', [])
         alert($scope.indexActual);
     };
   
-    _init();
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Datos Familiares';
         _TraerDatosFamiliares();
     };
     function _TraerDatosFamiliares() {
@@ -589,9 +612,12 @@ angular.module('starter.controllers', [])
         if (value == 13) return "Undecimo";
     };
 })
-.controller('CumplimientoCtrl', function ($scope) {
-    $scope.listaCumplimientos = [];
-    $scope.groups = [];
+.controller('CumplimientoCtrl', function ($scope, $rootScope) {
+    $scope.$on('$ionicView.enter', function () {
+        $scope.listaCumplimientos = [];
+        $scope.groups = [];
+        _init();
+    });    
     $scope.toggleGroup = function(group) {
         if ($scope.isGroupShown(group)) {
             $scope.shownGroup = null;
@@ -601,20 +627,18 @@ angular.module('starter.controllers', [])
     };
     $scope.isGroupShown = function(group) {     
         return $scope.shownGroup === group;  
+    };    
+    $scope.mostrarTituloSalud = function (cumplimiento) {
+        if (cumplimiento.cumplimientoField.cumplimientoTipoIncentivoField == "SALUD")
+            return true;
+    };    
+    $scope.mostrarTituloEducacion = function (cumplimiento) {
+        if (cumplimiento.cumplimientoField.cumplimientoTipoIncentivoField == "EDUCACION")
+            return true;
     };
     
-    $scope.mostrarTituloSalud = function(cumplimiento){
-        if(cumplimiento.cumplimientoField.cumplimientoTipoIncentivoField == "SALUD")
-            return true;
-    }
-    
-    $scope.mostrarTituloEducacion = function(cumplimiento){
-        if(cumplimiento.cumplimientoField.cumplimientoTipoIncentivoField == "EDUCACION")
-            return true;
-    }
-    
-    _init();
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Cumplimiento';
         _TraerDatosCumplimientos();
     };
     function _TraerDatosCumplimientos() {
@@ -622,30 +646,50 @@ angular.module('starter.controllers', [])
         $scope.listaCumplimientos = obj_completo.Cumplimientos;
     };
 })
-.controller('NovedadesCtrl',function($scope){
-    var novedades = byaSite._getVar("HV_MFA");
-    $scope.listaNovedades = [];
-    $scope.mostrarMensaje = false
-    if(novedades.Novedades.length == 0){
-        $scope.mostrarMensaje = true;
-    }else{
-        $scope.mostrarMensaje = false;
-        $scope.listaNovedades = novedades.Novedades;
-    }    
+.controller('NovedadesCtrl', function ($scope, $rootScope) {
+    $scope.$on('$ionicView.enter', function () {
+        _init();
+    });
+
+    function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Novedades';
+        _verNovedades();
+    };
+    function _verNovedades() {
+        var novedades = byaSite._getVar("HV_MFA");
+        $scope.listaNovedades = [];
+        $scope.mostrarMensaje = false
+        if (novedades.Novedades.length == 0) {
+            $scope.mostrarMensaje = true;
+        } else {
+            $scope.mostrarMensaje = false;
+            $scope.listaNovedades = novedades.Novedades;
+        }
+    };       
 })
-.controller('AntifraudeCtrl', function ($scope) {
-    var novedades = byaSite._getVar("HV_MFA");
-    $scope.listaNovedades = [];
-    $scope.mostrarMensaje = false
-    if (novedades.Novedades.length == 0) {
-        $scope.mostrarMensaje = true;
-    } else {
-        $scope.mostrarMensaje = false;
-        $scope.listaNovedades = novedades.Novedades;
-    }
+.controller('AntifraudeCtrl', function ($scope, $rootScope) {
+    $scope.$on('$ionicView.enter', function () {
+        _init();
+    });
+
+    function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Antifraudes';
+        _verAntifraudes();
+    };
+    function _verAntifraudes() {
+        var novedades = byaSite._getVar("HV_MFA");
+        $scope.listaNovedades = [];
+        $scope.mostrarMensaje = false
+        if (novedades.Novedades.length == 0) {
+            $scope.mostrarMensaje = true;
+        } else {
+            $scope.mostrarMensaje = false;
+            $scope.listaNovedades = novedades.Novedades;
+        }
+    };
 })
 .controller('IdentificarPersonaPotencialCtrl', function ($scope, $rootScope, focalizacionService, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
-    $scope.$on('$ionicView.enter', function() {
+    $scope.$on('$ionicView.enter', function () {
         $scope.mensajeError = "";
         $rootScope.usuario = {};
         $rootScope.usuario.tipoDocumento = "";
@@ -656,8 +700,8 @@ angular.module('starter.controllers', [])
         $scope.mostarMensaje = false;
         $scope.ocultoLoader = false;
         $rootScope.mostrarMensajesError = false;
-    })
-    
+        _init();
+    });    
     $scope._verificarCiudadano = function () {
         _verificarCiudadano();
     };
@@ -694,8 +738,8 @@ angular.module('starter.controllers', [])
         } else $scope.errorLongitudDocumento = false;
     };
 
-    _init();
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> A qué soy Potencial?';
         _getTokenDIS();
     };
     function _getTokenDIS() {
@@ -742,8 +786,11 @@ angular.module('starter.controllers', [])
     };
 })
 .controller('SeleccionarPersonaCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state, $ionicHistory) {
-    $scope.focalizacion = [];
-    $scope.personas_programas = [];
+    $scope.$on('$ionicView.enter', function () {
+        $scope.focalizacion = [];
+        $scope.personas_programas = [];
+        _init();
+    });    
     $scope.ValidarPreguntaSeleccionada = function (persona) {
         $.each($scope.personas_programas, function (index, item) {
             if ((item.tipIde == persona.tipIde) && (item.Documento == persona.Documento) && (item.Nombre == persona.Nombre)) {
@@ -754,14 +801,9 @@ angular.module('starter.controllers', [])
     $scope._seleccionarPersona = function () {
         _seleccionarPersona();
     };
-    $rootScope._inicializarSeleccionPersonas = function () {
-        $scope.focalizacion = [];
-        $scope.personas_programas = [];
-        _init();
-    };
 
-    _init();
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> A qué soy Potencial?';
         _traerFocalizacion();
     };
     function _traerFocalizacion() {
@@ -781,7 +823,6 @@ angular.module('starter.controllers', [])
         _primeraLista();
         _segundoLista();
         _terceraLista();
-        alert(JSON.stringify($scope.personas_programas));
     };
     function _primeraLista() {
         $.each($scope.focalizacion[0], function (index, item) {
@@ -902,16 +943,19 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('ProgramasPotencialCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
-    $scope.persona = {};
-    $scope.lProgramas = [];
+.controller('ProgramasPotencialCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
+    $scope.$on('$ionicView.enter', function () {
+        $scope.persona = {};
+        $scope.lProgramas = [];
+        _init();
+    });    
     $scope._elegirPrograma = function (programa) {
         byaSite._setVar("id_programa_potencial_elegio", programa.Id);
         $state.go("app.informacion_programa");
     };
 
-    _init();
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> A qué soy Potencial?';
         _Programas();
     };
     function _Programas() {
@@ -946,11 +990,15 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('InformacionProgramaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
-    $scope.id_programa = {};
-    $scope.programa = {};
-    _init();
+.controller('InformacionProgramaCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
+    $scope.$on('$ionicView.enter', function () {
+        $scope.id_programa = {};
+        $scope.programa = {};
+        _init();
+    });
+
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> A qué soy Potencial?';
         _programa();
     };
     function _programa() {

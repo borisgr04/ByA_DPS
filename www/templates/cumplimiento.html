@@ -1,4 +1,4 @@
-<ion-view view-title='<img class="logoEncabezado" src="img/logo2.png"/> Cumplimiento'>
+<ion-view view-title='{{TituloMenu.titulo}}'>
     <ion-content>
         <div>
         <div ng-repeat="cumplimiento in listaCumplimientos | orderBy:'-cumplimientoField.fechaInicioPeriodoVerificacionField' | limitTo:3">

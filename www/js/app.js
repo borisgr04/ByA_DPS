@@ -8,7 +8,9 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
   })
 
 .run(function ($ionicPlatform, $ionicPopup, $state, $ionicHistory, $rootScope) {
-
+    $rootScope.TituloMenu = {
+        titulo: ''
+    };
     $rootScope.usuario = {};
     $rootScope.usuario.tipoDocumento = "";
     $rootScope.usuario.documento = "";

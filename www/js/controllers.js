@@ -11,14 +11,15 @@ angular.module('starter.controllers', [])
         $rootScope.usuario.documento = "";
     };
 })
-.controller('HomeCtrl', function ($scope, $ionicModal, $timeout, autenticacionService, mensajesService) {
+.controller('HomeCtrl', function ($scope, $ionicModal, $timeout, autenticacionService, mensajesService, $rootScope) {
     $scope.$on('$ionicView.enter', function () {
         $scope.ocultarLoader = false;
         _init();
     });
     $scope.ocultarLoader = false;
 
-    function _init(){
+    function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> DPS Móvil';
         _getToken();
         _Mensajes();
     };
@@ -103,7 +104,8 @@ angular.module('starter.controllers', [])
         }else $scope.errorLongitudDocumento = false;
     };
 
-    function _init() {        
+    function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> En qué estoy inscrito?';
         _getToken();   
     };        
     function _getToken() {
@@ -179,6 +181,7 @@ angular.module('starter.controllers', [])
     };
      
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> En qué estoy inscrito?';
         _getToken();        
     };
     function _getToken() {
@@ -333,7 +336,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('ProgramasInscritosCtrl', function ($scope, $ionicPopup, $ionicModal, $timeout, autenticacionService, utilidadMaestraService, atencionPeticionesService, $state) {
+.controller('ProgramasInscritosCtrl', function ($scope, $ionicPopup, $rootScope, $ionicModal, $timeout, autenticacionService, utilidadMaestraService, atencionPeticionesService, $state) {
     $scope.$on('$ionicView.enter', function () {
         $scope.lProgramasInscritos = [];
         $scope.persona = {};
@@ -346,7 +349,8 @@ angular.module('starter.controllers', [])
         _irDetallesPrograma(programa);
     };      
 
-    function _init() {        
+    function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> En qué estoy inscrito?';
         _getTokenUM();
     };
     function _getTokenUM() {
@@ -435,7 +439,7 @@ angular.module('starter.controllers', [])
         }
     };
 })
-.controller('LiquidacionYPagoCtrl', function ($scope) {
+.controller('LiquidacionYPagoCtrl', function ($scope, $rootScope) {
     $scope.$on('$ionicView.enter', function () {
         $scope.groups = [];
         $scope.hojavida_MFA = {};
@@ -454,6 +458,7 @@ angular.module('starter.controllers', [])
     };    
     
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Liquidación y Pagos';
         _TraerLiquidaciones();
     };
     function _TraerLiquidaciones() {
@@ -462,7 +467,7 @@ angular.module('starter.controllers', [])
         $scope.liquidaciones = obj_completo.Liquidacion;
     };
 })
-.controller('MenuFamiliasEnAccionCtrl', function ($scope, $state, autenticacionService, $ionicPopup, $ionicModal, $timeout, atencionPeticionesService) {
+.controller('MenuFamiliasEnAccionCtrl', function ($scope, $rootScope, $state, autenticacionService, $ionicPopup, $ionicModal, $timeout, atencionPeticionesService) {
     $scope.$on('$ionicView.enter', function () {
         $scope.ocultarLoader = false;
         _init();
@@ -472,6 +477,7 @@ angular.module('starter.controllers', [])
     };
 
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Más Familias en Acción';
         _getTokenDIS();
     };
     function _getTokenDIS() {
@@ -509,7 +515,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('EstadoFamiliaCtrl', function ($scope) {
+.controller('EstadoFamiliaCtrl', function ($scope, $rootScope) {
     $scope.$on('$ionicView.enter', function () {
         $scope.groups = [];
         $scope.nucleo_familiar_completo = [];
@@ -553,6 +559,7 @@ angular.module('starter.controllers', [])
     };
   
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Datos Familiares';
         _TraerDatosFamiliares();
     };
     function _TraerDatosFamiliares() {
@@ -605,7 +612,7 @@ angular.module('starter.controllers', [])
         if (value == 13) return "Undecimo";
     };
 })
-.controller('CumplimientoCtrl', function ($scope) {
+.controller('CumplimientoCtrl', function ($scope, $rootScope) {
     $scope.$on('$ionicView.enter', function () {
         $scope.listaCumplimientos = [];
         $scope.groups = [];
@@ -631,6 +638,7 @@ angular.module('starter.controllers', [])
     };
     
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Cumplimiento';
         _TraerDatosCumplimientos();
     };
     function _TraerDatosCumplimientos() {
@@ -638,12 +646,13 @@ angular.module('starter.controllers', [])
         $scope.listaCumplimientos = obj_completo.Cumplimientos;
     };
 })
-.controller('NovedadesCtrl', function ($scope) {
+.controller('NovedadesCtrl', function ($scope, $rootScope) {
     $scope.$on('$ionicView.enter', function () {
         _init();
     });
 
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Novedades';
         _verNovedades();
     };
     function _verNovedades() {
@@ -658,12 +667,13 @@ angular.module('starter.controllers', [])
         }
     };       
 })
-.controller('AntifraudeCtrl', function ($scope) {
+.controller('AntifraudeCtrl', function ($scope, $rootScope) {
     $scope.$on('$ionicView.enter', function () {
         _init();
     });
 
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Antifraudes';
         _verAntifraudes();
     };
     function _verAntifraudes() {
@@ -729,6 +739,7 @@ angular.module('starter.controllers', [])
     };
 
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> A qué soy Potencial?';
         _getTokenDIS();
     };
     function _getTokenDIS() {
@@ -792,6 +803,7 @@ angular.module('starter.controllers', [])
     };
 
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> A qué soy Potencial?';
         _traerFocalizacion();
     };
     function _traerFocalizacion() {
@@ -931,7 +943,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('ProgramasPotencialCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
+.controller('ProgramasPotencialCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
     $scope.$on('$ionicView.enter', function () {
         $scope.persona = {};
         $scope.lProgramas = [];
@@ -943,6 +955,7 @@ angular.module('starter.controllers', [])
     };
 
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> A qué soy Potencial?';
         _Programas();
     };
     function _Programas() {
@@ -977,7 +990,7 @@ angular.module('starter.controllers', [])
         });
     };
 })
-.controller('InformacionProgramaCtrl', function ($scope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
+.controller('InformacionProgramaCtrl', function ($scope, $rootScope, verificacionCiudadanoService, autenticacionService, $ionicPopup, $timeout, $ionicLoading, $location, $state) {
     $scope.$on('$ionicView.enter', function () {
         $scope.id_programa = {};
         $scope.programa = {};
@@ -985,6 +998,7 @@ angular.module('starter.controllers', [])
     });
 
     function _init() {
+        $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> A qué soy Potencial?';
         _programa();
     };
     function _programa() {

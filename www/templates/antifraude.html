@@ -1,4 +1,4 @@
-<ion-view view-title='<img class="logoEncabezado" src="img/logo2.png"/> Antifraudes'>
+<ion-view view-title='{{TituloMenu.titulo}}'>
     <ion-content>
         <div class="item item-avatar" ng-repeat="novedad in listaNovedades | orderBy:'-novedadField.fechaAplicacionNovedadField' | limitTo:4">
             <img ng-src="img/profile.png">     

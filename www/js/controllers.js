@@ -811,7 +811,6 @@ angular.module('starter.controllers', [])
         if ($scope.focalizacion == null) {
             $ionicHistory.goBack()
         }
-
         _procesarObjeto();
 
         if (($scope.personas_programas.length == 0) || ($scope.personas_programas == null)) {
@@ -845,7 +844,7 @@ angular.module('starter.controllers', [])
             else {
                 var persona = {};
                 persona.tipIde = item.TipoDocumento;
-                persona.TipoIdentificacion = "C.C.";
+                persona.TipoIdentificacion = _relacionTipoIde(item.TipoDocumento);
                 persona.Documento = item.DocumentoIdentificacion;
                 persona.Nombre = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
                 persona.check = false;
@@ -876,7 +875,7 @@ angular.module('starter.controllers', [])
             else {
                 var persona = {};
                 persona.tipIde = item.TipoDocumento;
-                persona.TipoIdentificacion = "C.C.";
+                persona.TipoIdentificacion = _relacionTipoIde(item.TipoDocumento);
                 persona.Documento = item.DocumentoIdentificacion;
                 persona.Nombre = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
                 persona.check = false;
@@ -907,7 +906,7 @@ angular.module('starter.controllers', [])
             else {
                 var persona = {};
                 persona.tipIde = item.TipoDocumento;
-                persona.TipoIdentificacion = "C.C.";
+                persona.TipoIdentificacion = _relacionTipoIde(item.TipoDocumento);
                 persona.Documento = item.DocumentoIdentificacion;
                 persona.Nombre = item.PrimerNombre + " " + item.SegundoNombre + " " + item.PrimerApellido + " " + item.SegundoApellido;
                 persona.check = false;
@@ -932,6 +931,14 @@ angular.module('starter.controllers', [])
         } else {
             showAlert("Atención","Debe seleccionar una de las opciones");
         }
+    };
+    function _relacionTipoIde(value) {
+        var tipo = "";
+        if(value==1) tipo = "C.C.";
+        if(value==2) tipo = "T.I.";
+        if(value==3) tipo = "C.E.";
+        if (value == 4) tipo = "R.C.";
+        return tipo;
     };
     function showAlert(title, data) {
         var alertPopup = $ionicPopup.alert({

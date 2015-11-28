@@ -70,6 +70,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/home',
         views: {
             'menuContent': {
+                cache: false,
                 controller: 'HomeCtrl',
                 templateUrl: 'templates/home.html'
             }
@@ -79,6 +80,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/identificar_persona',
         views: {
             'menuContent': {
+                cache: false,
                 controller: "IdentificarPersonaCtrl",
                 templateUrl: 'templates/identificar_persona.html'
             }
@@ -88,6 +90,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/pregunta_validacion',
         views: {
             'menuContent': {
+                cache: false,
                 controller: 'PreguntasPersonasCtrl',
                 templateUrl: 'templates/pregunta_validacion.html'
             }
@@ -97,6 +100,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/programas_inscritos',
         views: {
             'menuContent': {
+                cache: false,
                 controller: 'ProgramasInscritosCtrl',
                 templateUrl: 'templates/programas_inscritos.html'
             }
@@ -106,6 +110,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/menu-familias-en-accion',
         views: {
             'menuContent': {
+                cache: false,
                 controller: 'MenuFamiliasEnAccionCtrl',
                 templateUrl: 'templates/menu-familias-en-accion.html'
             }
@@ -115,6 +120,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/datos-familia',
         views: {
             'menuContent': {
+                cache: false,
                 controller: 'EstadoFamiliaCtrl',
                 templateUrl: 'templates/datos-familia.html'
             }
@@ -124,6 +130,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/novedades',
         views: {
             'menuContent': {
+                cache: false,
                 controller: 'NovedadesCtrl',
                 templateUrl: 'templates/novedades.html'
             }
@@ -133,6 +140,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/cumplimiento',
         views: {
             'menuContent': {
+                cache: false,
                 controller: 'CumplimientoCtrl',
                 templateUrl: 'templates/cumplimiento.html'
             }
@@ -142,6 +150,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/antifraude',
         views: {
             'menuContent': {
+                cache: false,
                 controller: 'AntifraudeCtrl',
                 templateUrl: 'templates/antifraude.html'
             }
@@ -151,6 +160,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/liquidacionypagos',
         views: {
             'menuContent': {
+                cache: false,
                 controller: 'LiquidacionYPagoCtrl',
                 templateUrl: 'templates/liquidacionesypagos.html'
             }
@@ -160,6 +170,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/identificar_persona_potencial',
         views: {
             'menuContent': {
+                cache: false,
                 controller: "IdentificarPersonaPotencialCtrl",
                 templateUrl: 'templates/identificar_persona_potencial.html'
             }
@@ -169,6 +180,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/seleccionar_persona',
         views: {
             'menuContent': {
+                cache: false,
                 controller: "SeleccionarPersonaCtrl",
                 templateUrl: 'templates/seleccionar_persona.html'
             }
@@ -178,6 +190,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/programas_potencial',
         views: {
             'menuContent': {
+                cache: false,
                 controller: "ProgramasPotencialCtrl",
                 templateUrl: 'templates/programas_potencial.html'
             }
@@ -187,6 +200,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         url: '/informacion_programa',
         views: {
             'menuContent': {
+                cache: false,
                 controller: "InformacionProgramaCtrl",
                 templateUrl: 'templates/informacion_programa.html'
             }

@@ -41,6 +41,22 @@ app.service("autenticacionService", function ($http) {
         var req = $http(pet);
         return req;
     };
+    this._getTokenFoc = function () {
+        var dat = "username=FocalizacionUser&password=JentcF9c7liz72o15o6$&grant_type=password&client_Id=e2b7e5a65926490ca6ad5799304fbed5";
+        var pet = {
+            method: 'POST',
+            url: 'http://186.170.31.187/DPS/Utilidad/InfraRESTAuthorization/oauth2/token',
+            headers: {
+                'User-Agent': 'Fiddler',
+                'content-type': 'application/x-www-form-urlencoded',
+                'Content-Length': '118',
+                'Host': 'urania.accionsocial.col'
+            },
+            data: dat
+        }
+        var req = $http(pet);
+        return req;
+    };
 });
 app.service("verificacionCiudadanoService", function ($http) {
     this._obtenerCuestionario = function (tip_ide, ide) {
@@ -112,11 +128,12 @@ app.service("focalizacionService", function ($http) {
 
         var pet = {
             method: 'GET',
-            url: 'http://186.170.31.187/DPS/MasFamiliasAccion/InfraestructuraFocalizacionREST/api/values?pTipoIdentificacion=' + tip_ide + '&pTipoPrograma=0&pNumeroIdentificacion=' + ide,
+            url: 'http://186.170.31.187/DPS/DireccionIngresoSocial/InfraestructuraFocalizacionWebAPI/ConsultarPotencial?pTipoIdentificacion=' + tip_ide + '&pTipoPrograma=0&pNumeroIdentificacion=' + ide,
             headers: {
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ' + byaSite._getTokenDIS(),
-                'Content-Type': 'application/json'
+                'User-Agent': 'Fiddler',
+                'Authorization': 'Bearer ' + byaSite._getTokenFOC(),
+                'Host': 'urania.accionsocial.col',
+                'Content-Length': '0'
             }
         }
         var req = $http(pet);
@@ -127,10 +144,12 @@ app.service("mensajesService", function ($http) {
     this._mensjes = function () {
         var pet = {
             method: 'GET',
-            url: 'http://186.170.31.187/DPS/DireccionIngresoSocial/InfraestructuraTitulos/ObtenerMensajesAdministrados?pCodMensaje=N',
+            url: 'http://186.170.31.187/DPS/DireccionIngresoSocial/InfraestructuraFocalizacionWebAPI/ObtenerMensajesAdministrados?pCodMensaje=',
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'User-Agent': 'Fiddler',
+                'Authorization': 'Bearer ' + byaSite._getTokenFOC(),
+                'Host': 'urania.accionsocial.col',
+                'Content-Length': '0'
             }
         }
         var req = $http(pet);

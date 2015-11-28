@@ -740,14 +740,14 @@ angular.module('starter.controllers', [])
 
     function _init() {
         $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> A qué soy Potencial?';
-        _getTokenDIS();
+        _getTokenFOC();
     };
-    function _getTokenDIS() {
+    function _getTokenFOC() {
         $scope.ocultarLoader = true;
-        var serAut = autenticacionService._getTokenDIS();
+        var serAut = autenticacionService._getTokenFoc();
         serAut.then(function (pl) {
             $scope.ocultarLoader = false;
-            byaSite._setTokenDIS(pl.data.access_token);
+            byaSite._setTokenFOC(pl.data.access_token);
         }, function (pl) {
             $scope.ocultarLoader = false;
             showAlert("Error", "Ha sido imposible conectarse al servidor");

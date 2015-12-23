@@ -26,9 +26,9 @@
                     <p><strong>{{_tipoDocumento(miembro.tipoDocumentoField)}} </strong> </p>
                     <p>{{miembro.numeroDocumentoField}}</p>
                     <p><strong>Colegio: </strong> <span ng-if="miembro.Colegio == null">Sin información</span></p>
-                    <p>{{miembro.Colegio | lowercase | capitalize}}</p>
+                    <p style="font-size: 70% ">{{miembro.Colegio}}</p>
                     <p><strong>Priorizado: </strong> <span ng-if="miembro.priorizadoField == null">Sin información</span> {{miembro.priorizadoField}}</p>
-                    <p><strong>Grado: </strong> <span ng-if="miembro.Grado == null">Sin información</span> {{_getGrado(miembro.Grado)}}</p>
+                    <p><strong>Grado: </strong> <span ng-if="miembro.Grado == null">Sin información</span> {{miembro.Grado}}</p>
                     <p><strong>Graduado: </strong> <span ng-if="miembro.Graduado==null">Sin información</span> {{miembro.Graduado}}</p>
                     
                 </ion-item>

@@ -77,10 +77,12 @@ angular.module('starter.controllers', [])
         $rootScope.usuario.documento = "";
         $scope.mostarMensaje = false;
         var tipoDocumento = $rootScope.usuario.tipoDocumento;
-        if (tipoDocumento == "TI" || tipoDocumento == "CC") {
-            $scope.maxLength = 10;
+        if (tipoDocumento == "TI") {
+            $scope.maxLength = 11;
         } else if (tipoDocumento == "CE") {
             $scope.maxLength = 6;
+        }else if(tipoDocumento == "CC"){
+            $scope.maxLength = 11;
         }
     };        
     $scope.validarDocumento = function (form) {
@@ -541,6 +543,7 @@ angular.module('starter.controllers', [])
     $scope._tipoDocumento = function (value) {
         if (value == "CC") return "Cedula de Ciudadanía";
         else if (value == "TI") return "Tarjeta de identidad";
+        else if (value == "RC") return "Registro Civil";
         else return "";
     };
     $scope._getGrado = function (value) {
@@ -575,7 +578,7 @@ angular.module('starter.controllers', [])
                 if (persona.idPersonaField == item_educacion.datosBaseField.idPersonaField) {
                     persona.Colegio = item_educacion.educacionField.institucionEducativaField;
                     persona.Grado = item_educacion.educacionField.gradoEscolarField;
-                    persona.Graduado = item_educacion.educacionField.graduadoBachillerField == "NO" ? "Sin Graduar" : "Graduado";
+                    persona.Graduado = item_educacion.educacionField.graduadoBachillerField == "NO" ? "Sin Graduar" : "Graduado";;
                 }
             });
         });
@@ -710,10 +713,12 @@ angular.module('starter.controllers', [])
         $rootScope.usuario.documento = "";
         $scope.mostarMensaje = false;
         var tipoDocumento = $rootScope.usuario.tipoDocumento;
-        if (tipoDocumento == "1" || tipoDocumento == "2" || tipoDocumento == "5") {
+        if (tipoDocumento == "1"|| tipoDocumento == "5") {
             $scope.maxLength = 10;
         } else if (tipoDocumento == "3") {
             $scope.maxLength = 6;
+        }else if(tipoDocumento == "2" ){
+            $scope.maxLength = 11;
         }
     };
     $scope.validarDocumento = function (form) {

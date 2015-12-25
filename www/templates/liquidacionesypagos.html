@@ -10,10 +10,10 @@
                 <div class="col col-80">
                     <p>{{liquidacion.datosBaseField.primerNombreField|capitalize}} {{liquidacion.datosBaseField.segundoNombreField|capitalize}} {{liquidacion.datosBaseField.primerApellidoField|capitalize}} {{liquidacion.datosBaseField.segundoApellidoField|capitalize}}</p>
                     <p><strong>Valor: </strong> {{liquidacion.cicloBeneficioField.valorCicloField | currency:"$":0}}</p>
-                    <p><strong>Entrega: </strong> {{liquidacion.cicloBeneficioField.formaEntregaIncentivoField|capitalize}}</p>
-                    <p><strong>Modalidad: </strong>@@</p>
+                    <p><strong>Entrega: </strong> </p>
+                    <p><strong>Modalidad: </strong>{{liquidacion.cicloBeneficioField.formaEntregaIncentivoField|capitalize}}</p>
                     <p><strong>Cuenta: </strong> {{liquidacion.cicloBeneficioField.numeroCuentaField}}</p>
-                    <p><strong>Cobrado: </strong>@@</p>
+                    <p><strong>Cobrado: </strong></p>
                 </div>
                 <div class="col col-10">
                     <i class="icon" ng-class="isGroupShown(liquidacion) ? 'ion-minus-circled' : 'ion-plus-circled'" style="color:#F29400;"></i>

@@ -539,8 +539,10 @@ angular.module('starter.controllers', [])
         return $scope.shownGroup === group;
     };
     $scope._tipoDocumento = function (value) {
-        if (value == "CC") return "Cedula de Ciudadanía";
+        if (value == "CC") return "Cédula de Ciudadanía";
         else if (value == "TI") return "Tarjeta de identidad";
+        else if (value == "RC") return "Registro Civil";
+        else if (value == "CE") return "Cédula de Extranjería";
         else return "";
     };
     $scope._getGrado = function (value) {
@@ -596,20 +598,21 @@ angular.module('starter.controllers', [])
         $scope.fin = $scope.indexActual + 1 - $scope.fal;
     };
     function _grado(value) {
-        if (value == 0) return "Prejardin";
-        if (value == 1) return "Jardin";
-        if (value == 2) return "Transición";
-        if (value == 3) return "Primero";
-        if (value == 4) return "Segundo";
-        if (value == 5) return "Tercero";
-        if (value == 6) return "Cuarto";
-        if (value == 7) return "Quinto";
-        if (value == 8) return "Sexto";
-        if (value == 9) return "Septimo";
-        if (value == 10) return "Octavo";
-        if (value == 11) return "Noveno";
-        if (value == 12) return "Decimo";
-        if (value == 13) return "Undecimo";
+        return value;
+        //if (value == 0) return "Prejardin";
+        //if (value == 1) return "Jardin";
+        //if (value == 2) return "Transición";
+        //if (value == 3) return "Primero";
+        //if (value == 4) return "Segundo";
+        //if (value == 5) return "Tercero";
+        //if (value == 6) return "Cuarto";
+        //if (value == 7) return "Quinto";
+        //if (value == 8) return "Sexto";
+        //if (value == 9) return "Septimo";
+        //if (value == 10) return "Octavo";
+        //if (value == 11) return "Noveno";
+        //if (value == 12) return "Decimo";
+        //if (value == 13) return "Undecimo";
     };
 })
 .controller('CumplimientoCtrl', function ($scope, $rootScope) {

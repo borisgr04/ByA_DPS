@@ -8,11 +8,11 @@
                     <img ng-src="img/profile.png" style="width:75%;">
                 </div>
                 <div class="col col-80">
-                    <p>{{liquidacion.datosBaseField.primerNombreField|capitalize}} {{liquidacion.datosBaseField.segundoNombreField|capitalize}} {{liquidacion.datosBaseField.primerApellidoField|capitalize}} {{liquidacion.datosBaseField.segundoApellidoField|capitalize}}</p>
-                    <p><strong>Valor: </strong> {{liquidacion.cicloBeneficioField.valorCicloField | currency:"$":0}}</p>
-                    <p><strong>Entrega: </strong> {{liquidacion.cicloBeneficioField.numeroDePagoField|capitalize}}</p>
+                    <p>{{titular.primerNombreField|capitalize}} {{titular.segundoNombreField|capitalize}}               {{titular.primerApellidoField|capitalize}} {{titular.segundoApellidoField|capitalize}}</p>
+                    <p><strong>Entrega: </strong> {{liquidacion.entrega}}</p>
+                    <p><strong>Valor: </strong> {{ liquidacion.valorLiquidacion | currency:"$":0}}</p>
                     <p><strong>Modalidad: </strong>@@</p>
-                    <p><strong>Cuenta: </strong> {{liquidacion.cicloBeneficioField.numeroCuentaField}}</p>
+                    <p><strong>Cuenta: </strong> {{liquidacion.cuenta}}</p>
                     <p><strong>Cobrado: </strong>@@</p>
                 </div>
                 <div class="col col-10">
@@ -20,7 +20,7 @@
                 </div>
               </div>   
           </ion-item>
-          <ion-item class="item-accordion item-accordion-button" ng-show="isGroupShown(liquidacion)" style="padding-left:60px;margin-top:0px;padding-top:0px;">
+          <ion-item class="item-accordion item-accordion-button" ng-show="isGroupShown(liquidacion)" style="padding-left:60px;margin-top:0px;padding-top:0px;" >
             <p><strong>Tipo de movimiento: </strong> {{liquidacion.cicloBeneficioField.tipoMovimientoLiquidacionField |lowercase|capitalize}}</p>
             <p><strong>Valor: </strong> {{liquidacion.cicloBeneficioField.valorCicloField | currency:"$":0}}</p>
           </ion-item>

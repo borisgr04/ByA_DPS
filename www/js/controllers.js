@@ -485,8 +485,11 @@ angular.module('starter.controllers', [])
         angular.forEach(entregas,function(entrega,indice){
             listanuevaLiquidacion = [];
             nuevaLiquidacion = {};
+            nuevaLiquidacion.titular = $scope.hojavida_MFA.Persona.primerNombreField + " " + $scope.hojavida_MFA.Persona.segundoNombreField + " " + $scope.hojavida_MFA.Persona.primerApellidoField + " " + $scope.hojavida_MFA.Persona.segundoApellidoField;
             nuevaLiquidacion.entrega = entrega;
             nuevaLiquidacion.valorLiquidacion = 0;
+            nuevaLiquidacion.modalidad = "@@";
+            nuevaLiquidacion.cobrado = "@@";
             angular.forEach(liquidaciones, function(liquidacion,indice){
                 if(entrega == liquidacion.cicloBeneficioField.numeroDePagoField){
                     nuevaLiquidacion.cuenta = liquidacion.cicloBeneficioField.numeroCuentaField;
@@ -497,8 +500,6 @@ angular.module('starter.controllers', [])
             nuevaLiquidacion.listaLiquidaciones = listanuevaLiquidacion;
             listaLiquidaciones.push(nuevaLiquidacion);
         });
-        // muestra en la consola el json con la agrupacion por entrega
-        console.log(listaLiquidaciones);
         return listaLiquidaciones;
     }    
     function _obtenerEntregas(liquidaciones){

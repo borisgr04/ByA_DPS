@@ -8,12 +8,12 @@
                     <img ng-src="img/profile.png" style="width:75%;">
                 </div>
                 <div class="col col-80">
-                    <p>{{liquidacion.datosBaseField.primerNombreField|capitalize}} {{liquidacion.datosBaseField.segundoNombreField|capitalize}} {{liquidacion.datosBaseField.primerApellidoField|capitalize}} {{liquidacion.datosBaseField.segundoApellidoField|capitalize}}</p>
-                    <p><strong>Valor: </strong> {{liquidacion.cicloBeneficioField.valorCicloField | currency:"$":0}}</p>
-                    <p><strong>Entrega: </strong> </p>
-                    <p><strong>Modalidad: </strong>{{liquidacion.cicloBeneficioField.formaEntregaIncentivoField|capitalize}}</p>
-                    <p><strong>Cuenta: </strong> {{liquidacion.cicloBeneficioField.numeroCuentaField}}</p>
-                    <p><strong>Cobrado: </strong></p>
+                    <p>{{liquidacion.titular}}</p>
+                    <p><strong>Valor: </strong> {{liquidacion.valorLiquidacion | currency:"$":0}}</p>
+                    <p><strong>Entrega: </strong> {{liquidacion.entrega|capitalize}}</p>
+                    <p><strong>Modalidad: </strong>{{liquidacion.modalidad|capitalize}}</p>
+                    <p><strong>Cuenta: </strong> {{liquidacion.cuenta}}</p>
+                    <p><strong>Cobrado: </strong>{{liquidacion.cobrado}}</p>
                 </div>
                 <div class="col col-10">
                     <i class="icon" ng-class="isGroupShown(liquidacion) ? 'ion-minus-circled' : 'ion-plus-circled'" style="color:#F29400;"></i>
@@ -21,8 +21,14 @@
               </div>   
           </ion-item>
           <ion-item class="item-accordion item-accordion-button" ng-show="isGroupShown(liquidacion)" style="padding-left:60px;margin-top:0px;padding-top:0px;" >
-            <p><strong>Tipo de movimiento: </strong> {{liquidacion.cicloBeneficioField.tipoMovimientoLiquidacionField |lowercase|capitalize}}</p>
-            <p><strong>Valor: </strong> {{liquidacion.cicloBeneficioField.valorCicloField | currency:"$":0}}</p>
+              <ul>
+                  <li ng-repeat="liq in liquidacion.listaLiquidaciones">
+                      <p><strong>{{$index +1}}. {{liq.datosBaseField.primerNombreField + " " + liq.datosBaseField.segundoNombreField + " " + liq.datosBaseField.primerApellidoField + " " + liq.datosBaseField.segundoApellidoField}}</strong></p>
+                      <p><strong>Tipo: </strong>{{liq.cicloBeneficioField.tipoMovimientoLiquidacionField}}</p>
+                      <p><strong>Valor: </strong>{{liq.cicloBeneficioField.valorCicloField | currency:"$":0}}</p>
+                      <br/>
+                  </li>
+              </ul>
           </ion-item>
         </div>
       </div>

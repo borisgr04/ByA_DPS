@@ -77,10 +77,12 @@ angular.module('starter.controllers', [])
         $rootScope.usuario.documento = "";
         $scope.mostarMensaje = false;
         var tipoDocumento = $rootScope.usuario.tipoDocumento;
-        if (tipoDocumento == "TI" || tipoDocumento == "CC") {
-            $scope.maxLength = 10;
+        if (tipoDocumento == "TI") {
+            $scope.maxLength = 11;
         } else if (tipoDocumento == "CE") {
             $scope.maxLength = 6;
+        }else if(tipoDocumento == "CC"){
+            $scope.maxLength = 11;
         }
     };        
     $scope.validarDocumento = function (form) {
@@ -444,6 +446,7 @@ angular.module('starter.controllers', [])
         $scope.groups = [];
         $scope.hojavida_MFA = {};
         $scope.liquidaciones = [];
+        $scope.titular = {};
         _init();
     });    
     $scope.toggleGroup = function(group) {
@@ -455,7 +458,7 @@ angular.module('starter.controllers', [])
     };
     $scope.isGroupShown = function(group) {     
         return $scope.shownGroup === group;  
-    };    
+    }; 
     
     function _init() {
         $rootScope.TituloMenu.titulo = '<img class="logoEncabezado" src="img/logo2.png"/> Liquidación y Pagos';
@@ -464,8 +467,61 @@ angular.module('starter.controllers', [])
     function _TraerLiquidaciones() {
         var obj_completo = byaSite._getVar("HV_MFA");
         $scope.hojavida_MFA = obj_completo;
-        $scope.liquidaciones = obj_completo.Liquidacion;
-    };
+        $scope.titular = obj_completo.Persona; 
+        var liquidaciones = obj_completo.Liquidacion;
+        $scope.liquidaciones = _agruparLiquidaciones(liquidaciones);
+        console.log(JSON.stringify($scope.liquidaciones));
+    };    
+    function _agruparLiquidaciones(liquidaciones,indices){
+        var entregas = _obtenerEntregas(liquidaciones);
+        var nuevaLiquidacion = {
+            entrega: null,
+            cuenta: null,
+            valorLiquidacion: null,
+            listaLiquidaciones: null
+        };
+        var listaLiquidaciones = [];
+        var listanuevaLiquidacion = [];
+        angular.forEach(entregas,function(entrega,indice){
+            listanuevaLiquidacion = [];
+            nuevaLiquidacion = {};
+            nuevaLiquidacion.entrega = entrega;
+            nuevaLiquidacion.valorLiquidacion = 0;
+            angular.forEach(liquidaciones, function(liquidacion,indice){
+                if(entrega == liquidacion.cicloBeneficioField.numeroDePagoField){
+                    nuevaLiquidacion.cuenta = liquidacion.cicloBeneficioField.numeroCuentaField;
+                    nuevaLiquidacion.valorLiquidacion += liquidacion.cicloBeneficioField.valorCicloField;
+                    listanuevaLiquidacion.push(liquidacion);
+                }
+            });
+            nuevaLiquidacion.listaLiquidaciones = listanuevaLiquidacion;
+            listaLiquidaciones.push(nuevaLiquidacion);
+        });
+        // muestra en la consola el json con la agrupacion por entrega
+        console.log(listaLiquidaciones);
+        return listaLiquidaciones;
+    }    
+    function _obtenerEntregas(liquidaciones){
+        listaIndices = [];
+        angular.forEach(liquidaciones, function(liquidacion,value){
+           if(!_containValue(listaIndices,liquidacion.cicloBeneficioField.numeroDePagoField)){
+               listaIndices.push(liquidacion.cicloBeneficioField.numeroDePagoField);
+           }
+        });
+        return listaIndices;
+    }    
+    function _containValue(lista,valor){
+            var retorno = false;
+        if(lista.length != 0){
+            angular.forEach(lista, function(value,index){
+                if(value == valor)
+                    retorno = true;
+            })
+        }else{
+            retorno = false;
+        }
+        return retorno;
+    }
 })
 .controller('MenuFamiliasEnAccionCtrl', function ($scope, $rootScope, $state, autenticacionService, $ionicPopup, $ionicModal, $timeout, atencionPeticionesService) {
     $scope.$on('$ionicView.enter', function () {
@@ -566,6 +622,7 @@ angular.module('starter.controllers', [])
     };
     function _TraerDatosFamiliares() {
         var obj_completo = byaSite._getVar("HV_MFA");
+        console.log(JSON.stringify(obj_completo));
         $scope.hojavida_MFA = obj_completo;
         $scope.nucleo_familiar_completo = obj_completo.NucleoFamiliar;
         _asignarDatosEducacion();
@@ -577,7 +634,7 @@ angular.module('starter.controllers', [])
                 if (persona.idPersonaField == item_educacion.datosBaseField.idPersonaField) {
                     persona.Colegio = item_educacion.educacionField.institucionEducativaField;
                     persona.Grado = item_educacion.educacionField.gradoEscolarField;
-                    persona.Graduado = item_educacion.educacionField.graduadoBachillerField == "NO" ? "Sin Graduar" : "Graduado";
+                    persona.Graduado = item_educacion.educacionField.graduadoBachillerField == "NO" ? "Sin Graduar" : "Graduado";;
                 }
             });
         });
@@ -713,10 +770,12 @@ angular.module('starter.controllers', [])
         $rootScope.usuario.documento = "";
         $scope.mostarMensaje = false;
         var tipoDocumento = $rootScope.usuario.tipoDocumento;
-        if (tipoDocumento == "1" || tipoDocumento == "2" || tipoDocumento == "5") {
+        if (tipoDocumento == "1"|| tipoDocumento == "5") {
             $scope.maxLength = 10;
         } else if (tipoDocumento == "3") {
             $scope.maxLength = 6;
+        }else if(tipoDocumento == "2" ){
+            $scope.maxLength = 11;
         }
     };
     $scope.validarDocumento = function (form) {

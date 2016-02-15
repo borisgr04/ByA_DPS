@@ -488,12 +488,12 @@ angular.module('starter.controllers', [])
             nuevaLiquidacion.titular = $scope.hojavida_MFA.Persona.primerNombreField + " " + $scope.hojavida_MFA.Persona.segundoNombreField + " " + $scope.hojavida_MFA.Persona.primerApellidoField + " " + $scope.hojavida_MFA.Persona.segundoApellidoField;
             nuevaLiquidacion.entrega = entrega;
             nuevaLiquidacion.valorLiquidacion = 0;
-            nuevaLiquidacion.modalidad = "@@";
-            nuevaLiquidacion.cobrado = "@@";
             angular.forEach(liquidaciones, function(liquidacion,indice){
                 if(entrega == liquidacion.cicloBeneficioField.numeroDePagoField){
                     nuevaLiquidacion.cuenta = liquidacion.cicloBeneficioField.numeroCuentaField;
                     nuevaLiquidacion.valorLiquidacion += liquidacion.cicloBeneficioField.valorCicloField;
+                    nuevaLiquidacion.modalidad = liquidacion.cicloBeneficioField.formaEntregaIncentivoField;
+                    nuevaLiquidacion.cobrado = cobrado(liquidacion.cicloBeneficioField.cobradoField);
                     listanuevaLiquidacion.push(liquidacion);
                 }
             });
@@ -501,7 +501,15 @@ angular.module('starter.controllers', [])
             listaLiquidaciones.push(nuevaLiquidacion);
         });
         return listaLiquidaciones;
-    }    
+    }   
+    
+    function cobrado(cobadro){
+        if(cobrado)
+            return "Si"
+        else
+            return "No";
+    }
+    
     function _obtenerEntregas(liquidaciones){
         listaIndices = [];
         angular.forEach(liquidaciones, function(liquidacion,value){

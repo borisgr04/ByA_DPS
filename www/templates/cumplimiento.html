@@ -8,9 +8,9 @@
                     <img ng-src="img/profile.png" style="width:75%;">
                 </div>
                 <div class="col col-80">
-                    <p><strong ng-show="mostrarTituloSalud(cumplimiento)">Periodo Cumplimiento Salud</strong></p>
-                    <p><strong ng-show="mostrarTituloEducacion(cumplimiento)">Periodo Cumplimientos Educación</strong></p>
-                    <p class='gray-light-2'>{{cumplimiento.cumplimientoField.fechaInicioPeriodoVerificacionField | date:'MMM d, y'}} - {{cumplimiento.cumplimientoField.fechaFinPeriodoVerificacionField | date:'MMM d, y'}}</p>
+                    <p><strong ng-show="mostrarTituloSalud(cumplimiento)">SALUD</strong></p>
+                    <p><strong ng-show="mostrarTituloEducacion(cumplimiento)">EDUCACIÓN</strong></p>
+                    <p class='gray-light-2'>Periodo: {{cumplimiento.cumplimientoField.fechaInicioPeriodoVerificacionField | date:'MMM d, y'}} - {{cumplimiento.cumplimientoField.fechaFinPeriodoVerificacionField | date:'MMM d, y'}}</p>
                 </div>
                 <div class="col col-10">
                     <i class="icon" ng-class="isGroupShown(cumplimiento) ? 'ion-minus-circled' : 'ion-plus-circled'" style="color:#F29400;"></i>

@@ -34,6 +34,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
             StatusBar.styleDefault();
         }
     });
+    /*
     $ionicPlatform.registerBackButtonAction(function(event) {
         if (true) 
         {
@@ -42,6 +43,7 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
             else $ionicHistory.goBack();            
         }
     }, 100);
+    
     $ionicPlatform.on('resume', function () {
         $ionicHistory.nextViewOptions({
             disableAnimate: true,
@@ -55,8 +57,9 @@ var app = angular.module('starter', ['ionic', 'starter.controllers','ngMessages'
         localStorage.removeItem("Focalizacion");
         byaSite._removeVar("lPreguntas");
      
-        $state.go("app.home");
+        //$state.go("app.home");
     });
+    */
 })
 
 .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
